@@ -1,0 +1,15 @@
+
+.panelNextTime {
+    background-color: #f3b936;
+    display: flex;
+    flex-direction: column;
+}
+
+.panelNextTime__title {
+    font-size: .8rem;
+    text-align: center;
+}
+.panelNextTime__time {
+    margin-top: 60px;
+    padding: 5px;
+}
