@@ -28,4 +28,6 @@ const registerServiceWorker = async () => {
     }
 };
 
-// registerServiceWorker();
+if(!import.meta.env.DEV) {
+    registerServiceWorker();
+}
