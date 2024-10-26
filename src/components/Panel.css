@@ -1,0 +1,8 @@
+.panel {
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid #000000;
+}
