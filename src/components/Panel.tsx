@@ -4,11 +4,11 @@ import { PanelDetails } from './PanelDetails.tsx';
 import { PanelStrip } from './PanelStrip.tsx';
 import { PanelNextTime } from './PanelNextTime.tsx';
 
-export const Panel: FunctionComponent = () => {
+export const Panel: FunctionComponent<{number: number}> = ({number}) => {
     return (
         <div className="panel">
-            <PanelStrip number={1} />
-            <PanelDetails />
+            <PanelStrip number={number} />
+            <PanelDetails starting={number === 1} />
             <PanelNextTime />
         </div>
     )

@@ -14,14 +14,15 @@
 .panelDetails {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     padding: 5px;
     width: 100%;
 }
 
 .panelDetails__name {
-    font-size: 1.5rem;
+    font-size: .85rem;
     font-weight: 700;
+    color: #D84315;
 }
 
 .panelDetails__finish,
@@ -31,7 +32,7 @@
     flex-direction: row;
     gap: 5px;
     align-items: flex-end;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
 .panelDetails__times > div:last-child {

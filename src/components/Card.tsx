@@ -7,8 +7,8 @@ export const Card: FunctionComponent = () => {
     return (
         <div className="card">
             <Header />
-            <Panel />
-            <Panel />
+            <Panel number={1} />
+            <Panel number={2} />
         </div>
     )
 }
