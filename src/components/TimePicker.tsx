@@ -7,6 +7,7 @@ type TimePickerValueProps = {
     value: number,
     onChange: (value: number) => void,
     disabled?: boolean,
+    emptyState?: boolean,
     style?: 'normal' | 'gray';
 };
 
@@ -23,6 +24,7 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
         value,
         onChange,
         disabled,
+        emptyState,
         style
     }) =>
     (
@@ -31,10 +33,10 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
             <input
                 type="number"
                 className="timePickerValue__input"
-                value={value}
+                value={emptyState ? '' : value}
                 pattern={patternNumberTwoDigits}
                 disabled={disabled}
-                onChange={(e) => onChange(validateTwoDigits(e.target.value))}
+                onChange={(e) => onChange(validateTwoDigits(e.target?.value || '0'))}
             />
         </div>
     )
@@ -95,6 +97,16 @@ export const TimePicker: FunctionComponent<Props> = (
         onChange && onChange(hours * 3600000 + minutes * 60000 + seconds * 1000 + miliseconds);
     }, [hours, minutes, seconds, miliseconds]);
 
+    useEffect(() => {
+        const values = msToSeparateValues(value);
+        setHours(values[0]);
+        setMinutes(values[1]);
+        setSeconds(values[2]);
+        setMiliseconds(values[3]);
+    }, [value]);
+
+    console.log('TimePicker', {title, value, hours, minutes, seconds, miliseconds});
+
     return (
         <div className={["timePicker", className].join(' ')}>
             {title && <span className="timePicker__title">{title}</span>}
@@ -105,6 +117,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     onChange={setHours}
                     disabled={disabled}
                     style={style}
+                    emptyState={value === 0}
                 /> }
                 {showMinutes && <TimePickerValue
                     value={minutes}
@@ -112,6 +125,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     onChange={setMinutes}
                     disabled={disabled}
                     style={style}
+                    emptyState={value === 0}
                 /> }
                 {showSeconds && <TimePickerValue
                     value={seconds}
@@ -119,6 +133,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     onChange={setSeconds}
                     disabled={disabled}
                     style={style}
+                    emptyState={value === 0}
                 /> }
                 {showMiliseconds && <TimePickerValue
                     value={miliseconds}
@@ -126,6 +141,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     onChange={setMiliseconds}
                     disabled={disabled}
                     style={style}
+                    emptyState={value === 0}
                 /> }
             </div>
             {subtitle && <span className="timePicker__subtitle">{subtitle}</span>}

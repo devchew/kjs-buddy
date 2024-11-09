@@ -49,6 +49,21 @@ export const PanelProvider: FunctionComponent<PropsWithChildren<PanelProviderPro
     const setArrivalTime = (arrivalTime: number) => setPanel({...panel, arrivalTime});
 
     useEffect(() => {
+        // if actual start time is set, and provisional start time is not set, set provisional start time
+        if (panel.actualStartTime === 0 && panel.provisionalStartTime !== 0) {
+            setPanel({...panel, actualStartTime: panel.provisionalStartTime});
+        }
+    }, [panel.actualStartTime, panel.provisionalStartTime]);
+
+    useEffect(() => {
+        // if driving time is set, and actual start time is set, calculate arrival time
+        if (panel.drivingTime !== 0 && panel.actualStartTime !== 0) {
+            setPanel({...panel, arrivalTime: panel.actualStartTime + panel.drivingTime});
+            console.log('Arrival time updated', panel.arrivalTime);
+        }
+    }, [panel.drivingTime, panel.actualStartTime]);
+
+    useEffect(() => {
         props.onChange(panel);
         console.log('Panel updated', panel);
     }, [panel]);
