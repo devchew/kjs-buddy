@@ -1,5 +1,5 @@
 import "./TimePicker.css";
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 
 
 type TimePickerValueProps = {
@@ -9,6 +9,13 @@ type TimePickerValueProps = {
     disabled?: boolean,
     style?: 'normal' | 'gray';
 };
+
+const patternNumberTwoDigits = "[0-9]{1,2}";
+
+const validateTwoDigits = (value: string): number => {
+    const firstTwoDigits = value.slice(0, 2);
+    return parseInt(firstTwoDigits, 10);
+}
 
 const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
     {
@@ -25,8 +32,9 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
                 type="number"
                 className="timePickerValue__input"
                 value={value}
+                pattern={patternNumberTwoDigits}
                 disabled={disabled}
-                onChange={(e) => onChange(parseInt(e.target.value))}
+                onChange={(e) => onChange(validateTwoDigits(e.target.value))}
             />
         </div>
     )
@@ -40,6 +48,7 @@ type Props = {
     disabled?: boolean;
     style?: 'normal' | 'gray';
     className?: string;
+    onChange: (value: number) => void;
 }
 
 const precisionToFlags = (precision: Props['precision']) => {
@@ -70,12 +79,22 @@ export const TimePicker: FunctionComponent<Props> = (
         precision,
         disabled,
         className,
-        style
+        style,
+        onChange
     }
 ) => {
 
     const [showHours, showMinutes, showSeconds, showMiliseconds] = precisionToFlags(precision);
-    const [hours, minutes, seconds, miliseconds] = msToSeparateValues(value);
+    const values = msToSeparateValues(value);
+    const [hours, setHours] = useState(values[0]);
+    const [minutes, setMinutes] = useState(values[1]);
+    const [seconds, setSeconds] = useState(values[2]);
+    const [miliseconds, setMiliseconds] = useState(values[3]);
+
+    useEffect(() => {
+        onChange && onChange(hours * 3600000 + minutes * 60000 + seconds * 1000 + miliseconds);
+    }, [hours, minutes, seconds, miliseconds]);
+
     return (
         <div className={["timePicker", className].join(' ')}>
             {title && <span className="timePicker__title">{title}</span>}
@@ -83,28 +102,28 @@ export const TimePicker: FunctionComponent<Props> = (
                 {showHours && <TimePickerValue
                     value={hours}
                     label="H"
-                    onChange={console.log}
+                    onChange={setHours}
                     disabled={disabled}
                     style={style}
                 /> }
                 {showMinutes && <TimePickerValue
                     value={minutes}
                     label="M"
-                    onChange={console.log}
+                    onChange={setMinutes}
                     disabled={disabled}
                     style={style}
                 /> }
                 {showSeconds && <TimePickerValue
                     value={seconds}
                     label="S"
-                    onChange={console.log}
+                    onChange={setSeconds}
                     disabled={disabled}
                     style={style}
                 /> }
                 {showMiliseconds && <TimePickerValue
                     value={miliseconds}
                     label="1/10"
-                    onChange={console.log}
+                    onChange={setMiliseconds}
                     disabled={disabled}
                     style={style}
                 /> }
