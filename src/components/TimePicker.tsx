@@ -87,7 +87,7 @@ const precisionToFlags = (precision: Props['precision']) => {
 const roundToTwoDigits = (value: number) => parseInt(value.toPrecision(2), 10);
 
 const msToSeparateValues = (ms: number) => {
-    const hours = Math.floor(ms / 3600000);
+    const hours = Math.floor((ms % 86400000) / 3600000);
     const minutes = Math.floor((ms % 3600000) / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     const miliseconds = roundToTwoDigits(ms % 1000);
