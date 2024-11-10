@@ -1,6 +1,7 @@
 
 import { Card } from './components/Card.tsx';
 import { useOffline } from './hooks/offline.ts';
+import { Countdown } from './components/Countdown.tsx';
 
 function App () {
     const isOffline = useOffline()
@@ -11,7 +12,7 @@ function App () {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '100vw',
+            paddingBottom: '5rem',
         }}>
             <Card />
             {isOffline && <div style={{
@@ -22,6 +23,7 @@ function App () {
             }}>
                 Brak połączenia z internetem
             </div>}
+            <Countdown />
         </div>
     )
 }

@@ -38,6 +38,7 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
     const updatePanels = (panels: CardPanel[]) => setPanels(panels);
     const updatePanelByNumber = (panelNumber: number, panel: CardPanel) => setPanels(panels.map((p) => p.number === panelNumber ? panel : p));
 
+
     useEffect(() => {
         setCardInfo(monteCalvaria.cardInfo);
         setPanels(monteCalvaria.panels);
