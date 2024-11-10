@@ -8,14 +8,18 @@ type TimePickerValueProps = {
     onChange: (value: number) => void,
     disabled?: boolean,
     emptyState?: boolean,
+    max?: number,
     style?: 'normal' | 'gray';
 };
 
 const patternNumberTwoDigits = "[0-9]{1,2}";
 
-const validateTwoDigits = (value: string): number => {
-    const firstTwoDigits = value.slice(0, 2);
-    return parseInt(firstTwoDigits, 10);
+const validate = (value: string, max: number = 99): number => {
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed) || parsed < 0) {
+        return 0;
+    }
+    return Math.min(parsed, max);
 }
 
 const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
@@ -25,21 +29,38 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
         onChange,
         disabled,
         emptyState,
+        max,
         style
-    }) =>
-    (
+    }) => {
+
+    const [val, setVal] = useState(emptyState ? '' : value.toString());
+
+    useEffect(() => {
+        setVal(emptyState ? '' : value.toString());
+    }, [emptyState, value]);
+
+    const onBlur = () => {
+        const validatedValue = validate(val, max);
+        onChange(validatedValue);
+        setVal(validatedValue.toString());
+    }
+
+    return (
         <div className={["timePickerValue", "timePickerValue--" + (style || 'normal')].join(" ")}>
             {label && <span className="timePickerValue__label">{label}</span>}
             <input
                 type="number"
                 className="timePickerValue__input"
-                value={emptyState ? '' : value}
+                value={val}
                 pattern={patternNumberTwoDigits}
                 disabled={disabled}
-                onChange={(e) => onChange(validateTwoDigits(e.target?.value || '0'))}
+                onFocus={(e) => e.target.select()}
+                onBlur={onBlur}
+                onChange={(e) => setVal(e.target?.value)}
             />
         </div>
-    )
+    );
+}
 
 
 type Props = {
@@ -118,6 +139,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     disabled={disabled}
                     style={style}
                     emptyState={value === 0}
+                    max={23}
                 /> }
                 {showMinutes && <TimePickerValue
                     value={minutes}
@@ -126,6 +148,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     disabled={disabled}
                     style={style}
                     emptyState={value === 0}
+                    max={59}
                 /> }
                 {showSeconds && <TimePickerValue
                     value={seconds}
@@ -134,6 +157,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     disabled={disabled}
                     style={style}
                     emptyState={value === 0}
+                    max={59}
                 /> }
                 {showMiliseconds && <TimePickerValue
                     value={miliseconds}
@@ -142,6 +166,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     disabled={disabled}
                     style={style}
                     emptyState={value === 0}
+                    max={99}
                 /> }
             </div>
             {subtitle && <span className="timePicker__subtitle">{subtitle}</span>}
