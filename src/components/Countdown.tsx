@@ -42,6 +42,10 @@ export const Countdown: FunctionComponent = () => {
         return () => clearInterval(interval);
     }, []);
 
+    if (until <= 0) {
+        return null;
+    }
+
     return (<div className="countdown">
             <span className="countdown__value">
                 {hours && <AnimatedNumber size={40} value={hours} minDigits={2}  />}

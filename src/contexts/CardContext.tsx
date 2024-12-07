@@ -32,7 +32,7 @@ export const useCardContext = () => {
 export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [cardInfo, setCardInfo] = useState<CardInfo>(defaultCardContext.cardInfo);
-    const [panels, setPanels] = useState<CardPanel[]>(defaultCardContext.panels);
+    const [panels, setPanels] = useState<CardPanel[]>([]);
 
     const updateCardInfo = (cardInfo: CardInfo) => setCardInfo(cardInfo);
     const updatePanels = (panels: CardPanel[]) => setPanels(panels);
@@ -40,10 +40,49 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
 
 
     useEffect(() => {
-        setCardInfo(monteCalvaria.cardInfo);
-        setPanels(monteCalvaria.panels);
+        const persistedCardInfo = localStorage.getItem('cardInfo');
+        if (persistedCardInfo) {
+            try {
+                const cardInfo = JSON.parse(persistedCardInfo);
+                setCardInfo(cardInfo);
+            } catch (e) {
+                console.error('Error parsing persisted cardInfo', e);
+                setCardInfo(defaultCardContext.cardInfo);
+            }
+        } else {
+            setCardInfo(defaultCardContext.cardInfo);
+        }
+
+        const persistedPanels = localStorage.getItem('panels');
+        if (persistedPanels) {
+            try {
+                const panels = JSON.parse(persistedPanels);
+                if (Array.isArray(panels)) {
+                    setPanels(panels);
+                }
+            } catch (e) {
+                console.error('Error parsing persisted panels', e);
+                setPanels(defaultCardContext.panels);
+            }
+        } else {
+            setPanels(defaultCardContext.panels);
+        }
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        localStorage.setItem('cardInfo', JSON.stringify(cardInfo));
+    }, [cardInfo, loading]);
+
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        localStorage.setItem('panels', JSON.stringify(panels));
+    }, [panels, loading]);
 
     return (
         <CardContext.Provider value={{ loading, cardInfo, panels, updateCardInfo, updatePanels, updatePanelByNumber }}>
