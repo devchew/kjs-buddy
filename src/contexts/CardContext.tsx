@@ -1,5 +1,4 @@
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { monteCalvaria } from './MonteCalvaria.ts';
 import { CardInfo, CardPanel, EventDetails } from '../types/Event.ts';
 import { defaultEvent } from './defaultEvent.ts';
 
