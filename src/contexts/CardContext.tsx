@@ -3,7 +3,6 @@ import { CardInfo, CardPanel, EventDetails } from '../types/Event.ts';
 import { defaultEvent } from './defaultEvent.ts';
 import { useBroadcast } from '../hooks/useBroadcast.ts';
 import { Countdown } from '../types/Panel.ts';
-import { separateValuesToMs } from '../helpers/timeParsers.ts';
 
 export type CardContextType = EventDetails &{
     loading: boolean;
@@ -44,30 +43,6 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
     const updateCardInfo = (cardInfo: CardInfo) => setCardInfo(cardInfo);
     const updatePanels = (panels: CardPanel[]) => setPanels(panels);
     const updatePanelByNumber = (panelNumber: number, panel: CardPanel) => setPanels(panels.map((p) => p.number === panelNumber ? panel : p));
-
-
-    // temporary
-    //
-    // const getNowAsMsFrommidnight = () => {
-    //     const now = new Date();
-    //     return separateValuesToMs([now.getHours(), now.getMinutes(), now.getSeconds(), 0]);
-    // }
-    //
-    // const findClosestPanel = (panels: CardPanel[]): CardPanel | undefined => {
-    //     const now = getNowAsMsFrommidnight();
-    //     return panels.find((panel) => panel.arrivalTime - now > 0);
-    // }
-    //
-    // useEffect(() => {
-    //     const closestPanel = findClosestPanel(panels);
-    //     if (closestPanel) {
-    //         setCountdown({toTime: closestPanel.arrivalTime, message: `Next panel: ${closestPanel.number}`});
-    //     }
-    // }, [panels]);
-
-
-
-    // /temporary
 
     useEffect(() => {
         subscribe('countdown', (data) => {

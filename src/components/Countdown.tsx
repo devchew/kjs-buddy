@@ -19,6 +19,10 @@ export const Countdown: FunctionComponent = () => {
         return () => clearInterval(interval);
     }, [countdown]);
 
+    if (countdown.toTime === 0 && countdown.message === '') {
+        return null;
+    }
+
     // keep the countdown for 5 minutes after it has passed
     if (until <= -300000) {
         return null;

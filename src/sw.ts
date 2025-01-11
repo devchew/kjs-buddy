@@ -2,7 +2,6 @@
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
-import { Messages } from './types/Messages.ts';
 import { onBroadcastMessage, postBroadcastMessage } from './helpers/broadcastHelpers.ts';
 import { calculateCountdown } from './helpers/calculateCountdown.ts';
 
@@ -40,7 +39,5 @@ channel.addEventListener('message', event => {
         const countdown = calculateCountdown(data);
         postMessage('countdown', countdown);
     });
-
-
 
 });
