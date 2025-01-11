@@ -2,9 +2,16 @@
 import { Card } from './components/Card.tsx';
 import { useOffline } from './hooks/offline.ts';
 import { Countdown } from './components/Countdown.tsx';
+import { useBroadcast } from './hooks/useBroadcast.ts';
+import { AskNotificationBar } from './components/AskNotificationBar.tsx';
 
 function App () {
-    const isOffline = useOffline()
+    const isOffline = useOffline();
+    const {postMessage} = useBroadcast();
+
+    const testNotify = () => {
+        postMessage('notifiyTest', 'Test notification');
+    }
 
     return (
         <div style={{
@@ -23,6 +30,8 @@ function App () {
             }}>
                 Brak połączenia z internetem
             </div>}
+            <AskNotificationBar />
+            <button onClick={testNotify}>Test notify</button>
             <Countdown />
         </div>
     )

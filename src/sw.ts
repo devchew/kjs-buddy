@@ -28,6 +28,13 @@ self.skipWaiting()
 clientsClaim()
 
 
+const sendNotification = async (title: string, body: string) => {
+    await self.registration.showNotification(title, {
+        body,
+        tag: 'vibration-sample'
+    })
+}
+
 const channel = new BroadcastChannel('sw-messages');
 
 const postMessage = postBroadcastMessage(channel);
@@ -38,6 +45,10 @@ channel.addEventListener('message', event => {
     onBroadcastMessage(event, 'panels', (data) => {
         const countdown = calculateCountdown(data);
         postMessage('countdown', countdown);
+    });
+
+    onBroadcastMessage(event, 'notifiyTest', (data) => {
+        sendNotification('Test', data).then(r => console.log('Notification sent', r));
     });
 
 });

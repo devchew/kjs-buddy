@@ -5,4 +5,5 @@ export interface Messages {
     countdown: Countdown;
     panels: CardPanel[];
     cardInfo: CardInfo;
+    notifiyTest: string;
 }
