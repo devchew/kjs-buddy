@@ -41,20 +41,34 @@ const channel = new BroadcastChannel('sw-messages');
 
 const postMessage = postBroadcastMessage(channel);
 
-let countdownNotifyTimer: number | undefined;
+let countdown5MinNotifyTimer: number | undefined;
+let countdown1MinNotifyTimer: number | undefined;
+
 const updateCountdownNotify = (countdown: Countdown) => {
 
-    clearTimeout(countdownNotifyTimer);
+    clearTimeout(countdown5MinNotifyTimer);
+    clearTimeout(countdown1MinNotifyTimer);
     if (countdown.toTime === 0 && countdown.message === '') {
         return;
     }
 
     // 5 minutes before the countdown, send a notification
-    const when = countdown.toTime - getNowAsMsFrommidnight() - 300000;
+    const when5 = countdown.toTime - getNowAsMsFrommidnight() - 300000;
+    // 1 minute before the countdown, send a notification
+    const when1 = countdown.toTime - getNowAsMsFrommidnight() - 60000;
 
-    countdownNotifyTimer = setTimeout(() => {
-        sendNotification('Next panel', countdown.message).then(r => console.log('Notification sent', r));
-    }, when);
+
+    if (when5 > 0) {
+        countdown5MinNotifyTimer = setTimeout(() => {
+            sendNotification('PKC 5 minut!', countdown.message).then(r => console.log('Notification sent', r));
+        }, when5);
+    }
+
+    if (when1 > 0) {
+        countdown1MinNotifyTimer = setTimeout(() => {
+            sendNotification('PKC 1 minuta', countdown.message).then(r => console.log('Notification sent', r));
+        }, when1);
+    }
 }
 
 channel.addEventListener('message', event => {

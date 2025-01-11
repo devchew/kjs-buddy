@@ -69,6 +69,7 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
         if (persistedPanels) {
             try {
                 const panels = JSON.parse(persistedPanels);
+                console.log('loaded panels', panels);
                 if (Array.isArray(panels)) {
                     setPanels(panels);
                 }

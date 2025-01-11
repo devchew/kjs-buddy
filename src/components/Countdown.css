@@ -22,10 +22,7 @@
 }
 
 .countdown__value {
-    font-size: 3rem;
+    font-size: 40px;
 
 }
 
-.AnimatedNumberItem__number {
-    font-size: 3rem;
-}
