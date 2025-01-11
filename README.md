@@ -49,3 +49,8 @@ _Wyjaśnienie:_ Strategie buforowania używane w Service Worker powinny być odp
 
 _Wyjaśnienie:_ Kod źródłowy powinien być odpowiednio skomentowany, a README projektu na GitHubie powinno zawierać instrukcje uruchomienia projektu, zależności, użyte technologie i funkcjonalności.
  
+## Demo
+
+https://devchew.github.io/kjs-buddy/
+
+![countdown](./docs/countdown.gif)
