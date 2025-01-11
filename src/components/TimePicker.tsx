@@ -117,8 +117,6 @@ export const TimePicker: FunctionComponent<Props> = (
         setMiliseconds(values[3]);
     }, [value]);
 
-    console.log('TimePicker', {title, value, hours, minutes, seconds, miliseconds});
-
     return (
         <div className={["timePicker", className].join(' ')}>
             {title && <span className="timePicker__title">{title}</span>}
