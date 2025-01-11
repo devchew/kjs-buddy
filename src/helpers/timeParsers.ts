@@ -22,3 +22,8 @@ export const separateValuesToMs = (values: [number, number, number, number]) => 
     const [hours, minutes, seconds, miliseconds] = values;
     return hours * 3600000 + minutes * 60000 + seconds * 1000 + miliseconds;
 }
+
+export const getNowAsMsFrommidnight = () => {
+    const now = new Date();
+    return separateValuesToMs([now.getHours(), now.getMinutes(), now.getSeconds(), 0]);
+}

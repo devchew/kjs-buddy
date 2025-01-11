@@ -1,6 +1,6 @@
 import "./TimePicker.css";
 import { FunctionComponent, useEffect, useState } from 'react';
-import { msToSeparateValues } from '../helpers/timeParsers.tsx';
+import { msToSeparateValues } from '../helpers/timeParsers.ts';
 
 
 type TimePickerValueProps = {

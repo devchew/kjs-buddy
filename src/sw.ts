@@ -2,6 +2,9 @@
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
+import { Messages } from './types/Messages.ts';
+import { onBroadcastMessage, postBroadcastMessage } from './helpers/broadcastHelpers.ts';
+import { calculateCountdown } from './helpers/calculateCountdown.ts';
 
 declare let self: ServiceWorkerGlobalScope
 
@@ -25,24 +28,19 @@ registerRoute(new NavigationRoute(
 self.skipWaiting()
 clientsClaim()
 
-let interval: number | undefined;
-let count = 0;
 
 const channel = new BroadcastChannel('sw-messages');
+
+const postMessage = postBroadcastMessage(channel);
 
 channel.addEventListener('message', event => {
     console.log('Received', event.data);
 
-    if (event.data === 'start') {
-        interval = setInterval(() => {
-            channel.postMessage({ type: 'tick', payload: count++ });
-            console.log('tick');
-        }, 1000);
-    }
+    onBroadcastMessage(event, 'panels', (data) => {
+        const countdown = calculateCountdown(data);
+        postMessage('countdown', countdown);
+    });
 
-    if (event.data === 'stop') {
-        clearInterval(interval);
-        console.log('stopped');
-    }
+
 
 });

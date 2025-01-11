@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Messages } from '../types/Messages.ts';
+import { onBroadcastMessage, postBroadcastMessage } from '../helpers/broadcastHelpers.ts';
 
-type Subscribe = <K extends keyof Messages>(message: K, callback: (data: Messages[K]) => void) => void;
-type PostMessage = <K extends keyof Messages>(message: K, data: Messages[K]) => void;
+
+
+export type Subscribe = <K extends keyof Messages>(message: K, callback: (data: Messages[K]) => void) => void;
+export type PostMessage = <K extends keyof Messages>(message: K, data: Messages[K]) => void;
 
 export const useBroadcast = () => {
     const [channel] = useState(() => new BroadcastChannel('sw-messages'));
-    const [subscribers, setSubscribers] = useState<AbortController[]>([]);
+    const [subscribers] = useState<AbortController[]>([]);
 
     const subscribe: Subscribe = (message, callback) => {
 
         const abortController = new AbortController();
 
         channel.addEventListener('message', (event) => {
-            if (event.data.id === message) {
-                callback(event as any);
-            }
+            onBroadcastMessage(event, message, callback);
         }, { signal: abortController.signal });
 
         //setSubscribers((prev) => [...prev, abortController]);
@@ -27,9 +28,7 @@ export const useBroadcast = () => {
         }
     }, []);
 
-    const postMessage:PostMessage = (message, data) => {
-        channel.postMessage({ id: message, data });
-    }
+    const postMessage:PostMessage = postBroadcastMessage(channel);
 
 
     return { subscribe, postMessage };
