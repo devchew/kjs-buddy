@@ -30,12 +30,12 @@ export const persistStorage = () => {
         });
     }
 
-    const get = async () => {
+    const get = async (key?: string) => {
         const db = await openDB();
         return new Promise<any>((resolve, reject) => {
             const transaction = db.transaction(storeName, 'readonly');
             const store = transaction.objectStore(storeName);
-            const request = store.getAll();
+            const request = key ? store.getKey(key) : store.getAll();
 
             request.onerror = (e) => {
                 console.error('Error getting data', e);
@@ -48,12 +48,12 @@ export const persistStorage = () => {
         });
     }
 
-    const set = async (data: any) => {
+    const set = async (data: any, key: string) => {
         const db = await openDB();
         return new Promise<void>((resolve, reject) => {
             const transaction = db.transaction(storeName, 'readwrite');
             const store = transaction.objectStore(storeName);
-            const request = store.put(data);
+            const request = store.put(data, key);
 
             request.onerror = (e) => {
                 console.error('Error setting data', e);
