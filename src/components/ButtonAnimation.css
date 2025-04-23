@@ -1,0 +1,19 @@
+.button-with-progress {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s;
+}
+
+.button-with-progress:active {
+  transform: scale(0.98);
+}
+
+.button-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 0%;
+  transition: width 0.05s linear;
+}

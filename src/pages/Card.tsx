@@ -6,9 +6,9 @@ import { WakeLock } from '../components/WakeLock';
 import { Countdown } from '../components/Countdown';
 import { useCardContext } from '../contexts/CardContext';
 import { EditModeProvider, useEditModeContext } from '../contexts/EditModeContext';
-import { useLongPress } from '../hooks/useLongPress';
 import { PiPencil, PiFloppyDisk, PiX } from 'react-icons/pi';
 import { CardPanel } from '../types/Event';
+import { LongPressButton } from '../components/LongPressButton';
 
 // Card content component that uses the edit mode context
 const CardContent: FunctionComponent = () => {
@@ -22,16 +22,11 @@ const CardContent: FunctionComponent = () => {
   // Add a key state to force re-rendering of the Card component
   const [cardKey, setCardKey] = useState(0);
   
-  // Long press handler for the edit button
-  const longPressHandlers = useLongPress(
-    () => {
-      // Save a backup of panels before entering edit mode
-      setPanelsBackup([...panels]);
-      enableEditMode();
-    },
-    () => {},
-    { delay: 800 }
-  );
+  const handleLongPress = () => {
+    // Save a backup of panels before entering edit mode
+    setPanelsBackup([...panels]);
+    enableEditMode();
+  };
   
   // Save changes and exit edit mode
   const handleSave = () => {
@@ -106,23 +101,11 @@ const CardContent: FunctionComponent = () => {
             </button>
           </>
         ) : (
-          <button 
-            {...longPressHandlers}
-            style={{
-              padding: '10px 20px',
-              fontSize: '16px',
-              backgroundColor: '#1b3c83',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+          <LongPressButton 
+            onLongPress={handleLongPress}
           >
             <PiPencil size={20} /> Edit (press and hold)
-          </button>
+          </LongPressButton>
         )}
         
         {isEditMode && (
