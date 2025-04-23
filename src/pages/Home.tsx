@@ -11,22 +11,47 @@ export const HomePage: FunctionComponent = () => {
       height: '100vh',
     }}>
       <h1>Welcome to KJS Buddy</h1>
-      <Link to="/card">
-        <button 
-          style={{
-            padding: '10px 20px',
-            fontSize: '18px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginTop: '20px'
-          }}
-        >
-          Go to Card
-        </button>
-      </Link>
+      
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        marginTop: '2rem'
+      }}>
+        <Link to="/create">
+          <button 
+            style={{
+              padding: '10px 20px',
+              fontSize: '18px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              width: '200px'
+            }}
+          >
+            Create New Card
+          </button>
+        </Link>
+        
+        <Link to="/card">
+          <button 
+            style={{
+              padding: '10px 20px',
+              fontSize: '18px',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              width: '200px'
+            }}
+          >
+            View Current Card
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };
