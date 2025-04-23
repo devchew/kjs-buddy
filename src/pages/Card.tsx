@@ -4,9 +4,11 @@ import { useOffline } from '../hooks/offline';
 import { AskNotificationBar } from '../components/AskNotificationBar';
 import { WakeLock } from '../components/WakeLock';
 import { Countdown } from '../components/Countdown';
+import { useCardContext } from '../contexts/CardContext';
 
 export const CardPage: FunctionComponent = () => {
   const isOffline = useOffline();
+  const { addPanel } = useCardContext();
 
   return (
     <div style={{
@@ -17,6 +19,24 @@ export const CardPage: FunctionComponent = () => {
       paddingBottom: '5rem',
     }}>
       <CardComponent />
+      
+      <div style={{ margin: '1rem 0' }}>
+        <button 
+          onClick={addPanel}
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#1b3c83',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Add New Panel
+        </button>
+      </div>
+      
       {isOffline && <div style={{
         padding: '1rem',
         backgroundColor: 'red',

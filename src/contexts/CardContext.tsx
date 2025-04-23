@@ -9,6 +9,7 @@ export type CardContextType = EventDetails &{
     updateCardInfo: (cardInfo: CardInfo) => void;
     updatePanels: (panels: CardPanel[]) => void;
     updatePanelByNumber: (panelNumber: number, panel: CardPanel) => void;
+    addPanel: () => void;
     countdown: Countdown;
 }
 
@@ -19,6 +20,7 @@ const defaultCardContext: CardContextType = {
     updateCardInfo: () => {},
     updatePanels: () => {},
     updatePanelByNumber: () => {},
+    addPanel: () => {},
     countdown: {toTime: 0, message: ''},
 }
 
@@ -43,6 +45,26 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
     const updateCardInfo = (cardInfo: CardInfo) => setCardInfo(cardInfo);
     const updatePanels = (panels: CardPanel[]) => setPanels(panels);
     const updatePanelByNumber = (panelNumber: number, panel: CardPanel) => setPanels(panels.map((p) => p.number === panelNumber ? panel : p));
+    
+    // Add a new panel to the existing panels
+    const addPanel = () => {
+        const newPanelNumber = panels.length > 0 ? Math.max(...panels.map(p => p.number)) + 1 : 1;
+        const lastPanel = panels.length > 0 ? panels[panels.length - 1] : null;
+        
+        const newPanel: CardPanel = {
+            number: newPanelNumber,
+            name: `PS${newPanelNumber - 1}`,
+            finishTime: 0,
+            provisionalStartTime: lastPanel ? lastPanel.actualStartTime + lastPanel.drivingTime : 34200000, // Use previous panel time or default to 9:30
+            actualStartTime: 0,
+            drivingTime: 0,
+            resultTime: 0,
+            nextPKCTime: 0,
+            arrivalTime: 0,
+        };
+        
+        setPanels([...panels, newPanel]);
+    };
 
     useEffect(() => {
         subscribe('countdown', (data) => {
@@ -108,7 +130,8 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
                 countdown,
                 updateCardInfo,
                 updatePanels,
-                updatePanelByNumber
+                updatePanelByNumber,
+                addPanel
             }
         }>
             {children}
