@@ -1,8 +1,24 @@
 import { FunctionComponent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCardsStore } from '../contexts/CardsStoreContext';
-import {  PiTrash } from 'react-icons/pi';
+import { PiTrash } from 'react-icons/pi';
 import { TbSquareRoundedChevronLeft } from "react-icons/tb";
+import {
+  Container,
+  Group,
+  Title,
+  Paper,
+  Text,
+  Button,
+  Stack,
+  Box,
+  ActionIcon,
+  Card,
+  Divider,
+  Badge,
+  Center,
+  rem
+} from '@mantine/core';
 
 export const CardsListPage: FunctionComponent = () => {
   const { cards, deleteCard } = useCardsStore();
@@ -15,145 +31,77 @@ export const CardsListPage: FunctionComponent = () => {
   };
   
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '1rem',
-      maxWidth: '800px',
-      margin: '0 auto'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: '1rem',
-      }}>
-        <Link to="/" style={{
-          display: 'flex',
-          alignItems: 'center',
-          textDecoration: 'none',
-          color: '#1b3c83',
-          fontWeight: 'bold',
-          marginRight: 'auto',
-        }}>
-          <TbSquareRoundedChevronLeft size={24} />
+    <Container size="md" py="md">
+      <Group justify="space-between" mb="lg">
+        <Button 
+          leftSection={<TbSquareRoundedChevronLeft size={20} />}
+          variant="subtle" 
+          onClick={() => navigate('/')}
+        >
           Back to Home
-        </Link>
-        
-        <h1 style={{ margin: 0 }}>Saved Cards</h1>
-      </div>
+        </Button>
+        <Title order={2}>Saved Cards</Title>
+      </Group>
       
       {cards.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '2rem',
-          border: '1px dashed #ccc',
-          borderRadius: '8px',
-          marginTop: '2rem',
-        }}>
-          <p>No saved cards yet. Create a new card first.</p>
-          <Link to="/create">
-            <button style={{
-              padding: '10px 20px',
-              fontSize: '16px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginTop: '1rem'
-            }}>
-              Create New Card
-            </button>
-          </Link>
-        </div>
+        <Paper withBorder p="xl" radius="md" mt="xl">
+          <Center>
+            <Stack align="center">
+              <Text>No saved cards yet. Create a new card first.</Text>
+              <Button 
+                onClick={() => navigate('/create')} 
+                mt="md"
+              >
+                Create New Card
+              </Button>
+            </Stack>
+          </Center>
+        </Paper>
       ) : (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem',
-          marginTop: '1rem'
-        }}>
+        <Stack gap="md" mt="md">
           {cards
             .sort((a, b) => b.lastUsed - a.lastUsed) // Sort by last used, newest first
             .map(card => (
-              <div key={card.id} style={{
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                padding: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                backgroundColor: 'white'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '0.5rem'
-                }}>
-                  <h3 style={{ margin: '0' }}>{card.cardInfo.name}</h3>
-                  <button
-                    onClick={() => deleteCard(card.id)}
-                    style={{
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: '#ef476f',
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '4px'
-                    }}
-                    aria-label="Delete card"
-                  >
-                    <PiTrash size={20} />
-                  </button>
-                </div>
-                
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '0.5rem',
-                  flexWrap: 'wrap'
-                }}>
-                  <div>
-                    <p style={{ margin: '0.25rem 0' }}>Date: {card.cardInfo.date}</p>
-                    <p style={{ margin: '0.25rem 0' }}>Car #: {card.cardInfo.carNumber}</p>
-                    <p style={{ margin: '0.25rem 0', fontSize: '0.8rem', color: '#666' }}>
-                      Last used: {formatDate(card.lastUsed)}
-                    </p>
-                  </div>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                      onClick={() => navigate(`/cards/${card.id}`)}
-                      style={{
-                        padding: '8px 16px',
-                        fontSize: '14px',
-                        backgroundColor: '#4CAF50',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                      }}
+              <Card key={card.id} withBorder shadow="sm" padding="md" radius="md">
+                <Card.Section withBorder inheritPadding py="xs">
+                  <Group justify="space-between">
+                    <Text fw={600} size="lg">{card.cardInfo.name}</Text>
+                    <ActionIcon 
+                      color="red" 
+                      variant="subtle"
+                      onClick={() => deleteCard(card.id)}
+                      aria-label="Delete card"
                     >
-                      View Card
-                    </button>
-                  </div>
-                </div>
+                      <PiTrash style={{ width: rem(18), height: rem(18) }} />
+                    </ActionIcon>
+                  </Group>
+                </Card.Section>
                 
-                <div style={{
-                  marginTop: '0.5rem',
-                  padding: '0.5rem',
-                  backgroundColor: '#f8f9fa',
-                  borderRadius: '4px'
-                }}>
-                  <p style={{ margin: '0', fontWeight: 'bold' }}>Panels: {card.panels.length}</p>
-                </div>
-              </div>
+                <Group mt="md" justify="space-between">
+                  <Box>
+                    <Text size="sm">Date: {card.cardInfo.date}</Text>
+                    <Text size="sm">Car #: {card.cardInfo.carNumber}</Text>
+                    <Text size="xs" c="dimmed" mt={5}>
+                      Last used: {formatDate(card.lastUsed)}
+                    </Text>
+                  </Box>
+                  <Button
+                    onClick={() => navigate(`/cards/${card.id}`)}
+                    color="green"
+                    size="sm"
+                  >
+                    View Card
+                  </Button>
+                </Group>
+                
+                <Divider my="sm" />
+                <Group>
+                  <Badge variant="light">Panels: {card.panels.length}</Badge>
+                </Group>
+              </Card>
             ))}
-        </div>
+        </Stack>
       )}
-    </div>
+    </Container>
   );
 };

@@ -1,6 +1,17 @@
 import { FunctionComponent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCardsStore } from '../contexts/CardsStoreContext';
+import { 
+  Container, 
+  Title, 
+  Stack, 
+  Button, 
+  Paper, 
+  Text, 
+  Group,
+  Box,
+  Divider
+} from '@mantine/core';
 
 export const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -18,123 +29,79 @@ export const HomePage: FunctionComponent = () => {
     .slice(0, 3);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '2rem',
-      maxWidth: '800px',
-      margin: '0 auto',
-    }}>
-      <h1>Welcome to KJS Buddy</h1>
+    <Container py="xl" size="md">
+      <Title ta="center" mb="xl">Welcome to KJS Buddy</Title>
       
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        marginTop: '2rem',
-        width: '100%',
-        maxWidth: '400px',
-      }}>
-        <Link to="/create">
-          <button 
-            style={{
-              padding: '10px 20px',
-              fontSize: '18px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-          >
-            Create New Card
-          </button>
-        </Link>
+      <Stack maw={400} mx="auto" gap="md">
+        <Button 
+          size="lg" 
+          fullWidth 
+          color="blue"
+          onClick={() => navigate('/create')}
+        >
+          Create New Card
+        </Button>
         
-        <Link to="/cards">
-          <button 
-            style={{
-              padding: '10px 20px',
-              fontSize: '18px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-          >
-            All Cards
-          </button>
-        </Link>
+        <Button 
+          size="lg" 
+          fullWidth 
+          color="green"
+          onClick={() => navigate('/cards')}
+        >
+          All Cards
+        </Button>
         
         {/* Last used card for quick access */}
         {lastUsedCard && (
-          <div style={{ marginTop: '2rem', width: '100%' }}>
-            <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #ccc', paddingBottom: '0.5rem' }}>
-              Last Used Card
-            </h2>
-            <div 
+          <Box mt="lg" w="100%">
+            <Group justify="space-between" mb="xs">
+              <Text fw={600} size="lg">Last Used Card</Text>
+              <Divider w="60%" />
+            </Group>
+            <Paper 
+              p="md" 
+              radius="md" 
+              withBorder
               onClick={() => navigate(`/cards/${lastUsedCard.id}`)}
-              style={{
-                padding: '1rem',
-                backgroundColor: '#f8f9fa',
-                borderRadius: '8px',
-                marginTop: '0.5rem',
-                cursor: 'pointer',
-                border: '1px solid #ddd',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.1s',
-              }}
-              onMouseDown={e => e.currentTarget.style.transform = 'scale(0.98)'}
-              onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              style={{ cursor: 'pointer' }}
+              shadow="xs"
             >
-              <div style={{ fontWeight: 'bold' }}>{lastUsedCard.cardInfo.name}</div>
-              <div style={{ fontSize: '0.9rem', color: '#666' }}>
+              <Text fw={700}>{lastUsedCard.cardInfo.name}</Text>
+              <Text size="sm" c="dimmed">
                 {lastUsedCard.cardInfo.date} | Car #{lastUsedCard.cardInfo.carNumber}
-              </div>
-            </div>
-          </div>
+              </Text>
+            </Paper>
+          </Box>
         )}
         
         {/* Recent cards section */}
         {recentCards.length > 0 && (
-          <div style={{ marginTop: '1rem', width: '100%' }}>
-            <h2 style={{ fontSize: '1.2rem', borderBottom: '1px solid #ccc', paddingBottom: '0.5rem' }}>
-              Recent Cards
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
+          <Box mt="md" w="100%">
+            <Group justify="space-between" mb="xs">
+              <Text fw={600} size="lg">Recent Cards</Text>
+              <Divider w="60%" />
+            </Group>
+            <Stack gap="xs">
               {recentCards.map(card => (
-                <div 
+                <Paper 
                   key={card.id}
+                  p="sm" 
+                  radius="md"
+                  withBorder
                   onClick={() => navigate(`/cards/${card.id}`)}
-                  style={{
-                    padding: '0.75rem',
-                    backgroundColor: '#f8f9fa',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    border: '1px solid #ddd',
-                    transition: 'transform 0.1s',
-                  }}
-                  onMouseDown={e => e.currentTarget.style.transform = 'scale(0.98)'}
-                  onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                  style={{ cursor: 'pointer' }}
+                  shadow="xs"
                 >
-                  <div style={{ fontWeight: 'bold' }}>{card.cardInfo.name}</div>
-                  <div style={{ fontSize: '0.9rem', color: '#666' }}>
+                  <Text fw={700}>{card.cardInfo.name}</Text>
+                  <Text size="sm" c="dimmed">
                     {card.cardInfo.date} | Car #{card.cardInfo.carNumber}
-                  </div>
-                </div>
+                  </Text>
+                </Paper>
               ))}
-            </div>
-          </div>
+            </Stack>
+          </Box>
         )}
-      </div>
-    </div>
+      </Stack>
+    </Container>
   );
 };

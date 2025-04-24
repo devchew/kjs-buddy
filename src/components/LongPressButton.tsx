@@ -1,14 +1,15 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent, ReactNode, CSSProperties } from 'react';
 import { useLongPress } from '../hooks/useLongPress';
-import './ButtonAnimation.css';
+import styles from './LongPressButton.module.css';
 
 type LongPressButtonProps = {
   onLongPress: () => void;
   onClick?: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   delay?: number;
   style?: React.CSSProperties;
+  render?: (handlers: any) => ReactNode;
 };
 
 export const LongPressButton: FunctionComponent<LongPressButtonProps> = ({
@@ -18,6 +19,7 @@ export const LongPressButton: FunctionComponent<LongPressButtonProps> = ({
   className = '',
   delay = 800,
   style = {},
+  render,
 }) => {
   const { isHolding, progress, ...longPressHandlers } = useLongPress(
     onLongPress,
@@ -25,30 +27,41 @@ export const LongPressButton: FunctionComponent<LongPressButtonProps> = ({
     { delay }
   );
 
+  const progressBarStyle = {
+    '--progress-width': `${progress}%`
+  } as CSSProperties;
+
+  // If render prop is provided, use it
+  if (render) {
+    return (
+      <>
+        {render({
+          ...longPressHandlers,
+          className: `${styles.buttonWithProgress} ${className}`,
+          style,
+          children: (
+            <>
+              {children}
+              {isHolding && (
+                <div className={styles.progressBar} style={progressBarStyle} />
+              )}
+            </>
+          )
+        })}
+      </>
+    );
+  }
+
+  // Default button rendering
   return (
     <button
       {...longPressHandlers}
-      className={`button-with-progress ${className}`}
-      style={{
-        padding: '10px 20px',
-        fontSize: '16px',
-        backgroundColor: '#1b3c83',
-        color: 'white',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        ...style
-      }}
+      className={`${styles.defaultButton} ${styles.buttonWithProgress} ${className}`}
+      style={style}
     >
       {children}
       {isHolding && (
-        <div 
-          className="button-progress-bar"
-          style={{ width: `${progress}%` }}
-        />
+        <div className={styles.progressBar} style={progressBarStyle} />
       )}
     </button>
   );

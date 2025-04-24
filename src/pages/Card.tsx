@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card as CardComponent } from '../components/Card';
 import { useOffline } from '../hooks/offline';
 import { AskNotificationBar } from '../components/AskNotificationBar';
@@ -11,7 +11,16 @@ import { useCardsStore } from '../contexts/CardsStoreContext';
 import { PiPencil, PiFloppyDisk, PiX } from 'react-icons/pi';
 import { TbSquareRoundedChevronLeft } from "react-icons/tb";
 import { CardPanel } from '../types/Event';
-import { LongPressButton } from '../components/LongPressButton';
+import { MantineLongPressButton } from '../components/MantineLongPressButton';
+import { 
+  Container, 
+  Group, 
+  Title, 
+  Button, 
+  Stack, 
+  Alert,
+  Box
+} from '@mantine/core';
 
 // Card content component that uses the edit mode context
 const CardContent: FunctionComponent = () => {
@@ -87,125 +96,69 @@ const CardContent: FunctionComponent = () => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '1rem',
-      maxWidth: '800px',
-      margin: '0 auto'
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: '1rem',
-      }}>
-        <Link to={id ? "/cards" : "/"} style={{
-          display: 'flex',
-          alignItems: 'center',
-          textDecoration: 'none',
-          color: '#1b3c83',
-          fontWeight: 'bold',
-          marginRight: 'auto',
-        }}>
-          <TbSquareRoundedChevronLeft size={24} />
+    <Container size="md" py="md">
+      <Group justify="space-between" mb="lg">
+        <Button
+          leftSection={<TbSquareRoundedChevronLeft size={20} />}
+          variant="subtle"
+          onClick={() => navigate(id ? "/cards" : "/")}
+        >
           {id ? "Back to Cards" : "Back to Home"}
-        </Link>
-        
-        <h1 style={{ margin: 0 }}>{id ? "View Card" : "Current Card"}</h1>
-      </div>
+        </Button>
+        <Title order={2}>{id ? "View Card" : "Current Card"}</Title>
+      </Group>
       
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: '5rem',
-      }}>
-        {/* Use the key prop to force complete re-rendering when the key changes */}
+      <Stack align="center" pb="xl">
+        {/* KEEPING THE ORIGINAL CARD COMPONENT INTACT */}
         <CardComponent key={cardKey} />
         
-        <div style={{ 
-          margin: '1rem 0',
-          display: 'flex',
-          gap: '10px',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+        <Group my="md" justify="center">
           {isEditMode ? (
             <>
-              <button 
+              <Button 
                 onClick={addPanel}
-                style={{
-                  padding: '10px 20px',
-                  fontSize: '16px',
-                  backgroundColor: '#1b3c83',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                }}
+                color="blue"
               >
                 Add Panel
-              </button>
-              <button 
+              </Button>
+              <Button 
                 onClick={handleSave}
-                style={{
-                  padding: '10px 20px',
-                  fontSize: '16px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
+                color="green"
+                leftSection={<PiFloppyDisk size={20} />}
               >
-                <PiFloppyDisk size={20} /> Save
-              </button>
-              
-              <button 
+                Save
+              </Button>
+              <Button 
                 onClick={handleDiscard}
-                style={{
-                  padding: '10px 20px',
-                  fontSize: '16px',
-                  backgroundColor: '#ef476f',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
+                color="red"
+                leftSection={<PiX size={20} />}
               >
-                <PiX size={20} /> Discard
-              </button>
+                Discard
+              </Button>
             </>
           ) : (
-            <LongPressButton 
+            <MantineLongPressButton 
               onLongPress={handleLongPress}
+              leftSection={<PiPencil size={20} />}
             >
-              <PiPencil size={20} /> Edit (press and hold)
-            </LongPressButton>
+              Edit (press and hold)
+            </MantineLongPressButton>
           )}
+        </Group>
         
-        </div>
+        {isOffline && (
+          <Alert color="red" radius="md" title="Offline">
+            Brak połączenia z internetem
+          </Alert>
+        )}
         
-        {isOffline && <div style={{
-          padding: '1rem',
-          backgroundColor: 'red',
-          color: 'white',
-          borderRadius: '1rem',
-        }}>
-          Brak połączenia z internetem
-        </div>}
-        <AskNotificationBar />
-        <WakeLock />
-        <Countdown />
-      </div>
-    </div>
+        <Box>
+          <AskNotificationBar />
+          <WakeLock />
+          <Countdown />
+        </Box>
+      </Stack>
+    </Container>
   );
 };
 
