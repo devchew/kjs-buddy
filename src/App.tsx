@@ -1,35 +1,40 @@
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HomePage } from './pages/Home';
+import { CardPage } from './pages/Card';
+import { CardCreatePage } from './pages/CardCreate';
+import { CardsStoreProvider } from './contexts/CardsStoreContext';
+import { CardProvider } from './contexts/CardContext';
+// Using full relative path to resolve module
+import { CardsListPage } from './pages/CardsList.tsx';
+import { MantineProvider, createTheme } from '@mantine/core';
+import '@mantine/core/styles.css';
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
 
-import { Card } from './components/Card.tsx';
-import { useOffline } from './hooks/offline.ts';
-import { Countdown } from './components/Countdown.tsx';
-import { AskNotificationBar } from './components/AskNotificationBar.tsx';
-import { WakeLock } from './components/WakeLock.tsx';
+// Create a custom theme (you can adjust colors to match your desired style)
+const theme = createTheme({
+  primaryColor: 'blue',
+});
 
-function App () {
-    const isOffline = useOffline();
-
-    return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: '5rem',
-        }}>
-            <Card />
-            {isOffline && <div style={{
-                padding: '1rem',
-                backgroundColor: 'red',
-                color: 'white',
-                borderRadius: '1rem',
-            }}>
-                Brak połączenia z internetem
-            </div>}
-            <AskNotificationBar />
-            <WakeLock />
-            <Countdown />
-        </div>
-    )
+function App() {
+  return (
+    <MantineProvider theme={theme} defaultColorScheme="light">
+      <Notifications />
+      <HashRouter>
+        <CardsStoreProvider>
+          <CardProvider>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/card" element={<CardPage />} />
+              <Route path="/create" element={<CardCreatePage />} />
+              <Route path="/cards" element={<CardsListPage />} />
+              <Route path="/cards/:id" element={<CardPage />} />
+            </Routes>
+          </CardProvider>
+        </CardsStoreProvider>
+      </HashRouter>
+    </MantineProvider>
+  );
 }
 
-export default App
+export default App;

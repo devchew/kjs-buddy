@@ -4,7 +4,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA({
+  plugins: [react(), 
+    VitePWA({
     strategies: 'injectManifest',
     srcDir: 'src',
     filename: 'sw.ts',
@@ -22,12 +23,13 @@ export default defineConfig({
     },
 
     devOptions: {
-      enabled: true,
+      enabled: false,
       navigateFallback: 'index.html',
       suppressWarnings: true,
       type: 'module',
     },
-  })],
+  })
+],
   server:{
     port: 7777
   },

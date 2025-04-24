@@ -1,0 +1,177 @@
+{
+  "predefinedCards": [
+    {
+      "id": "monte-calvaria",
+      "name": "Monte Calvaria",
+      "description": "Standard Monte Calvaria rally card with 3 panels",
+      "cardInfo": {
+        "name": "Rally Monte Calvaria",
+        "cardNumber": 1,
+        "carNumber": 1,
+        "date": "",
+        "logo": "montecalvaria.png",
+        "sponsorLogo": "pzmot.png"
+      },
+      "panelCount": 3,
+      "panelTemplate": {
+        "name": "PS",
+        "drivingTime": 1800000,
+        "provisionalStartTime": 34200000
+      },
+      "panels": [
+        {
+          "number": 1,
+          "name": "",
+          "drivingTime": 0,
+          "provisionalStartTime": 34200000,
+          "actualStartTime": 34200000,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 0
+        },
+        {
+          "number": 2,
+          "name": "PS1 - Góra Kalwaria JW 1",
+          "drivingTime": 1800000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 36000000
+        },
+        {
+          "number": 3,
+          "name": "PS2 - Góra Kalwaria JW 2",
+          "drivingTime": 1800000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 37800000
+        }
+      ]
+    },
+    {
+      "id": "regional-sprint",
+      "name": "Regional Sprint",
+      "description": "Regional sprint rally with 2 panels",
+      "cardInfo": {
+        "name": "Regional Sprint Rally",
+        "cardNumber": 1,
+        "carNumber": 1,
+        "date": "",
+        "logo": "montecalvaria.png",
+        "sponsorLogo": "pzmot.png"
+      },
+      "panelCount": 2,
+      "panelTemplate": {
+        "name": "SS",
+        "drivingTime": 1200000,
+        "provisionalStartTime": 36000000
+      },
+      "panels": [
+        {
+          "number": 1,
+          "name": "",
+          "drivingTime": 0,
+          "provisionalStartTime": 36000000,
+          "actualStartTime": 36000000,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 0
+        },
+        {
+          "number": 2,
+          "name": "SS1 - Sprint Stage",
+          "drivingTime": 1200000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 37200000
+        }
+      ]
+    },
+    {
+      "id": "championship",
+      "name": "National Championship",
+      "description": "National championship rally with 5 panels",
+      "cardInfo": {
+        "name": "National Championship Rally",
+        "cardNumber": 1,
+        "carNumber": 1,
+        "date": "",
+        "logo": "montecalvaria.png",
+        "sponsorLogo": "pzmot.png"
+      },
+      "panelCount": 5,
+      "panelTemplate": {
+        "name": "SS",
+        "drivingTime": 2400000,
+        "provisionalStartTime": 32400000
+      },
+      "panels": [
+        {
+          "number": 1,
+          "name": "",
+          "drivingTime": 0,
+          "provisionalStartTime": 32400000,
+          "actualStartTime": 32400000,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 0
+        },
+        {
+          "number": 2,
+          "name": "SS1 - Mountain Pass",
+          "drivingTime": 2400000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 34800000
+        },
+        {
+          "number": 3,
+          "name": "SS2 - Forest Drive",
+          "drivingTime": 1800000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 36600000
+        },
+        {
+          "number": 4, 
+          "name": "SS3 - Valley Run",
+          "drivingTime": 2100000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 38700000
+        },
+        {
+          "number": 5,
+          "name": "SS4 - Final Sprint",
+          "drivingTime": 1500000,
+          "provisionalStartTime": 0,
+          "actualStartTime": 0,
+          "finishTime": 0,
+          "resultTime": 0,
+          "nextPKCTime": 0,
+          "arrivalTime": 40200000
+        }
+      ]
+    }
+  ]
+}

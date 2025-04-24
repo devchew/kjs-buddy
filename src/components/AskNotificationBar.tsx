@@ -1,5 +1,10 @@
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import './AskNotificationBar.css';
+import { 
+  Alert, 
+  Button, 
+  Text
+} from '@mantine/core';
+import { TbBellRinging } from 'react-icons/tb';
 
 const useNotificationPermision = () => {
     const [granted, setGranted] = useState(false);
@@ -50,12 +55,25 @@ export const AskNotificationBar: FunctionComponent = () => {
     }
 
     return (
-        <div className="askNotificationBar">
-            <button onClick={askNotificationPermission} className="askNotificationBar__action">Zezwól na powiadomienia</button>
-            <p>
-                Wyślemy Ci powiadomienie, gdy zbliża się czas na kolejne PKC.
-            </p>
-            <button onClick={() => setHidden(true)} className="askNotificationBar__dismiss">Zamknij</button>
-        </div>
+        <Alert 
+          color="blue" 
+          radius="md" 
+          title="Powiadomienia" 
+          icon={<TbBellRinging />}
+          withCloseButton
+          onClose={() => setHidden(true)}
+          mb="md"
+        >
+          <Text mb="md">
+            Wyślemy Ci powiadomienie, gdy zbliża się czas na kolejne PKC.
+          </Text>
+          <Button 
+            onClick={askNotificationPermission}
+            size="sm"
+            variant="filled"
+          >
+            Zezwól na powiadomienia
+          </Button>
+        </Alert>
     );
 }
