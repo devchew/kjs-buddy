@@ -19,9 +19,9 @@ export const WakeLock = () => {
                 size="md"
                 thumbIcon={
                     wakeLockActive ? (
-                        <TbScreenShare size={14} stroke={1.5} />
+                        <TbScreenShare size={14} stroke="1.5" />
                     ) : (
-                        <TbScreenShare size={14} stroke={1.5} color="gray" />
+                        <TbScreenShare size={14} stroke="1.5" color="gray" />
                     )
                 }
             />
