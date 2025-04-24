@@ -35,13 +35,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: '22.15.0'
 
-      # Remove lock file to because of error during npm install on GitHub Actions
-      - name: remove lock file
-        run: rm -rf package-lock.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build
         run: npm run build
 
