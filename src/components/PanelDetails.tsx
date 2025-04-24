@@ -2,8 +2,8 @@ import { FunctionComponent, PropsWithChildren } from 'react';
 import { PiCaretRightFill, PiFlagCheckeredFill, PiFlagFill } from 'react-icons/pi';
 import { TimePicker } from './TimePicker.tsx';
 import "./PanelDetails.css";
-
 import { usePanelContext } from '../contexts/PanelContext.tsx';
+import { useEditModeContext } from '../contexts/EditModeContext.tsx';
 
 const IconInRedCircle: FunctionComponent<PropsWithChildren<{ className?: string }>> = ({children, className}) => (
     <div className={["iconInRedCircle", className].join(' ')}>
@@ -11,9 +11,8 @@ const IconInRedCircle: FunctionComponent<PropsWithChildren<{ className?: string 
     </div>
 )
 
-
 export const PanelDetails: FunctionComponent = () => {
-
+    const { isEditMode } = useEditModeContext();
     const {
         actualStartTime,
         setActualStartTime,
@@ -33,7 +32,9 @@ export const PanelDetails: FunctionComponent = () => {
 
     return (
         <div className="panelDetails">
-            <span className="panelDetails__name">{name}</span>
+            {/* Only show name in detail section when not in edit mode */}
+            {!isEditMode && <span className="panelDetails__name">{name}</span>}
+            
             {number > 1 && <div className="panelDetails__finish">
               <IconInRedCircle className="panelDetails__finish__icon"><PiFlagCheckeredFill
                 fill="#000"/></IconInRedCircle>
