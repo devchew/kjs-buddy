@@ -35,7 +35,7 @@ export const CardsListPage: FunctionComponent = () => {
       <Group justify="space-between" mb="lg">
         <Button 
           leftSection={<TbSquareRoundedChevronLeft size={20} />}
-          variant="subtle" 
+          variant="default" 
           onClick={() => navigate('/')}
         >
           Back to Home

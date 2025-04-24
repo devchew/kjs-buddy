@@ -100,7 +100,7 @@ const CardContent: FunctionComponent = () => {
       <Group justify="space-between" mb="lg">
         <Button
           leftSection={<TbSquareRoundedChevronLeft size={20} />}
-          variant="subtle"
+          variant="default"
           onClick={() => navigate(id ? "/cards" : "/")}
         >
           {id ? "Back to Cards" : "Back to Home"}
