@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/Home';
 import { CardPage } from './pages/Card';
 import { CardCreatePage } from './pages/CardCreate';
@@ -20,19 +20,18 @@ function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <Notifications />
-      <HashRouter>
+      <BrowserRouter>
         <CardsStoreProvider>
           <CardProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/card" element={<CardPage />} />
               <Route path="/create" element={<CardCreatePage />} />
               <Route path="/cards" element={<CardsListPage />} />
               <Route path="/cards/:id" element={<CardPage />} />
             </Routes>
           </CardProvider>
         </CardsStoreProvider>
-      </HashRouter>
+      </BrowserRouter>
     </MantineProvider>
   );
 }

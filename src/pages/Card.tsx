@@ -29,7 +29,7 @@ const CardContent: FunctionComponent = () => {
   const isOffline = useOffline();
   const { addPanel, panels, updatePanels, cardInfo, updateCardInfo } = useCardContext();
   const { isEditMode, enableEditMode, disableEditMode } = useEditModeContext();
-  const { lastUsedCardId, updateCard, saveCard, getCard } = useCardsStore();
+  const { lastUsedCardId, updateCard, saveCard, getCard, loading } = useCardsStore();
   
   // Store a backup of panels when entering edit mode
   const [panelsBackup, setPanelsBackup] = useState<CardPanel[]>([]);
@@ -39,6 +39,7 @@ const CardContent: FunctionComponent = () => {
   
   // Load card data when component mounts or id changes
   useEffect(() => {
+    if (loading) return; // Wait for loading to finish
     if (id) {
       const card = getCard(id);
       if (!card) {
@@ -50,7 +51,7 @@ const CardContent: FunctionComponent = () => {
       updateCardInfo(card.cardInfo);
       updatePanels(card.panels);
     }
-  }, [id]);
+  }, [id, loading]);
 
   const handleLongPress = () => {
     // Save a backup of panels before entering edit mode
@@ -94,6 +95,10 @@ const CardContent: FunctionComponent = () => {
     // Force Card component to re-render with a new key
     setCardKey(prevKey => prevKey + 1);
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state while fetching data
+  }
 
   return (
     <Container size="md" py="md">
