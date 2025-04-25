@@ -20,5 +20,15 @@
   "description": "",
   "devDependencies": {
     "turbo": "^2.5.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@scarf/scarf",
+      "@swc/core",
+      "bcrypt",
+      "esbuild",
+      "sqlite3"
+    ]
   }
 }
