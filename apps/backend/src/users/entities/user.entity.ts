@@ -8,30 +8,30 @@ export enum UserRole {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ nullable: true })
-  password: string;
+  password!: string;
 
   @Column({ nullable: true })
-  googleId: string;
+  googleId?: string;
 
   @Column({ nullable: true })
-  facebookId: string;
+  facebookId?: string;
 
   @Column({
     type: 'simple-enum',
     enum: UserRole,
     default: UserRole.USER,
   })
-  role: UserRole;
+  role: UserRole = UserRole.USER;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date = new Date();
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date = new Date();
 }
