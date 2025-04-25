@@ -5,6 +5,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["master"]
+    paths:
+    - 'apps/frontend/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,6 +39,9 @@ jobs:
         with:
           node-version: '22.15.0'
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline --prod
       - name: Build
