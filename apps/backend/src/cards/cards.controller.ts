@@ -26,6 +26,8 @@ export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Create new card',
     description: 'Creates a new rally card for the authenticated user' 
