@@ -6,7 +6,7 @@ import { AppModule } from '../src/app.module';
 describe('Cards Module (e2e)', () => {
   let app: INestApplication;
   let authToken: string;
-  let testCardId: number;
+  let testCardId: string;
   
   // Test user for authentication
   const testUser = {
@@ -15,11 +15,28 @@ describe('Cards Module (e2e)', () => {
     username: 'cardtestuser',
   };
 
-  // Test card data
+  // Test card data using the updated CardDto structure
   const testCard = {
-    title: 'Test Card',
-    content: 'This is a test card',
-    tags: ['test', 'e2e'],
+    name: 'Rally Test',
+    cardNumber: 1,
+    carNumber: 69,
+    date: '2025-04-26',
+    logo: 'logo.png',
+    sponsorLogo: 'sponsor.png',
+    panels: [
+      {
+        number: 1,
+        name: 'PS1 - Test Stage',
+        finishTime: 0,
+        provisionalStartTime: 34200000,
+        actualStartTime: 34200000,
+        drivingTime: 300000,
+        resultTime: 0,
+        nextPKCTime: 0,
+        arrivalTime: 0
+      }
+    ],
+    description: 'Test card description'
   };
 
   beforeAll(async () => {
@@ -65,9 +82,13 @@ describe('Cards Module (e2e)', () => {
         .expect(201)
         .expect((res) => {
           expect(res.body).toHaveProperty('id');
-          expect(res.body).toHaveProperty('title', testCard.title);
-          expect(res.body).toHaveProperty('content', testCard.content);
-          expect(res.body.tags).toEqual(expect.arrayContaining(testCard.tags));
+          expect(res.body).toHaveProperty('name', testCard.name);
+          expect(res.body).toHaveProperty('cardNumber', testCard.cardNumber);
+          expect(res.body).toHaveProperty('carNumber', testCard.carNumber);
+          expect(res.body).toHaveProperty('date', testCard.date);
+          expect(res.body).toHaveProperty('logo', testCard.logo);
+          expect(res.body).toHaveProperty('sponsorLogo', testCard.sponsorLogo);
+          expect(res.body).toHaveProperty('panels');
           
           // Save the card ID for later tests
           testCardId = res.body.id;
@@ -99,12 +120,12 @@ describe('Cards Module (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('id', testCardId);
-          expect(res.body).toHaveProperty('title', testCard.title);
+          expect(res.body).toHaveProperty('name', testCard.name);
         });
     });
 
     it('should update a card with valid data and authentication', () => {
-      const updatedCard = { ...testCard, title: 'Updated Card Title' };
+      const updatedCard = { ...testCard, name: 'Updated Rally Name' };
       
       return request(app.getHttpServer())
         .put(`/cards/${testCardId}`)
@@ -113,7 +134,7 @@ describe('Cards Module (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('id', testCardId);
-          expect(res.body).toHaveProperty('title', updatedCard.title);
+          expect(res.body).toHaveProperty('name', updatedCard.name);
         });
     });
 
@@ -121,7 +142,7 @@ describe('Cards Module (e2e)', () => {
       return request(app.getHttpServer())
         .delete(`/cards/${testCardId}`)
         .set('Authorization', `Bearer ${authToken}`)
-        .expect(200);
+        .expect(204);
     });
 
     it('should verify the card was deleted', () => {

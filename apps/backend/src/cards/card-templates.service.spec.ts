@@ -93,16 +93,30 @@ describe('CardTemplatesService', () => {
     it('should create and return a new card template', async () => {
       const userId = '1';
       const createTemplateDto = { 
-        name: 'New Template', 
-        description: 'Description',
-        panels: [{ type: 'text', content: 'Panel content' }],
         isPublic: true,
-        logo: 'logo.png',
-        sponsorLogo: 'sponsor.png'
+        card: {
+          name: 'New Template', 
+          description: 'Description',
+          cardNumber: 1,
+          carNumber: 69,
+          date: '2025-04-26',
+          panels: [{ number: 1, name: 'Panel 1', finishTime: 0, provisionalStartTime: 34200000, actualStartTime: 34200000, drivingTime: 0, resultTime: 0, nextPKCTime: 0, arrivalTime: 0 }],
+          logo: 'logo.png',
+          sponsorLogo: 'sponsor.png'
+        }
       };
+      
       const newTemplate = { 
         id: '1', 
-        ...createTemplateDto, 
+        name: createTemplateDto.card.name,
+        description: createTemplateDto.card.description,
+        cardNumber: createTemplateDto.card.cardNumber,
+        carNumber: createTemplateDto.card.carNumber,
+        date: createTemplateDto.card.date,
+        panels: createTemplateDto.card.panels,
+        logo: createTemplateDto.card.logo,
+        sponsorLogo: createTemplateDto.card.sponsorLogo,
+        isPublic: createTemplateDto.isPublic,
         userId, 
         createdAt: new Date(), 
         updatedAt: new Date() 
@@ -115,7 +129,15 @@ describe('CardTemplatesService', () => {
       
       expect(result).toEqual(newTemplate);
       expect(mockCardTemplatesRepository.create).toHaveBeenCalledWith({
-        ...createTemplateDto,
+        name: createTemplateDto.card.name,
+        description: createTemplateDto.card.description,
+        cardNumber: createTemplateDto.card.cardNumber,
+        carNumber: createTemplateDto.card.carNumber,
+        date: createTemplateDto.card.date,
+        panels: createTemplateDto.card.panels,
+        logo: createTemplateDto.card.logo,
+        sponsorLogo: createTemplateDto.card.sponsorLogo,
+        isPublic: createTemplateDto.isPublic,
         userId,
       });
       expect(mockCardTemplatesRepository.save).toHaveBeenCalledWith(newTemplate);
@@ -126,16 +148,39 @@ describe('CardTemplatesService', () => {
     it('should update and return a card template', async () => {
       const templateId = '1';
       const userId = '1';
-      const updateTemplateDto = { name: 'Updated Template' };
+      const updateTemplateDto = { 
+        isPublic: true,
+        card: {
+          name: 'Updated Template',
+          description: 'Updated Description',
+          cardNumber: 1,
+          carNumber: 69,
+          date: '2025-04-26',
+          logo: 'logo.png',
+          sponsorLogo: 'sponsor.png',
+          panels: []
+        }
+      };
       const existingTemplate = { 
         id: templateId, 
         name: 'Original Template', 
         description: 'Description',
-        isPublic: true,
+        cardNumber: 1,
+        carNumber: 69,
+        date: '2025-04-26',
+        logo: 'logo.png',
+        sponsorLogo: 'sponsor.png',
+        isPublic: false,
         userId,
         panels: []
       };
-      const updatedTemplate = { ...existingTemplate, ...updateTemplateDto };
+      
+      const updatedTemplate = { 
+        ...existingTemplate, 
+        name: updateTemplateDto.card.name,
+        description: updateTemplateDto.card.description,
+        isPublic: updateTemplateDto.isPublic
+      };
 
       mockCardTemplatesRepository.findOne.mockResolvedValue(existingTemplate);
       mockCardTemplatesRepository.save.mockResolvedValue(updatedTemplate);
@@ -150,7 +195,19 @@ describe('CardTemplatesService', () => {
     it('should throw NotFoundException if template not found', async () => {
       const templateId = '999';
       const userId = '1';
-      const updateTemplateDto = { name: 'Updated Template' };
+      const updateTemplateDto = { 
+        isPublic: true,
+        card: {
+          name: 'Updated Template',
+          description: 'Updated Description',
+          cardNumber: 1,
+          carNumber: 69,
+          date: '2025-04-26',
+          logo: 'logo.png',
+          sponsorLogo: 'sponsor.png',
+          panels: []
+        }
+      };
 
       mockCardTemplatesRepository.findOne.mockResolvedValue(null);
 
@@ -163,11 +220,29 @@ describe('CardTemplatesService', () => {
       const templateId = '1';
       const userId = '1';
       const wrongUserId = '2';
-      const updateTemplateDto = { name: 'Updated Template' };
+      const updateTemplateDto = { 
+        isPublic: true,
+        card: {
+          name: 'Updated Template',
+          description: 'Updated Description',
+          cardNumber: 1,
+          carNumber: 69,
+          date: '2025-04-26',
+          logo: 'logo.png',
+          sponsorLogo: 'sponsor.png',
+          panels: []
+        }
+      };
       const existingTemplate = { 
         id: templateId, 
         name: 'Original Template', 
-        isPublic: true,
+        description: 'Description',
+        cardNumber: 1,
+        carNumber: 69,
+        date: '2025-04-26',
+        logo: 'logo.png',
+        sponsorLogo: 'sponsor.png',
+        isPublic: false,
         userId,
         panels: []
       };

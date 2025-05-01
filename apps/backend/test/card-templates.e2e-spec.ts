@@ -6,7 +6,7 @@ import { AppModule } from '../src/app.module';
 describe('Card Templates Module (e2e)', () => {
   let app: INestApplication;
   let authToken: string;
-  let testTemplateId: number;
+  let testTemplateId: string;
   
   // Test user for authentication
   const testUser = {
@@ -17,12 +17,29 @@ describe('Card Templates Module (e2e)', () => {
 
   // Test card template data
   const testTemplate = {
-    name: 'Test Template',
-    description: 'This is a test card template',
-    panels: [
-      { type: 'text', content: 'Test panel content', name: 'Test Panel' }
-    ],
     isPublic: true,
+    card: {
+      name: 'Test Template',
+      description: 'This is a test card template',
+      cardNumber: 1,
+      carNumber: 69,
+      date: '2025-04-26',
+      logo: 'logo.png',
+      sponsorLogo: 'sponsor.png',
+      panels: [
+        { 
+          number: 1, 
+          name: 'Test Panel',
+          finishTime: 0,
+          provisionalStartTime: 34200000,
+          actualStartTime: 34200000,
+          drivingTime: 0,
+          resultTime: 0,
+          nextPKCTime: 0,
+          arrivalTime: 0
+        }
+      ]
+    }
   };
 
   beforeAll(async () => {
@@ -68,10 +85,13 @@ describe('Card Templates Module (e2e)', () => {
         .expect(201)
         .expect((res) => {
           expect(res.body).toHaveProperty('id');
-          expect(res.body).toHaveProperty('name', testTemplate.name);
-          expect(res.body).toHaveProperty('description', testTemplate.description);
+          expect(res.body).toHaveProperty('name', testTemplate.card.name);
+          expect(res.body).toHaveProperty('description', testTemplate.card.description);
           expect(res.body).toHaveProperty('isPublic', testTemplate.isPublic);
           expect(res.body).toHaveProperty('panels');
+          expect(res.body).toHaveProperty('cardNumber', testTemplate.card.cardNumber);
+          expect(res.body).toHaveProperty('carNumber', testTemplate.card.carNumber);
+          expect(res.body).toHaveProperty('date', testTemplate.card.date);
           
           // Save the template ID for later tests
           testTemplateId = res.body.id;
@@ -87,7 +107,7 @@ describe('Card Templates Module (e2e)', () => {
 
     it('should get all public card templates without authentication', () => {
       return request(app.getHttpServer())
-        .get('/cards/templates')
+        .get('/cards/templates/all')
         .expect(200)
         .expect((res) => {
           expect(Array.isArray(res.body)).toBeTruthy();
@@ -100,12 +120,18 @@ describe('Card Templates Module (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('id', testTemplateId);
-          expect(res.body).toHaveProperty('name', testTemplate.name);
+          expect(res.body).toHaveProperty('name', testTemplate.card.name);
         });
     });
 
     it('should update a card template with valid data and authentication', () => {
-      const updatedTemplate = { ...testTemplate, name: 'Updated Template Name' };
+      const updatedTemplate = { 
+        isPublic: true,
+        card: {
+          ...testTemplate.card,
+          name: 'Updated Template Name'
+        }
+      };
       
       return request(app.getHttpServer())
         .put(`/cards/templates/${testTemplateId}`)
@@ -114,12 +140,18 @@ describe('Card Templates Module (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toHaveProperty('id', testTemplateId);
-          expect(res.body).toHaveProperty('name', updatedTemplate.name);
+          expect(res.body).toHaveProperty('name', updatedTemplate.card.name);
         });
     });
 
     it('should not update a card template without authentication', () => {
-      const updatedTemplate = { ...testTemplate, name: 'Another Updated Name' };
+      const updatedTemplate = { 
+        isPublic: true,
+        card: {
+          ...testTemplate.card,
+          name: 'Another Updated Name'
+        }
+      };
       
       return request(app.getHttpServer())
         .put(`/cards/templates/${testTemplateId}`)
@@ -131,7 +163,7 @@ describe('Card Templates Module (e2e)', () => {
       return request(app.getHttpServer())
         .delete(`/cards/templates/${testTemplateId}`)
         .set('Authorization', `Bearer ${authToken}`)
-        .expect(200);
+        .expect(204);
     });
 
     it('should verify the card template was deleted', () => {

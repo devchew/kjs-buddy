@@ -14,7 +14,15 @@ export class CardTemplatesService {
 
   async create(createCardTemplateDto: CreateCardTemplateDto, userId: string): Promise<CardTemplate> {
     const cardTemplate = this.cardTemplateRepository.create({
-      ...createCardTemplateDto,
+      name: createCardTemplateDto.card.name,
+      description: createCardTemplateDto.card.description || '',
+      logo: createCardTemplateDto.card.logo,
+      sponsorLogo: createCardTemplateDto.card.sponsorLogo,
+      panels: createCardTemplateDto.card.panels,
+      cardNumber: createCardTemplateDto.card.cardNumber,
+      carNumber: createCardTemplateDto.card.carNumber,
+      date: createCardTemplateDto.card.date,
+      isPublic: createCardTemplateDto.isPublic || false,
       userId,
     });
     
@@ -54,7 +62,20 @@ export class CardTemplatesService {
     }
 
     // Update the card template with new data
-    Object.assign(cardTemplate, updateCardTemplateDto);
+    if (updateCardTemplateDto.isPublic !== undefined) {
+      cardTemplate.isPublic = updateCardTemplateDto.isPublic;
+    }
+    
+    if (updateCardTemplateDto.card) {
+      if (updateCardTemplateDto.card.name) cardTemplate.name = updateCardTemplateDto.card.name;
+      if (updateCardTemplateDto.card.description !== undefined) cardTemplate.description = updateCardTemplateDto.card.description || '';
+      if (updateCardTemplateDto.card.logo) cardTemplate.logo = updateCardTemplateDto.card.logo;
+      if (updateCardTemplateDto.card.sponsorLogo) cardTemplate.sponsorLogo = updateCardTemplateDto.card.sponsorLogo;
+      if (updateCardTemplateDto.card.panels) cardTemplate.panels = updateCardTemplateDto.card.panels;
+      if (updateCardTemplateDto.card.cardNumber) cardTemplate.cardNumber = updateCardTemplateDto.card.cardNumber;
+      if (updateCardTemplateDto.card.carNumber) cardTemplate.carNumber = updateCardTemplateDto.card.carNumber;
+      if (updateCardTemplateDto.card.date) cardTemplate.date = updateCardTemplateDto.card.date;
+    }
 
     return this.cardTemplateRepository.save(cardTemplate);
   }

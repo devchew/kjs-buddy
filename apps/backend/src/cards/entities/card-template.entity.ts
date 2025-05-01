@@ -26,6 +26,27 @@ export class CardTemplate {
   description!: string;
 
   @ApiProperty({
+    example: 1,
+    description: 'Card number in the event'
+  })
+  @Column({ default: 1 })
+  cardNumber!: number;
+
+  @ApiProperty({
+    example: 69,
+    description: 'Car number in the event'
+  })
+  @Column({ default: 1 })
+  carNumber!: number;
+
+  @ApiProperty({
+    example: '2025-04-26',
+    description: 'Event date in YYYY-MM-DD format'
+  })
+  @Column({ default: '' })
+  date!: string;
+
+  @ApiProperty({
     example: 'montecalvaria.png',
     description: 'Logo image filename or URL'
   })
