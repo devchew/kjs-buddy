@@ -6,8 +6,7 @@ import { CardInfo, CardPanel } from '../types/Event';
 import monte from "../assets/montecalvaria.png";
 import pzm from "../assets/pzmot.png";
 import { TbSquareRoundedChevronLeft, TbPlus } from "react-icons/tb";
-import { usePredefinedCards } from '../hooks/usePredefinedCards';
-import { PredefinedCard } from '../types/PredefinedCards';
+import { usePredefinedCards, type PredefinedCard } from '../hooks/usePredefinedCards';
 import {
   Container, 
   Title,
@@ -54,7 +53,9 @@ export const CardCreatePage: FunctionComponent = () => {
   
   useEffect(() => {
     if (selectedTemplate) {
-      setPanelCount(selectedTemplate.panelCount);
+      // Ensure panels array exists and set panel count
+      const panelsCount = Array.isArray(selectedTemplate.panels) ? selectedTemplate.panels.length : 1;
+      setPanelCount(panelsCount);
     }
   }, [selectedTemplate]);
   
@@ -67,8 +68,16 @@ export const CardCreatePage: FunctionComponent = () => {
   
   const handleTemplateSelect = (template: PredefinedCard) => {
     setSelectedTemplate(template);
-    setCardInfo(template.cardInfo);
-    setPanelCount(template.panelCount);
+    // Update cardInfo using template properties directly since cardInfo is no longer a nested property
+    setCardInfo({
+      name: template.name,
+      cardNumber: template.cardNumber,
+      carNumber: template.carNumber,
+      date: template.date,
+      logo: template.logo || monte,
+      sponsorLogo: template.sponsorLogo || pzm,
+    });
+    setPanelCount(template.panels?.length || 1);
     setCreationMode('details');
   };
   
@@ -90,77 +99,19 @@ export const CardCreatePage: FunctionComponent = () => {
     
     let panels: CardPanel[] = [];
     
-    // If a template with specific panel configurations is selected, use those as a base
-    if (selectedTemplate && selectedTemplate.panels) {
-      const templatePanels = [...selectedTemplate.panels];
-      
-      // If user wants more panels than template provides, add additional ones
-      if (panelCount > templatePanels.length) {
-        const lastPanel = templatePanels[templatePanels.length - 1];
-        const baseTime = lastPanel.provisionalStartTime || lastPanel.actualStartTime || 34200000;
-        const baseDrivingTime = lastPanel.drivingTime || selectedTemplate.panelTemplate.drivingTime || 0;
-        
-        // Get the naming pattern from the template
-        const nameBase = selectedTemplate.panelTemplate.name;
-        
-        // Add additional panels
-        for (let i = templatePanels.length + 1; i <= panelCount; i++) {
-          const additionalTime = baseDrivingTime * (i - templatePanels.length);
-          templatePanels.push({
-            number: i,
-            name: `${nameBase}${i-1} - Additional`,
-            finishTime: 0,
-            provisionalStartTime: 0,
-            actualStartTime: 0,
-            drivingTime: baseDrivingTime,
-            resultTime: 0,
-            nextPKCTime: 0,
-            arrivalTime: baseTime + additionalTime,
-          });
-        }
-      } 
-      // If user wants fewer panels than template provides, remove some
-      else if (panelCount < templatePanels.length) {
-        // Keep only the first 'panelCount' panels
-        templatePanels.splice(panelCount);
-      }
-      
-      // Ensure panel numbers are sequential and all fields are non-nullable numbers
-      panels = templatePanels.map((panel, index) => ({
-        ...panel,
-        number: index + 1,
-        finishTime: panel.finishTime || 0,
-        provisionalStartTime: panel.provisionalStartTime || 0,
-        actualStartTime: panel.actualStartTime || 0,
-        drivingTime: panel.drivingTime || 0,
-        resultTime: panel.resultTime || 0,
-        nextPKCTime: panel.nextPKCTime || 0,
-        arrivalTime: panel.arrivalTime || 0
-      }));
-    } 
-    // Otherwise, generate panels based on the panel count and template if available
-    else {
-      for (let i = 1; i <= panelCount; i++) {
-        panels.push({
-          number: i,
-          name: i === 1 
-            ? '' 
-            : selectedTemplate 
-              ? `${selectedTemplate.panelTemplate.name}${i-1}` 
-              : `PS${i-1}`,
-          finishTime: 0,
-          provisionalStartTime: i === 1 
-            ? (selectedTemplate?.panelTemplate.provisionalStartTime || 34200000) 
-            : 0,
-          actualStartTime: i === 1 
-            ? (selectedTemplate?.panelTemplate.provisionalStartTime || 34200000) 
-            : 0,
-          drivingTime: selectedTemplate?.panelTemplate.drivingTime || 0,
-          resultTime: 0,
-          nextPKCTime: 0,
-          arrivalTime: 0,
-        });
-      }
+    // Generate panels based on the panel count
+    for (let i = 1; i <= panelCount; i++) {
+      panels.push({
+        number: i,
+        name: i === 1 ? '' : `PS${i-1}`,
+        finishTime: 0,
+        provisionalStartTime: i === 1 ? 34200000 : 0, // 9:30 AM in milliseconds
+        actualStartTime: i === 1 ? 34200000 : 0,
+        drivingTime: 0,
+        resultTime: 0,
+        nextPKCTime: 0,
+        arrivalTime: 0,
+      });
     }
     
     // Update card info and panels in context
@@ -241,7 +192,7 @@ export const CardCreatePage: FunctionComponent = () => {
                 <Title order={4} mb="xs">{template.name}</Title>
                 <Text size="sm" c="dimmed" mb="lg">{template.description}</Text>
                 <Group justify="space-between" mt="auto">
-                  <Badge variant="light">Panels: {template.panelCount}</Badge>
+                  <Badge variant="light">Panels: {template.panels?.length || 0}</Badge>
                 </Group>
               </Card>
             ))
@@ -343,12 +294,10 @@ export const CardCreatePage: FunctionComponent = () => {
               </Text>
               <Paper withBorder p="xs" bg="gray.0">
                 <List spacing="xs">
-                  {selectedTemplate.panels.slice(0, Math.min(panelCount, selectedTemplate.panels.length)).map(panel => (
-                    <List.Item key={panel.number}>
+                  {Array.from({length: Math.min(panelCount, selectedTemplate.panels.length)}).map((_, index) => (
+                    <List.Item key={index}>
                       <Group justify="space-between">
-                        <Text>PKC{panel.number}: <Text span fw={700}>{panel.name || 'Start'}</Text></Text>
-                        {panel.drivingTime > 0 && 
-                          <Badge>Driving time: {Math.floor(panel.drivingTime/60000)} min</Badge>}
+                        <Text>PKC{index + 1}: <Text span fw={700}>{index === 0 ? 'Start' : `PS${index}`}</Text></Text>
                       </Group>
                     </List.Item>
                   ))}

@@ -314,6 +314,11 @@ export interface components {
              *     ]
              */
             panels: components["schemas"]["CardPanelDto"][];
+            /**
+             * @description Optional description
+             * @example A description of the card
+             */
+            description?: string;
         };
         Card: {
             /**
@@ -326,6 +331,11 @@ export interface components {
              * @example Rally Monte Calvaria
              */
             name: string;
+            /**
+             * @description Description of the card
+             * @example An event description
+             */
+            description: string;
             /**
              * @description Card number in the event
              * @example 1
@@ -450,23 +460,43 @@ export interface components {
              *     ]
              */
             panels?: components["schemas"]["CardPanelDto"][];
+            /**
+             * @description Optional description
+             * @example A description of the card
+             */
+            description?: string;
         };
         CardTemplate: {
             /**
-             * @description Unique identifier for the card template
+             * @description Unique identifier for the card
              * @example 123e4567-e89b-12d3-a456-426614174000
              */
             id: string;
             /**
-             * @description Name of the card template
-             * @example Rally Monte Calvaria Template
+             * @description Name of the event/card
+             * @example Rally Monte Calvaria
              */
             name: string;
             /**
-             * @description Description of the card template
-             * @example A template for Rally Monte Calvaria event
+             * @description Description of the card
+             * @example An event description
              */
             description: string;
+            /**
+             * @description Card number in the event
+             * @example 1
+             */
+            cardNumber: number;
+            /**
+             * @description Car number in the event
+             * @example 69
+             */
+            carNumber: number;
+            /**
+             * @description Event date in YYYY-MM-DD format
+             * @example 2025-04-26
+             */
+            date: string;
             /**
              * @description Logo image filename or URL
              * @example montecalvaria.png
@@ -478,7 +508,7 @@ export interface components {
              */
             sponsorLogo: string;
             /**
-             * @description Array of panels in the template
+             * @description Array of panels in the card
              * @example [
              *       {
              *         "number": 1,
@@ -490,44 +520,70 @@ export interface components {
              *         "resultTime": 0,
              *         "nextPKCTime": 0,
              *         "arrivalTime": 0
+             *       },
+             *       {
+             *         "number": 2,
+             *         "name": "PS1 - Mountain Pass",
+             *         "finishTime": 0,
+             *         "provisionalStartTime": 34200000,
+             *         "actualStartTime": 34200000,
+             *         "drivingTime": 300000,
+             *         "resultTime": 0,
+             *         "nextPKCTime": 0,
+             *         "arrivalTime": 0
              *       }
              *     ]
              */
             panels: string[];
             /**
-             * @description Whether the template is public and accessible without authentication
-             * @example true
-             */
-            isPublic: boolean;
-            /**
-             * @description ID of the user who created this template
+             * @description ID of the user who owns this card
              * @example 123e4567-e89b-12d3-a456-426614174000
              */
             userId: string;
             /**
+             * @description Timestamp of when the card was last accessed
+             * @example 1714201274525
+             */
+            lastUsed: number;
+            /**
              * Format: date-time
-             * @description Date and time when the template was created
+             * @description Date and time when the card was created
              * @example 2025-04-26T12:00:00Z
              */
             createdAt: string;
             /**
              * Format: date-time
-             * @description Date and time when the template was last updated
+             * @description Date and time when the card was last updated
              * @example 2025-04-26T15:30:45Z
              */
             updatedAt: string;
+            /**
+             * @description Whether the template is public and accessible without authentication
+             * @example true
+             */
+            isPublic: boolean;
         };
         CreateCardTemplateDto: {
             /**
-             * @description Name of the card template
-             * @example Rally Monte Calvaria Template
+             * @description Name of the event/card
+             * @example Rally Monte Calvaria
              */
             name: string;
             /**
-             * @description Description of the card template
-             * @example A template for Rally Monte Calvaria event
+             * @description Card number in the event
+             * @example 1
              */
-            description?: string;
+            cardNumber: number;
+            /**
+             * @description Car number in the event
+             * @example 69
+             */
+            carNumber: number;
+            /**
+             * @description Event date in YYYY-MM-DD format
+             * @example 2025-04-26
+             */
+            date: string;
             /**
              * @description Logo image filename or URL
              * @example montecalvaria.png
@@ -539,7 +595,7 @@ export interface components {
              */
             sponsorLogo: string;
             /**
-             * @description Array of panels in the template
+             * @description Array of panels in the card
              * @example [
              *       {
              *         "number": 1,
@@ -554,7 +610,12 @@ export interface components {
              *       }
              *     ]
              */
-            panels: string[];
+            panels: components["schemas"]["CardPanelDto"][];
+            /**
+             * @description Optional description
+             * @example A description of the card
+             */
+            description?: string;
             /**
              * @description Whether the template is public and accessible without authentication
              * @default false
@@ -564,15 +625,25 @@ export interface components {
         };
         UpdateCardTemplateDto: {
             /**
-             * @description Name of the card template
-             * @example Rally Monte Calvaria Template
+             * @description Name of the event/card
+             * @example Rally Monte Calvaria
              */
             name?: string;
             /**
-             * @description Description of the card template
-             * @example A template for Rally Monte Calvaria event
+             * @description Card number in the event
+             * @example 1
              */
-            description?: string;
+            cardNumber?: number;
+            /**
+             * @description Car number in the event
+             * @example 69
+             */
+            carNumber?: number;
+            /**
+             * @description Event date in YYYY-MM-DD format
+             * @example 2025-04-26
+             */
+            date?: string;
             /**
              * @description Logo image filename or URL
              * @example montecalvaria.png
@@ -584,7 +655,7 @@ export interface components {
              */
             sponsorLogo?: string;
             /**
-             * @description Array of panels in the template
+             * @description Array of panels in the card
              * @example [
              *       {
              *         "number": 1,
@@ -599,7 +670,12 @@ export interface components {
              *       }
              *     ]
              */
-            panels?: string[];
+            panels?: components["schemas"]["CardPanelDto"][];
+            /**
+             * @description Optional description
+             * @example A description of the card
+             */
+            description?: string;
             /**
              * @description Whether the template is public and accessible without authentication
              * @default false

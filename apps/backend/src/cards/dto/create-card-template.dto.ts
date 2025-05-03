@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { CardDto } from './card.dto';
 
-export class CreateCardTemplateDto {
+export class CreateCardTemplateDto extends CardDto {
   @ApiProperty({
     example: true,
     description: 'Whether the template is public and accessible without authentication',
@@ -13,9 +13,4 @@ export class CreateCardTemplateDto {
   @IsBoolean()
   isPublic?: boolean;
 
-  @ApiProperty({
-    description: 'Card data',
-    type: CardDto
-  })
-  card!: CardDto;
 }

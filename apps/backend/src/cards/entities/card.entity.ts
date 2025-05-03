@@ -19,6 +19,13 @@ export class Card {
   name!: string;
 
   @ApiProperty({
+    example: 'An event description',
+    description: 'Description of the card'
+  })
+  @Column({ nullable: true })
+  description!: string;
+
+  @ApiProperty({
     example: 1,
     description: 'Card number in the event'
   })
