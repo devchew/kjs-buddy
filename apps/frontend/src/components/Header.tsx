@@ -1,6 +1,8 @@
 import { FunctionComponent } from 'react';
 import "./Header.css";
 import { useCardContext } from '../contexts/CardContext.tsx';
+import monte from "./../assets/montecalvaria.png";
+import pzm from "./../assets/pzmot.png";
 
 const formatDate = (date: string): string => {
     const dateObj = new Date(date);
@@ -11,7 +13,7 @@ export const Header: FunctionComponent = () => {
     const { cardInfo } = useCardContext();
     return (
         <div className="header">
-            <img src={cardInfo.logo} className="header__eventLogo"/>
+            <img src={monte} className="header__eventLogo"/>
             <div className="header__carNumber">
                 <div className="header__carNumber__title">Numer auta</div>
                 <div className="header__carNumber__number">{cardInfo.carNumber}</div>
@@ -20,7 +22,7 @@ export const Header: FunctionComponent = () => {
                 <span className="header__eventName__title">Karta drogowa {cardInfo.cardNumber}<br/></span>
                 <span className="header__eventName__name">{cardInfo.name}<br/>{formatDate(cardInfo.date)}</span>
             </div>
-            <img src={cardInfo.sponsorLogo} className="header__eventSponsorLogo"/>
+            <img src={pzm} className="header__eventSponsorLogo"/>
         </div>
     )
 }

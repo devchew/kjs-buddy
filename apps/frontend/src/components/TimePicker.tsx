@@ -1,5 +1,5 @@
 import "./TimePicker.css";
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FocusEventHandler, FunctionComponent, useEffect, useState } from 'react';
 import { msToSeparateValues } from '../helpers/timeParsers.ts';
 
 
@@ -37,10 +37,14 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
     const [val, setVal] = useState(emptyState ? '' : value.toString());
 
     useEffect(() => {
-        setVal(emptyState ? '' : value.toString());
+        if (emptyState) {
+            setVal('');
+            return;
+        }
     }, [emptyState, value]);
 
-    const onBlur = () => {
+    const onBlur: FocusEventHandler<HTMLInputElement> = (e) => {
+        
         const validatedValue = validate(val, max);
         onChange(validatedValue);
         setVal(validatedValue.toString());
@@ -50,14 +54,20 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
         <div className={["timePickerValue", "timePickerValue--" + (style || 'normal')].join(" ")}>
             {label && <span className="timePickerValue__label">{label}</span>}
             <input
-                type="number"
+                type="text"
+                inputMode="numeric"
+                autoComplete="off"
+                autoCorrect="off"
+                datatype="number"
+                maxLength={2}
                 className="timePickerValue__input"
                 value={val}
+                onFocus={(e) => e.target.select()}
                 pattern={patternNumberTwoDigits}
                 disabled={disabled}
-                onFocus={(e) => e.target.select()}
                 onBlur={onBlur}
                 onChange={(e) => setVal(e.target?.value)}
+                aria-label="TimePickerValue"
             />
         </div>
     );

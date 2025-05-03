@@ -30,7 +30,7 @@
 }
 
 .panel__main {
-    flex: 1;
+    flex: 100%;
     display: flex;
     flex-direction: column;
 }
