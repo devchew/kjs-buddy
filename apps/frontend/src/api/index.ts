@@ -9,3 +9,5 @@ if (!baseUrl) {
 }
 
 export const client = createClient<paths>({ baseUrl });
+
+export const createAuthClient = (token: string | null) => createClient<paths>({ baseUrl, headers: { Authorization: `Bearer ${token}` } });

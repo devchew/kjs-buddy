@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCardsStore } from "../contexts/CardsStoreContext";
+import { useAuth } from "../contexts/AuthContext";
 import {
   Container,
   Title,
@@ -11,12 +12,15 @@ import {
   Group,
   Box,
   Divider,
+  Avatar,
 } from "@mantine/core";
 import { Header } from "../components/Header";
+import { TbLogin, TbUser, TbUserPlus } from "react-icons/tb";
 
 export const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();
   const { cards, lastUsedCardId } = useCardsStore();
+  const { user, isAuthenticated } = useAuth();
 
   // Get the last used card for quick access
   const lastUsedCard = lastUsedCardId
@@ -31,11 +35,60 @@ export const HomePage: FunctionComponent = () => {
 
   return (
     <Container py="xl" size="md">
-      <Title ta="center" mb="xl">
-        Witaj w KJS Buddy
-      </Title>
+      <Group justify="space-between" mb="md">
+        <Title ta="center">
+          Witaj w KJS Buddy
+        </Title>
+        
+        {isAuthenticated ? (
+          <Button
+            variant="subtle"
+            onClick={() => navigate("/profile")}
+            leftSection={<TbUser size={20} />}
+          >
+            {user?.email?.split('@')[0] || 'Profile'}
+          </Button>
+        ) : (
+          <Group>
+            <Button
+              variant="subtle"
+              onClick={() => navigate("/login")}
+              leftSection={<TbLogin size={20} />}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="light"
+              onClick={() => navigate("/register")}
+              leftSection={<TbUserPlus size={20} />}
+            >
+              Register
+            </Button>
+          </Group>
+        )}
+      </Group>
 
       <Stack maw={600} mx="auto" gap="md">
+        {isAuthenticated && (
+          <Paper p="xs" withBorder radius="md" mb="lg">
+            <Text fw={500} size="sm">
+              Witaj, {user?.email?.split('@')[0] || 'User'}!
+              Twoje karty są synchronizowane w chmurze.
+            </Text>
+          </Paper>
+        )}
+        
+        {!isAuthenticated && (
+          <Paper p="xs" withBorder radius="md" mb="lg">
+            <Text fw={500} size="sm" mb="xs">
+              You're using the app in local mode. 
+            </Text>
+            <Text size="sm" color="dimmed">
+              Register or log in to sync your cards across devices.
+            </Text>
+          </Paper>
+        )}
+
         {/* Last used card for quick access */}
         {lastUsedCard && (
           <Box mt="lg" w="100%">

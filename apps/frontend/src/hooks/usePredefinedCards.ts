@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { client } from '../api';
 import { PredefinedCard } from '../types/Responses';
+import { useHttpClient } from './useHttpClient';
 
 const loadCardsFromLocalStorage = () => {
   const cards = localStorage.getItem("predefinedCards");
@@ -22,6 +22,7 @@ const saveCardsToLocalStorage = (cards: PredefinedCard[]) => {
 export const usePredefinedCards = () => {
   const [predefinedCards, setPredefinedCards] = useState<PredefinedCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const client = useHttpClient(); 
 
   useEffect(() => {
     const localCards = loadCardsFromLocalStorage();
