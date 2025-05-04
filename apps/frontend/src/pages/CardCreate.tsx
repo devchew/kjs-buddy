@@ -120,10 +120,10 @@ export const CardCreatePage: FunctionComponent = () => {
     updatePanels(panels);
     
     // Save to the cards store
-    const cardId = saveCard(cardInfo, panels);
-    
-    // Navigate to the card view
-    navigate(`/cards/${cardId}`);
+    saveCard(cardInfo, panels).then(({id}) => {
+      // Navigate to the card view after saving
+      navigate(`/cards/${id}`);
+    });
   };
 
   // Template selection screen

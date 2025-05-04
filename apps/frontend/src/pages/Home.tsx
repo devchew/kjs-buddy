@@ -12,24 +12,19 @@ import {
   Group,
   Box,
   Divider,
-  Avatar,
 } from "@mantine/core";
 import { Header } from "../components/Header";
 import { TbLogin, TbUser, TbUserPlus } from "react-icons/tb";
+import { useCardContext } from "../contexts/CardContext";
 
 export const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { cards, lastUsedCardId } = useCardsStore();
+  const { cards } = useCardsStore();
+  const { id: currentCardId } = useCardContext();
   const { user, isAuthenticated } = useAuth();
-
-  // Get the last used card for quick access
-  const lastUsedCard = lastUsedCardId
-    ? cards.find((card) => card.id === lastUsedCardId)
-    : null;
 
   // Get recent cards (up to 3, excluding last used)
   const recentCards = cards
-    .filter((card) => card.id !== lastUsedCardId)
     .sort((a, b) => b.lastUsed - a.lastUsed)
     .slice(0, 3);
 
@@ -87,7 +82,7 @@ export const HomePage: FunctionComponent = () => {
         )}
 
         {/* Last used card for quick access */}
-        {lastUsedCard && (
+        {currentCardId && (
           <Box mt="lg" w="100%">
             <Group justify="space-between" mb="xs">
               <Text fw={600} size="lg">
@@ -96,7 +91,7 @@ export const HomePage: FunctionComponent = () => {
               <Divider w="60%" />
             </Group>
             <Link
-              to={`/cards/${lastUsedCard.id}`}
+              to={`/cards/${currentCardId}`}
               style={{ textDecoration: "none" }}
             >
               <Paper p="sm" shadow="xs">

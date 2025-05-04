@@ -35,17 +35,18 @@ const CardContent: FunctionComponent = () => {
       // If the card is the last used one, we can skip loading it again
       return;
     }
-
-    const card = getCard(id);
-    if (!card) {
-      navigate('/cards');
-      return;
-    }
-    
-    // Update context with card data
-    updateCardInfo(card.cardInfo);
-    updatePanels(card.panels);
-    setId(id);
+    getCard(id).then((card) => {
+      
+      if (!card) {
+        navigate('/cards');
+        return;
+      }
+      
+      // Update context with card data
+      updateCardInfo(card.cardInfo);
+      updatePanels(card.panels);
+      setId(id);
+    })
   }, [id, loading]);
 
   const handleLongPress = () => {
@@ -72,7 +73,7 @@ const CardContent: FunctionComponent = () => {
     disableEditMode();
   };
 
-  if (loading) {
+  if (loading || !cardInfo || !panels || localCardId !== id) {
     return <div>Ładowanie...</div>; // Show loading state while fetching data
   }
 

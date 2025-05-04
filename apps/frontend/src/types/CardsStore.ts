@@ -9,5 +9,4 @@ export interface StoredCard {
 
 export interface CardsStore {
   cards: StoredCard[];
-  lastUsedCardId: string | null;
 }
