@@ -2,6 +2,9 @@ import { createContext, FunctionComponent, PropsWithChildren, useContext, useEff
 import { CardInfo, CardPanel } from '../types/Card';
 import { CardsStore, StoredCard } from '../types/CardsStore';
 import { v4 as uuidv4 } from 'uuid';
+import { useHttpClient } from '../hooks/useHttpClient';
+import { useAuth } from './AuthContext';
+import { CardResponse } from '../types/Responses';
 
 interface CardsStoreContextType extends CardsStore {
   saveCard: (cardInfo: CardInfo, panels: CardPanel[]) => string;
@@ -35,10 +38,53 @@ export const useCardsStore = () => {
   return context;
 };
 
+const serverCardToStoredCard = (card: CardResponse): StoredCard => {
+  const {id, panels, lastUsed, ...info} = card;
+  return {
+    id,
+    cardInfo: info,
+    panels,
+    lastUsed
+  };
+}
+
+const resolveConflictCard = (localCard: StoredCard, serverCard: StoredCard): StoredCard => {
+  // Here you can implement your conflict resolution strategy
+  // For now, we will just prefer the local card
+  return localCard;
+}
+
+const mergeLocalCardsWithServerCards = (localCards: StoredCard[], serverCards: CardResponse[]): StoredCard[] => {
+  const transformedServerCards = serverCards.map(serverCardToStoredCard);
+  const localCardIds = localCards.map(card => card.id);
+  const newCards = transformedServerCards.filter(({id}) => !localCardIds.includes(id));
+  const conflictedCardsIds = transformedServerCards.filter(({id}) => localCardIds.includes(id)).map(({id}) => id);
+
+  if (conflictedCardsIds.length > 0) {
+    console.warn('Conflicted cards found:', conflictedCardsIds);
+
+    const resolvedConflicts = conflictedCardsIds.map((id) => {
+      const localCard = localCards.find(card => card.id === id);
+      const serverCard = transformedServerCards.find(card => card.id === id);
+      if (localCard && serverCard) {
+        return resolveConflictCard(localCard, serverCard);
+      }
+      return null;
+    }).filter(card => card !== null) as StoredCard[];
+
+    return [...newCards, ...resolvedConflicts, ...localCards];
+  };
+
+  return [...newCards, ...localCards];
+
+};
+
 export const CardsStoreProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState<StoredCard[]>([]);
   const [lastUsedCardId, setLastUsedCardId] = useState<string | null>(null);
+  const http = useHttpClient();
+  const { isAuthenticated } = useAuth();
 
   // Load cards from local storage on first render
   useEffect(() => {
@@ -60,6 +106,25 @@ export const CardsStoreProvider: FunctionComponent<PropsWithChildren> = ({ child
 
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    http.GET('/cards')
+    .then((response) => {
+      if (response.error) {
+        console.error('Error loading cards from server:', response.error);
+        return;
+      }
+      if (!response.data) {
+        return;
+      }
+      const newCards = mergeLocalCardsWithServerCards(cards, response.data);
+      setCards(newCards);
+    });
+  }, [isAuthenticated, http]);
 
   // Save cards to local storage whenever they change
   useEffect(() => {
