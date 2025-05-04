@@ -81,10 +81,7 @@ export const HomePage: FunctionComponent = () => {
         {!isAuthenticated && (
           <Paper p="xs" withBorder radius="md" mb="lg">
             <Text fw={500} size="sm" mb="xs">
-              You're using the app in local mode. 
-            </Text>
-            <Text size="sm" color="dimmed">
-              Register or log in to sync your cards across devices.
+              Zaloguj się lub zarejestruj, aby synchronizować karty w chmurze.
             </Text>
           </Paper>
         )}
