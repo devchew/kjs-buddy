@@ -1,10 +1,27 @@
-import { CardPanel } from '../types/Event.ts';
-import { defaultEvent } from './defaultEvent.ts';
+import { CardPanel } from '../types/Card.ts';
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { PanelContextType } from '../types/Panel.ts';
+
+
+export type PanelContextType = CardPanel & {
+    setFinishTime: (finishTime: number) => void;
+    setProvisionalStartTime: (provisionalStartTime: number) => void;
+    setActualStartTime: (actualStartTime: number) => void;
+    setDrivingTime: (drivingTime: number) => void;
+    setResultTime: (resultTime: number) => void;
+    setNextPKCTime: (nextPKCTime: number) => void;
+    setArrivalTime: (arrivalTime: number) => void;
+}
 
 const defaultPanelContext: PanelContextType = {
-    ...defaultEvent.panels[0],
+    number: 0,
+    finishTime: -1,
+    provisionalStartTime: -1,
+    actualStartTime: -1,
+    drivingTime: -1,
+    resultTime: -1,
+    nextPKCTime: -1,
+    arrivalTime: -1,
+    name: '',
     setFinishTime: () => {},
     setProvisionalStartTime: () => {},
     setActualStartTime: () => {},

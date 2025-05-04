@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { client, components } from '../api';
-
-export type PredefinedCard = components["schemas"]["CardTemplate"];
+import { client } from '../api';
+import { PredefinedCard } from '../types/Responses';
 
 const loadCardsFromLocalStorage = () => {
   const cards = localStorage.getItem("predefinedCards");

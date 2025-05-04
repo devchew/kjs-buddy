@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCardsStore } from '../contexts/CardsStoreContext';
 import { 
   Container, 
@@ -12,6 +12,7 @@ import {
   Box,
   Divider
 } from '@mantine/core';
+import { Header } from '../components/Header';
 
 export const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -32,25 +33,8 @@ export const HomePage: FunctionComponent = () => {
     <Container py="xl" size="md">
       <Title ta="center" mb="xl">Welcome to KJS Buddy</Title>
       
-      <Stack maw={400} mx="auto" gap="md">
-        <Button 
-          size="lg" 
-          fullWidth 
-          color="blue"
-          onClick={() => navigate('/create')}
-        >
-          Create New Card
-        </Button>
-        
-        <Button 
-          size="lg" 
-          fullWidth 
-          color="green"
-          onClick={() => navigate('/cards')}
-        >
-          All Cards
-        </Button>
-        
+      <Stack maw={600} mx="auto" gap="md">
+              
         {/* Last used card for quick access */}
         {lastUsedCard && (
           <Box mt="lg" w="100%">
@@ -58,19 +42,11 @@ export const HomePage: FunctionComponent = () => {
               <Text fw={600} size="lg">Last Used Card</Text>
               <Divider w="60%" />
             </Group>
-            <Paper 
-              p="md" 
-              radius="md" 
-              withBorder
-              onClick={() => navigate(`/cards/${lastUsedCard.id}`)}
-              style={{ cursor: 'pointer' }}
-              shadow="xs"
-            >
-              <Text fw={700}>{lastUsedCard.cardInfo.name}</Text>
-              <Text size="sm" c="dimmed">
-                {lastUsedCard.cardInfo.date} | Car #{lastUsedCard.cardInfo.carNumber}
-              </Text>
-            </Paper>
+            <Link to={`/cards/${lastUsedCard.id}`} style={{ textDecoration: 'none' }}>
+              <Paper p="sm" shadow="xs" >
+                <Header />
+              </Paper>
+            </Link>          
           </Box>
         )}
         
@@ -101,6 +77,23 @@ export const HomePage: FunctionComponent = () => {
             </Stack>
           </Box>
         )}
+         <Button 
+          size="lg" 
+          fullWidth 
+          color="blue"
+          onClick={() => navigate('/create')}
+        >
+          Create New Card
+        </Button>
+        
+        <Button 
+          size="lg" 
+          fullWidth 
+          color="green"
+          onClick={() => navigate('/cards')}
+        >
+          All Cards
+        </Button>
       </Stack>
     </Container>
   );

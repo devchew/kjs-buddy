@@ -2,11 +2,11 @@ import { FunctionComponent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCardContext } from '../contexts/CardContext';
 import { useCardsStore } from '../contexts/CardsStoreContext';
-import { CardInfo, CardPanel } from '../types/Event';
+import { CardInfo, CardPanel } from '../types/Card';
 import monte from "../assets/montecalvaria.png";
 import pzm from "../assets/pzmot.png";
 import { TbSquareRoundedChevronLeft, TbPlus } from "react-icons/tb";
-import { usePredefinedCards, type PredefinedCard } from '../hooks/usePredefinedCards';
+import { usePredefinedCards } from '../hooks/usePredefinedCards';
 import {
   Container, 
   Title,
@@ -25,6 +25,7 @@ import {
   Badge,
   List
 } from '@mantine/core';
+import { PredefinedCard } from '../types/Responses';
 
 type CardCreationMode = 'blank' | 'template' | 'details';
 

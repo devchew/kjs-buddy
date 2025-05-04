@@ -10,6 +10,7 @@ import { MantineProvider, createTheme } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
+import { ActionsBottomBar } from './components/ActionsBottomBar.tsx';
 
 // Create a custom theme (you can adjust colors to match your desired style)
 const theme = createTheme({
@@ -29,6 +30,7 @@ function App() {
               <Route path="/cards" element={<CardsListPage />} />
               <Route path="/cards/:id" element={<CardPage />} />
             </Routes>
+            <ActionsBottomBar />
           </CardProvider>
         </CardsStoreProvider>
       </BrowserRouter>

@@ -34,20 +34,22 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
         style
     }) => {
 
-    const [val, setVal] = useState(emptyState ? '' : value.toString());
+    const [val, setVal] = useState(emptyState ? '' : value.toString(10));
 
     useEffect(() => {
         if (emptyState) {
-            setVal('');
+            setVal('--');
             return;
+        }
+        if (value !== undefined && value !== null) {
+            setVal(value.toString(10));
         }
     }, [emptyState, value]);
 
-    const onBlur: FocusEventHandler<HTMLInputElement> = (e) => {
-        
+    const onBlur: FocusEventHandler<HTMLInputElement> = () => {        
         const validatedValue = validate(val, max);
         onChange(validatedValue);
-        setVal(validatedValue.toString());
+        setVal(validatedValue.toString(10));
     }
 
     return (
@@ -59,7 +61,6 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
                 autoComplete="off"
                 autoCorrect="off"
                 datatype="number"
-                maxLength={2}
                 className="timePickerValue__input"
                 value={val}
                 onFocus={(e) => e.target.select()}

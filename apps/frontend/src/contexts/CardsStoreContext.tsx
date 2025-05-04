@@ -1,5 +1,5 @@
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { CardInfo, CardPanel } from '../types/Event';
+import { CardInfo, CardPanel } from '../types/Card';
 import { CardsStore, StoredCard } from '../types/CardsStore';
 import { v4 as uuidv4 } from 'uuid';
 

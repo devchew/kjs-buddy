@@ -4,7 +4,7 @@ import { clientsClaim } from 'workbox-core'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 import { onBroadcastMessage, postBroadcastMessage } from './helpers/broadcastHelpers.ts';
 import { calculateCountdown } from './helpers/calculateCountdown.ts';
-import { Countdown } from './types/Panel.ts';
+import { Countdown } from './types/Countdown.ts';
 import { getNowAsMsFrommidnight } from './helpers/timeParsers.ts';
 
 declare let self: ServiceWorkerGlobalScope

@@ -1,11 +1,11 @@
 import { createContext, FunctionComponent, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import { CardInfo, CardPanel, EventDetails } from '../types/Event.ts';
-import { defaultEvent } from './defaultEvent.ts';
+import { Card, CardInfo, CardPanel } from '../types/Card.ts';
 import { useBroadcast } from '../hooks/useBroadcast.ts';
-import { Countdown } from '../types/Panel.ts';
+import { Countdown } from '../types/Countdown.ts';
 
-export type CardContextType = EventDetails &{
+export type CardContextType = Card & {
     loading: boolean;
+    updateCard: (card: Card) => void;
     updateCardInfo: (cardInfo: CardInfo) => void;
     updatePanels: (panels: CardPanel[]) => void;
     updatePanelByNumber: (panelNumber: number, panel: CardPanel) => void;
@@ -13,11 +13,22 @@ export type CardContextType = EventDetails &{
     deletePanel: (panelNumber: number) => void;
     updatePanelName: (panelNumber: number, name: string) => void;
     countdown: Countdown;
+    setId: (id: string) => void;
 }
 
 const defaultCardContext: CardContextType = {
     loading: false,
-    ...defaultEvent,
+    cardInfo: {
+        name: 'Rally example',
+        cardNumber: 1,
+        carNumber: 69,
+        date: '2021-09-01',
+        logo: '',
+        sponsorLogo: '',
+    },
+
+    panels: [],
+    updateCard: () => {},
     updateCardInfo: () => {},
     updatePanels: () => {},
     updatePanelByNumber: () => {},
@@ -25,6 +36,8 @@ const defaultCardContext: CardContextType = {
     deletePanel: () => {},
     updatePanelName: () => {},
     countdown: {toTime: 0, message: ''},
+    id: '',
+    setId: () => {},
 }
 
 const CardContext = createContext<CardContextType>(defaultCardContext);
@@ -43,11 +56,18 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
 
     const [loading, setLoading] = useState(true);
     const [cardInfo, setCardInfo] = useState<CardInfo>(defaultCardContext.cardInfo);
-    const [panels, setPanels] = useState<CardPanel[]>([]);
+    const [panels, setPanels] = useState<CardPanel[]>(defaultCardContext.panels);
+    const [id, setId] = useState<string>(defaultCardContext.id);
 
     const updateCardInfo = (cardInfo: CardInfo) => setCardInfo(cardInfo);
     const updatePanels = (panels: CardPanel[]) => setPanels(panels);
     const updatePanelByNumber = (panelNumber: number, panel: CardPanel) => setPanels(panels.map((p) => p.number === panelNumber ? panel : p));
+
+    const updateCard = (card: Card) => {
+        setCardInfo(card.cardInfo);
+        setPanels(card.panels);
+        setId(card.id);
+    };
     
     // Add a new panel to the existing panels
     const addPanel = () => {
@@ -106,32 +126,18 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
     }, [subscribe]);
 
     useEffect(() => {
-        const persistedCardInfo = localStorage.getItem('cardInfo');
-        if (persistedCardInfo) {
-            try {
-                const cardInfo = JSON.parse(persistedCardInfo);
-                setCardInfo(cardInfo);
-            } catch (e) {
-                console.error('Error parsing persisted cardInfo', e);
-                setCardInfo(defaultCardContext.cardInfo);
-            }
-        } else {
-            setCardInfo(defaultCardContext.cardInfo);
+        const currentCard = localStorage.getItem('currentCard');
+        if (!currentCard) {
+            setLoading(false);
+            return;
         }
-
-        const persistedPanels = localStorage.getItem('panels');
-        if (persistedPanels) {
-            try {
-                const panels = JSON.parse(persistedPanels);
-                console.log('loaded panels', panels);
-                if (Array.isArray(panels)) {
-                    setPanels(panels);
-                }
-            } catch (e) {
-                console.error('Error parsing persisted panels', e);
-                setPanels(defaultCardContext.panels);
-            }
-        } else {
+        try {
+            const {cardInfo, panels} = JSON.parse(currentCard) as {cardInfo: CardInfo, panels: CardPanel[]};
+            setCardInfo(cardInfo);
+            setPanels(panels);
+        } catch (e) {
+            console.error('Error parsing currentCard', e);
+            setCardInfo(defaultCardContext.cardInfo);
             setPanels(defaultCardContext.panels);
         }
         setLoading(false);
@@ -142,7 +148,6 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
             return;
         }
         postMessage('cardInfo', cardInfo);
-        localStorage.setItem('cardInfo', JSON.stringify(cardInfo));
     }, [cardInfo, loading]);
 
     useEffect(() => {
@@ -150,8 +155,14 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
             return;
         }
         postMessage('panels', panels);
-        localStorage.setItem('panels', JSON.stringify(panels));
     }, [panels, loading]);
+
+    useEffect(() => {
+        if (loading) {
+            return;
+        }
+        localStorage.setItem('currentCard', JSON.stringify({cardInfo, panels}));
+    }, [loading, panels, cardInfo]);
 
     return (
         <CardContext.Provider value={
@@ -160,6 +171,9 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
                 cardInfo,
                 panels,
                 countdown,
+                id,
+                setId,
+                updateCard,
                 updateCardInfo,
                 updatePanels,
                 updatePanelByNumber,

@@ -23,6 +23,7 @@
 
 .countdown__value {
     font-size: 40px;
-
+    color: var(--mantine-color-white);
+    font-weight: 700;
 }
 

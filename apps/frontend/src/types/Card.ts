@@ -17,7 +17,10 @@ export type CardPanel = {
     nextPKCTime: number;
     arrivalTime: number;
 }
-export type EventDetails = {
+
+export type Card = {
     cardInfo: CardInfo;
     panels: CardPanel[];
+    id: string;
 }
+

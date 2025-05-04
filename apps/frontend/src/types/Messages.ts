@@ -1,5 +1,5 @@
-import { Countdown } from './Panel.ts';
-import { CardInfo, CardPanel } from './Event.ts';
+import { Countdown } from './Countdown.ts';
+import { CardInfo, CardPanel } from './Card.ts';
 
 export interface Messages {
     countdown: Countdown;

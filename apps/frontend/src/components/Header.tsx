@@ -13,7 +13,7 @@ export const Header: FunctionComponent = () => {
     const { cardInfo } = useCardContext();
     return (
         <div className="header">
-            <img src={monte} className="header__eventLogo"/>
+            <img src={monte} className="header__eventLogo" alt='event logo'/>
             <div className="header__carNumber">
                 <div className="header__carNumber__title">Numer auta</div>
                 <div className="header__carNumber__number">{cardInfo.carNumber}</div>
@@ -22,7 +22,7 @@ export const Header: FunctionComponent = () => {
                 <span className="header__eventName__title">Karta drogowa {cardInfo.cardNumber}<br/></span>
                 <span className="header__eventName__name">{cardInfo.name}<br/>{formatDate(cardInfo.date)}</span>
             </div>
-            <img src={pzm} className="header__eventSponsorLogo"/>
+            <img src={pzm} className="header__eventSponsorLogo" alt='sponsor logo'/>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { CardInfo, CardPanel } from './Event';
+import { CardInfo, CardPanel } from './Card';
 
 export interface StoredCard {
   id: string;

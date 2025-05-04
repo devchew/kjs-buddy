@@ -47,8 +47,8 @@ export const Countdown: FunctionComponent = () => {
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 1000,
-            width: '90%',
-            maxWidth: '400px'
+            width: '100%',
+            maxWidth: '550px'
           }}
         >
             <Group justify="space-between" align="center">

@@ -1,5 +1,5 @@
-import { CardPanel } from '../types/Event.ts';
-import { Countdown } from '../types/Panel.ts';
+import { CardPanel } from '../types/Card.ts';
+import { Countdown } from '../types/Countdown.ts';
 import { getNowAsMsFrommidnight } from './timeParsers.ts';
 
 
