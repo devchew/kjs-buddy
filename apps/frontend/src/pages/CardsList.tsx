@@ -102,6 +102,15 @@ export const CardsListPage: FunctionComponent = () => {
             ))}
         </Stack>
       )}
+               <Button 
+          mt="xl"
+          size="lg" 
+          fullWidth 
+          color="blue"
+          onClick={() => navigate('/create')}
+        >
+          Utwórz nową kartę
+        </Button>
     </Container>
   );
 };

@@ -6,10 +6,14 @@ import { msToSeparateValues, getNowAsMsFrommidnight } from '../helpers/timeParse
 import { useCardContext } from '../contexts/CardContext.tsx';
 import { gradientColorBasedOnTime } from '../helpers/gradientColorBasedOnTime.ts';
 import { Paper, Group, Text, Box } from '@mantine/core';
+import { useNavigate, useMatch,  } from 'react-router-dom';
+
 
 export const Countdown: FunctionComponent = () => {
+    const isOnCardPage = useMatch('/cards/:id');
+    const navigate = useNavigate();
     const [until, setUntil] = useState(0);
-    const { countdown } = useCardContext();
+    const { countdown, id } = useCardContext();
 
 
     useEffect(() => {
@@ -40,6 +44,7 @@ export const Countdown: FunctionComponent = () => {
           p="md" 
           radius="md" 
           shadow="md" 
+          onClick={isOnCardPage ? undefined : () => navigate(`/cards/${id}`)}
           style={{ 
             backgroundColor: gradientColorBasedOnTime(until),
             position: 'fixed',
@@ -48,7 +53,8 @@ export const Countdown: FunctionComponent = () => {
             transform: 'translateX(-50%)',
             zIndex: 1000,
             width: '100%',
-            maxWidth: '550px'
+            maxWidth: '550px',
+            cursor: isOnCardPage ? 'default' : 'pointer',
           }}
         >
             <Group justify="space-between" align="center">

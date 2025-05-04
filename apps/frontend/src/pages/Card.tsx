@@ -21,9 +21,9 @@ const CardContent: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
   const id = params.id as string;
   const navigate = useNavigate();
-  const { addPanel, panels, updatePanels, cardInfo, updateCardInfo, id: localCardId } = useCardContext();
+  const { addPanel, panels, updatePanels, cardInfo, updateCardInfo, id: localCardId, setId } = useCardContext();
   const { isEditMode, enableEditMode, disableEditMode } = useEditModeContext();
-  const { updateCard, saveCard, getCard, loading } = useCardsStore();
+  const { updateCard, getCard, loading } = useCardsStore();
   
   // Store a backup of panels when entering edit mode
   const [panelsBackup, setPanelsBackup] = useState<CardPanel[]>([]);
@@ -45,6 +45,7 @@ const CardContent: FunctionComponent = () => {
     // Update context with card data
     updateCardInfo(card.cardInfo);
     updatePanels(card.panels);
+    setId(id);
   }, [id, loading]);
 
   const handleLongPress = () => {
@@ -56,15 +57,13 @@ const CardContent: FunctionComponent = () => {
   // Save changes and exit edit mode
   const handleSave = () => {
     disableEditMode();
-    
-    if (id) {
-      // Update existing card
-      updateCard(id, cardInfo, panels);
-    } else {
-      // Save as a new card
-      saveCard(cardInfo, panels);
-    }
+    updateCard(id, cardInfo, panels);
   };
+
+  useEffect(() => {
+    if (isEditMode || loading) return; // Skip if not in edit mode or still loading
+    updateCard(id, cardInfo, panels); // Update card in store
+  }, [isEditMode, loading, id, panels, cardInfo]);
   
   // Discard changes and restore from backup
   const handleDiscard = () => {
