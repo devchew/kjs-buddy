@@ -31,7 +31,7 @@ export const HomePage: FunctionComponent = () => {
 
   return (
     <Container py="xl" size="md">
-      <Title ta="center" mb="xl">Welcome to KJS Buddy</Title>
+      <Title ta="center" mb="xl">Witaj w KJS Buddy</Title>
       
       <Stack maw={600} mx="auto" gap="md">
               
@@ -39,7 +39,7 @@ export const HomePage: FunctionComponent = () => {
         {lastUsedCard && (
           <Box mt="lg" w="100%">
             <Group justify="space-between" mb="xs">
-              <Text fw={600} size="lg">Last Used Card</Text>
+              <Text fw={600} size="lg">Ostatnio używana karta</Text>
               <Divider w="60%" />
             </Group>
             <Link to={`/cards/${lastUsedCard.id}`} style={{ textDecoration: 'none' }}>
@@ -54,7 +54,7 @@ export const HomePage: FunctionComponent = () => {
         {recentCards.length > 0 && (
           <Box mt="md" w="100%">
             <Group justify="space-between" mb="xs">
-              <Text fw={600} size="lg">Recent Cards</Text>
+              <Text fw={600} size="lg">Ostatnie karty</Text>
               <Divider w="60%" />
             </Group>
             <Stack gap="xs">
@@ -70,7 +70,7 @@ export const HomePage: FunctionComponent = () => {
                 >
                   <Text fw={700}>{card.cardInfo.name}</Text>
                   <Text size="sm" c="dimmed">
-                    {card.cardInfo.date} | Car #{card.cardInfo.carNumber}
+                    {card.cardInfo.date} | Auto #{card.cardInfo.carNumber}
                   </Text>
                 </Paper>
               ))}
@@ -83,7 +83,7 @@ export const HomePage: FunctionComponent = () => {
           color="blue"
           onClick={() => navigate('/create')}
         >
-          Create New Card
+          Utwórz nową kartę
         </Button>
         
         <Button 
@@ -92,7 +92,7 @@ export const HomePage: FunctionComponent = () => {
           color="green"
           onClick={() => navigate('/cards')}
         >
-          All Cards
+          Wszystkie karty
         </Button>
       </Stack>
     </Container>

@@ -74,7 +74,7 @@ const CardContent: FunctionComponent = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading state while fetching data
+    return <div>Ładowanie...</div>; // Show loading state while fetching data
   }
 
   return (
@@ -85,9 +85,9 @@ const CardContent: FunctionComponent = () => {
           variant="default"
           onClick={() => navigate(id ? "/cards" : "/")}
         >
-          {id ? "Back to Cards" : "Back to Home"}
+          {id ? "Powrót do kart" : "Powrót do strony głównej"}
         </Button>
-        <Title order={2}>{id ? "View Card" : "Current Card"}</Title>
+        <Title order={2}>{id ? "Podgląd karty" : "Aktualna karta"}</Title>
       </Group>
       
       <Stack align="center" pb="xl">
@@ -101,21 +101,21 @@ const CardContent: FunctionComponent = () => {
                 onClick={addPanel}
                 color="blue"
               >
-                Add Panel
+                Dodaj panel
               </Button>
               <Button 
                 onClick={handleSave}
                 color="green"
                 leftSection={<PiFloppyDisk size={20} />}
               >
-                Save
+                Zapisz
               </Button>
               <Button 
                 onClick={handleDiscard}
                 color="red"
                 leftSection={<PiX size={20} />}
               >
-                Discard
+                Anuluj
               </Button>
             </>
           ) : (
@@ -123,7 +123,7 @@ const CardContent: FunctionComponent = () => {
               onLongPress={handleLongPress}
               leftSection={<PiPencil size={20} />}
             >
-              Edit (press and hold)
+              Edytuj (naciśnij i przytrzymaj)
             </MantineLongPressButton>
           )}
         </Group>

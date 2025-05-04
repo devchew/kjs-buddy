@@ -136,14 +136,14 @@ export const CardCreatePage: FunctionComponent = () => {
             variant="default"
             onClick={() => navigate('/')}
           >
-            Back to Home
+            Powrót do strony głównej
           </Button>
-          <Title order={2}>Create New Card</Title>
+          <Title order={2}>Utwórz nową kartę</Title>
         </Group>
         
         <Box mb="xl">
-          <Title order={3}>Choose a Template</Title>
-          <Text c="dimmed">Start with a predefined template or create from scratch.</Text>
+          <Title order={3}>Wybierz szablon</Title>
+          <Text c="dimmed">Rozpocznij od predefiniowanego szablonu lub utwórz od podstaw.</Text>
         </Box>
         
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
@@ -168,9 +168,9 @@ export const CardCreatePage: FunctionComponent = () => {
               </Stack>
             </Card.Section>
             <Stack align="center">
-              <Text fw={700}>Blank Card</Text>
+              <Text fw={700}>Pusta karta</Text>
               <Text size="sm" c="dimmed" ta="center">
-                Start from scratch with a blank card
+                Zacznij od pustej karty
               </Text>
             </Stack>
           </Card>
@@ -178,7 +178,7 @@ export const CardCreatePage: FunctionComponent = () => {
           {/* Predefined templates */}
           {loadingTemplates ? (
             <Paper withBorder p="xl" radius="md">
-              <Text ta="center">Loading templates...</Text>
+              <Text ta="center">Ładowanie szablonów...</Text>
             </Paper>
           ) : (
             predefinedCards.map(template => (
@@ -193,7 +193,7 @@ export const CardCreatePage: FunctionComponent = () => {
                 <Title order={4} mb="xs">{template.name}</Title>
                 <Text size="sm" c="dimmed" mb="lg">{template.description}</Text>
                 <Group justify="space-between" mt="auto">
-                  <Badge variant="light">Panels: {template.panels?.length || 0}</Badge>
+                  <Badge variant="light">Etapy: {template.panels?.length || 0}</Badge>
                 </Group>
               </Card>
             ))
@@ -209,23 +209,22 @@ export const CardCreatePage: FunctionComponent = () => {
       <Group justify="space-between" mb="lg">
         <Button
           leftSection={<TbSquareRoundedChevronLeft size={20} />}
-          variant="subtle"
           onClick={handleBackToTemplates}
         >
-          Back to Templates
+          Powrót do szablonów
         </Button>
         <Title order={2}>
-          {selectedTemplate ? `Create ${selectedTemplate.name} Card` : 'Create New Card'}
+          {selectedTemplate ? `Tworzenie karty ${selectedTemplate.name}` : 'Tworzenie nowej karty'}
         </Title>
       </Group>
       
       <form onSubmit={handleSubmit}>
         <Paper withBorder p="md" radius="md" mb="xl" w="100%">
-          <Title order={3} mb="md">Card Information</Title>
+          <Title order={3} mb="md">Informacje o karcie</Title>
           <Grid gutter="md">
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput
-                label="Event Name"
+                label="Nazwa wydarzenia"
                 id="name"
                 name="name"
                 value={cardInfo.name}
@@ -236,7 +235,7 @@ export const CardCreatePage: FunctionComponent = () => {
             
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput
-                label="Event Date"
+                label="Data wydarzenia"
                 type="date"
                 id="date"
                 name="date"
@@ -248,7 +247,7 @@ export const CardCreatePage: FunctionComponent = () => {
             
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <NumberInput
-                label="Card Number"
+                label="Numer karty"
                 id="cardNumber"
                 name="cardNumber"
                 value={cardInfo.cardNumber}
@@ -260,7 +259,7 @@ export const CardCreatePage: FunctionComponent = () => {
             
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <NumberInput
-                label="Car Number"
+                label="Numer auta"
                 id="carNumber"
                 name="carNumber"
                 value={cardInfo.carNumber}
@@ -273,9 +272,9 @@ export const CardCreatePage: FunctionComponent = () => {
         </Paper>
         
         <Paper withBorder p="md" radius="md" mb="xl">
-          <Title order={3} mb="md">Panels</Title>
+          <Title order={3} mb="md">Etapy</Title>
           <NumberInput
-            label="Number of Panels (PKC points)"
+            label="Liczba paneli (punkty PKC)"
             id="panelCount"
             value={panelCount}
             onChange={handlePanelCountChange}
@@ -288,10 +287,10 @@ export const CardCreatePage: FunctionComponent = () => {
             <Box mt="md">
               <Text mb="sm">
                 {panelCount > selectedTemplate.panels.length 
-                  ? `Added ${panelCount - selectedTemplate.panels.length} extra panels to the template.` 
+                  ? `Dodano ${panelCount - selectedTemplate.panels.length} dodatkowych paneli do szablonu.` 
                   : panelCount < selectedTemplate.panels.length
-                    ? `Removed ${selectedTemplate.panels.length - panelCount} panels from the template.`
-                    : 'Using template panels as defined.'}
+                    ? `Usunięto ${selectedTemplate.panels.length - panelCount} paneli z szablonu.`
+                    : 'Używanie paneli zgodnie z szablonem.'}
               </Text>
               <Paper withBorder p="xs" bg="gray.0">
                 <List spacing="xs">
@@ -305,7 +304,7 @@ export const CardCreatePage: FunctionComponent = () => {
                   {panelCount > selectedTemplate.panels.length && (
                     <List.Item>
                       <Text ta="center" c="dimmed" fs="italic">
-                        + {panelCount - selectedTemplate.panels.length} additional panels will be generated
+                        + {panelCount - selectedTemplate.panels.length} dodatkowych paneli zostanie wygenerowanych
                       </Text>
                     </List.Item>
                   )}
@@ -320,14 +319,14 @@ export const CardCreatePage: FunctionComponent = () => {
             variant="outline"
             onClick={handleBackToTemplates}
           >
-            Back
+            Wstecz
           </Button>
           
           <Button 
             type="submit" 
             color="blue"
           >
-            Create Card
+            Utwórz kartę
           </Button>
         </Group>
       </form>

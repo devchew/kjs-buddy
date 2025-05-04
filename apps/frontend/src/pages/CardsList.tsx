@@ -38,21 +38,21 @@ export const CardsListPage: FunctionComponent = () => {
           variant="default" 
           onClick={() => navigate('/')}
         >
-          Back to Home
+          Powrót do strony głównej
         </Button>
-        <Title order={2}>Saved Cards</Title>
+        <Title order={2}>Zapisane karty</Title>
       </Group>
       
       {cards.length === 0 ? (
         <Paper withBorder p="xl" radius="md" mt="xl">
           <Center>
             <Stack align="center">
-              <Text>No saved cards yet. Create a new card first.</Text>
+              <Text>Brak zapisanych kart. Utwórz najpierw nową kartę.</Text>
               <Button 
                 onClick={() => navigate('/create')} 
                 mt="md"
               >
-                Create New Card
+                Utwórz nową kartę
               </Button>
             </Stack>
           </Center>
@@ -70,7 +70,7 @@ export const CardsListPage: FunctionComponent = () => {
                       color="red" 
                       variant="subtle"
                       onClick={() => deleteCard(card.id)}
-                      aria-label="Delete card"
+                      aria-label="Usuń kartę"
                     >
                       <PiTrash style={{ width: rem(18), height: rem(18) }} />
                     </ActionIcon>
@@ -79,10 +79,10 @@ export const CardsListPage: FunctionComponent = () => {
                 
                 <Group mt="md" justify="space-between">
                   <Box>
-                    <Text size="sm">Date: {card.cardInfo.date}</Text>
-                    <Text size="sm">Car #: {card.cardInfo.carNumber}</Text>
+                    <Text size="sm">Data: {card.cardInfo.date}</Text>
+                    <Text size="sm">Auto #: {card.cardInfo.carNumber}</Text>
                     <Text size="xs" c="dimmed" mt={5}>
-                      Last used: {formatDate(card.lastUsed)}
+                      Ostatnio użyto: {formatDate(card.lastUsed)}
                     </Text>
                   </Box>
                   <Button
@@ -90,13 +90,13 @@ export const CardsListPage: FunctionComponent = () => {
                     color="green"
                     size="sm"
                   >
-                    View Card
+                    Pokaż kartę
                   </Button>
                 </Group>
                 
                 <Divider my="sm" />
                 <Group>
-                  <Badge variant="light">Panels: {card.panels.length}</Badge>
+                  <Badge variant="light">Etapy: {card.panels.length}</Badge>
                 </Group>
               </Card>
             ))}
