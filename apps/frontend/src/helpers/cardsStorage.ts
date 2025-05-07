@@ -204,7 +204,10 @@ export const useCardsSharedStorage = () => {
         return Promise.resolve(card);
     }, [http, isAuthenticated]);
 
-    const syncCards = useCallback( (cards: StoredCard[]): Promise<void> => {}, [http, isAuthenticated]);
+    const syncCards = useCallback( (cards: StoredCard[]): Promise<void> => {
+        console.log('Syncing cards with server', cards);
+        return Promise.resolve();
+    }, [http, isAuthenticated]);
 
     return {
         syncCards,
