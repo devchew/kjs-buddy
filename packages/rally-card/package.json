@@ -1,0 +1,69 @@
+{
+  "name": "@internal/rally-card",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./style.css": "./dist/index.css"
+  },
+  "scripts": {
+    "build": "tsup --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
+    "lint": "eslint .",
+    "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly --declaration\"",
+    "dev:ui": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-icons": "5.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@storybook/addon-essentials": "8.6.12",
+    "@storybook/addon-interactions": "8.6.12",
+    "@storybook/addon-onboarding": "8.6.12",
+    "@storybook/blocks": "8.6.12",
+    "@storybook/react": "8.6.12",
+    "@storybook/react-vite": "8.6.12",
+    "@storybook/test": "8.6.12",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "eslint-plugin-storybook": "^0.12.0",
+    "globals": "^16.0.0",
+    "storybook": "8.6.12",
+    "tsup": "^8.4.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1"
+  },
+
+  "peerDependencies": {
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true,
+    "minify": true,
+    "shims": true,
+    "format": "esm",
+    "loader": {
+      ".jpg": "base64",
+      ".png": "base64"
+    }
+  }
+}

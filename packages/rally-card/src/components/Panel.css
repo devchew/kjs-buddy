@@ -1,0 +1,46 @@
+.rally-card-panel {
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 0.0625rem solid #000000; /* 1px */
+    position: relative;
+}
+
+.rally-card-panel__deleteButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    background-color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rally-card-panel__deleteButton:hover {
+    background-color: #f8f8f8;
+}
+
+.rally-card-panel__main {
+    flex: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rally-card-panel__nameInput {
+    margin: 5px;
+    padding: 5px;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-weight: 700;
+    color: #D84315;
+}

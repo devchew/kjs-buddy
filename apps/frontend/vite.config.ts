@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), 
+  plugins: [react(),
     VitePWA({
     strategies: 'injectManifest',
     srcDir: 'src',
@@ -23,7 +23,7 @@ export default defineConfig({
     },
 
     devOptions: {
-      enabled: false,
+      enabled: true,
       navigateFallback: 'index.html',
       suppressWarnings: true,
       type: 'module',

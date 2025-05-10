@@ -1,20 +1,21 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import './Countdown.css';
+import style from './Countdown.module.css';
 import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css"
 import { msToSeparateValues, getNowAsMsFrommidnight } from '../helpers/timeParsers.ts';
-import { useCardContext } from '../contexts/CardContext.tsx';
+import { useCardContext } from '@internal/rally-card';
 import { gradientColorBasedOnTime } from '../helpers/gradientColorBasedOnTime.ts';
-import { Paper, Group, Text, Box } from '@mantine/core';
-import { useNavigate, useMatch,  } from 'react-router-dom';
-
+import { useNavigate, useMatch } from 'react-router-dom';
+import type { Countdown as CountdownType } from '../types/Countdown.ts';
+import { useBroadcast } from '../hooks/useBroadcast.ts';
 
 export const Countdown: FunctionComponent = () => {
+    const { subscribe }  = useBroadcast();
     const isOnCardPage = useMatch('/cards/:id');
     const navigate = useNavigate();
     const [until, setUntil] = useState(0);
-    const { countdown, id } = useCardContext();
-
+    const [countdown, setCountdown] = useState<CountdownType>({toTime: 0, message: ''});
+    const { id } = useCardContext();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -23,6 +24,13 @@ export const Countdown: FunctionComponent = () => {
 
         return () => clearInterval(interval);
     }, [countdown]);
+
+    useEffect(() => {
+        subscribe('countdown', (data) => {
+            console.log('countdown recived', data);
+            setCountdown(data);
+        });
+    }, [subscribe]);
 
     if (countdown.toTime === 0 && countdown.message === '') {
         return null;
@@ -39,14 +47,15 @@ export const Countdown: FunctionComponent = () => {
         seconds
     ] = until > 0 ? msToSeparateValues(until) : [0, 0, 0];
 
+
     return (
-        <Paper 
-          p="md" 
-          radius="md" 
-          shadow="md" 
+        <div
           onClick={isOnCardPage ? undefined : () => navigate(`/cards/${id}`)}
-          style={{ 
+          style={{
             backgroundColor: gradientColorBasedOnTime(until),
+            padding: '16px',
+            borderRadius: '8px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
             position: 'fixed',
             bottom: '20px',
             left: '50%',
@@ -55,26 +64,39 @@ export const Countdown: FunctionComponent = () => {
             width: '100%',
             maxWidth: '550px',
             cursor: isOnCardPage ? 'default' : 'pointer',
+          color: 'white'
           }}
         >
-            <Group justify="space-between" align="center">
-                <Text fw={600} c="white">
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+                <span style={{
+                  fontWeight: 600,
+
+                }}>
                     {countdown.message}
-                </Text>
-                <Group gap="xs">
-                    <Box className="countdown__value">
+                </span>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>                    <div className={style.value}>
                         {hours && <AnimatedNumber size={40} value={hours} minDigits={2} />}
-                    </Box>
-                    <Text size="xl" fw={700} c="white">:</Text>
-                    <Box className="countdown__value">
+                    </div>
+                    <span style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
+                    }}>:</span>
+                    <div className={style.value}>
                         {minutes && <AnimatedNumber size={40} value={minutes} minDigits={2} />}
-                    </Box>
-                    <Text size="xl" fw={700} c="white">:</Text>
-                    <Box className="countdown__value">
+                    </div>
+                    <span style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
+                    }}>:</span>
+                    <div className={style.value}>
                         {seconds && <AnimatedNumber size={40} value={seconds} minDigits={2} />}
-                    </Box>
-                </Group>
-            </Group>
-        </Paper>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }

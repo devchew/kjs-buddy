@@ -1,0 +1,15 @@
+.rally-card-panelStrip {
+    display: flex;
+    padding: 0.3125rem 0.125rem; /* 5px 2px */
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5.625rem; /* 90px */
+    align-self: stretch;
+    background: #1b3c83;
+}
+
+.rally-card-panelStrip__previous,
+.rally-card-panelStrip__current {
+    color: #FFF;
+    text-align: center;
+}

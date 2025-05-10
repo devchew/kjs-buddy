@@ -1,0 +1,29 @@
+.bottomStrip {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #747bff;
+}
+
+.message {
+    text-align: center;
+    display: block;
+    font-size: 1.5rem;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+
+.value {
+    font-size: 40px;
+    color: currentColor;
+    font-weight: 700;
+}
+

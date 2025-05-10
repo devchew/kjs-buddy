@@ -1,20 +1,12 @@
 import { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import {
-  Container,
-  Title,
-  Paper,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Group,
-  Stack,
-  Alert,
-  Anchor,
-} from '@mantine/core';
-import { TbAlertCircle, TbLogin } from 'react-icons/tb';
+import { TbLogin } from 'react-icons/tb';
+import styles from './Login.module.css';
+import { FormField, ErrorMessage } from '../components/FormField';
+import { TextLink } from '../components/TextLink';
+import { Panel } from '../components/Panel';
+import { Button } from '../components/Button';
 
 export const LoginPage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -46,58 +38,52 @@ export const LoginPage: FunctionComponent = () => {
       setIsSubmitting(false);
     }
   };
-  
-  return (
-    <Container size="sm" py="xl">
-      <Title ta="center" mb="lg">
-        Log in to KJS Buddy
-      </Title>
+    return (
+    <div className={styles.container}>
       
-      <Paper p="lg" shadow="md" radius="md" withBorder>
+      <Panel>
         <form onSubmit={handleSubmit}>
-          <Stack>
-            {error && (
-              <Alert icon={<TbAlertCircle />} title="Authentication Error" color="red">
+          <div className={styles.formContainer}>            {error && (
+              <ErrorMessage title="Authentication Error">
                 {error}
-              </Alert>
+              </ErrorMessage>
             )}
             
-            <TextInput
+            <FormField
               label="Email"
-              placeholder="Your email address"
+              type="email"
+              placeholder="Address email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
             
-            <PasswordInput
-              label="Password"
-              placeholder="Your password"
+            <FormField
+              label="Hasło"
+              type="password"
+              placeholder="Hasło"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
-            
-            <Button 
-              fullWidth 
-              type="submit" 
-              loading={isSubmitting}
-              leftSection={<TbLogin size={20} />}
+              <Button
+              type="submit"
+              disabled={isSubmitting}
+              primary
             >
-              Log In
+              
+              <TbLogin size={20} />
+              <span>{isSubmitting ? 'Loguje...' : 'Zaloguj się'}</span>
             </Button>
-          </Stack>
+          </div>
         </form>
-      </Paper>
-      
-      <Group justify="center" mt="md">
-        <Text size="sm">
-          Don't have an account yet?{' '}
-          <Anchor component="button" onClick={() => navigate('/register')} fw={500}>
-            Register
-          </Anchor>
-        </Text>
-      </Group>
-    </Container>
+      </Panel>
+        <div className={styles.footer}>
+        <p className={styles.footerText}>
+          Nie masz konta?{' '}
+          <TextLink onClick={() => navigate('/register')}>
+            Zarejestruj się
+          </TextLink>
+        </p>
+      </div>
+    </div>
   );
 };

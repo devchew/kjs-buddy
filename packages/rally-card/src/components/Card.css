@@ -1,0 +1,14 @@
+.rally-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem; /* 5px */
+    background-color: #fff;
+    color: #222322;
+    padding: 0.3125rem; /* 5px */
+    max-width: 37.5rem; /* 600px */
+    width: 100%;
+}
+
+.rally-card *, .rally-card *::before, .rally-card *::after {
+    box-sizing: border-box;
+}

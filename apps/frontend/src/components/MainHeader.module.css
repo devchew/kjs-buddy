@@ -1,0 +1,24 @@
+.header {
+    border-bottom: .1rem solid var(--primary);
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: var(--primary);
+}
+
+.userContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user {
+
+}

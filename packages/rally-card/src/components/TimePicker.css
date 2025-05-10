@@ -1,0 +1,62 @@
+.rally-card-timePicker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rally-card-timePicker__title,
+.rally-card-timePicker__subtitle {
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+.rally-card-timePicker__values {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.rally-card-timePickerValue {
+    border: 0.0625rem solid #000; /* 1px */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    color: #000;
+    width: 3rem;
+    height: 3rem;
+    background-color: #fff;
+}
+
+.rally-card-timePickerValue--gray {
+    background-color: #c1c1c1;
+}
+
+.rally-card-timePickerValue__input {
+    grid-area: 1 / 1 / 2 / 2;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 1.8rem;
+}
+
+.rally-card-timePickerValue__input::-webkit-outer-spin-button,
+.rally-card-timePickerValue__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.rally-card-timePickerValue__input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.rally-card-timePickerValue__label {
+    grid-area: 1 / 1 / 2 / 2;
+    width: 100%;
+    background-color: transparent;
+    font-size: 0.6rem;
+    line-height: 1em;
+    padding: 0.2em;
+}

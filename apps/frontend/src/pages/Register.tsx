@@ -1,20 +1,12 @@
 import { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import {
-  Container,
-  Title,
-  Paper,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Group,
-  Stack,
-  Alert,
-  Anchor,
-} from '@mantine/core';
-import { TbAlertCircle, TbUserPlus } from 'react-icons/tb';
+import { TbUserPlus } from 'react-icons/tb';
+import styles from './Register.module.css';
+import { FormField, ErrorMessage } from '../components/FormField';
+import { TextLink } from '../components/TextLink';
+import { Panel } from '../components/Panel';
+import { Button } from '../components/Button';
 
 export const RegisterPage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -31,17 +23,17 @@ export const RegisterPage: FunctionComponent = () => {
     
     // Validation
     if (!email.trim() || !password.trim() || !passwordConfirm.trim()) {
-      setError('Please fill in all fields');
+      setError('Uzupełnij wszystkie pola');
       return;
     }
     
     if (password !== passwordConfirm) {
-      setError('Passwords do not match');
+      setError('Hasła nie pasują do siebie');
       return;
     }
     
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError('Hasło musi mieć co najmniej 6 znaków');
       return;
     }
     
@@ -52,71 +44,64 @@ export const RegisterPage: FunctionComponent = () => {
       await register(email, password);
       navigate('/');
     } catch (error) {
-      setError('Registration failed. User may already exist.');
+      setError('Użytkownik o tym adresie email już istnieje');
     } finally {
       setIsSubmitting(false);
     }
   };
-  
-  return (
-    <Container size="sm" py="xl">
-      <Title ta="center" mb="lg">
-        Create an Account
-      </Title>
+    return (
+    <>
       
-      <Paper p="lg" shadow="md" radius="md" withBorder>
+      <Panel>
         <form onSubmit={handleSubmit}>
-          <Stack>
-            {error && (
-              <Alert icon={<TbAlertCircle />} title="Registration Error" color="red">
+          <div className={styles.formContainer}>            {error && (
+              <ErrorMessage title="Błąd rejestracji">
                 {error}
-              </Alert>
+              </ErrorMessage>
             )}
             
-            <TextInput
-              label="Email"
-              placeholder="Your email address"
+            <FormField
+              label="Adres email"
+              type="email"
+              placeholder="Adres email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
             
-            <PasswordInput
-              label="Password"
-              placeholder="Create a password (min. 6 characters)"
+            <FormField
+              label="Hasło"
+              type="password"
+              placeholder="Hasło"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
             
-            <PasswordInput
-              label="Confirm Password"
-              placeholder="Confirm your password"
+            <FormField
+              label="Potwierdź hasło"
+              type="password"
+              placeholder="Potwierdź hasło"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
-              required
             />
-            
-            <Button 
-              fullWidth 
-              type="submit" 
-              loading={isSubmitting}
-              leftSection={<TbUserPlus size={20} />}
+              <Button
+              type="submit"
+              disabled={isSubmitting}
+              primary
             >
-              Register
+              <TbUserPlus size={20} />
+              <span>{isSubmitting ? 'Rejestruje...' : 'Zarejestruj się'}</span>
             </Button>
-          </Stack>
+          </div>
         </form>
-      </Paper>
-      
-      <Group justify="center" mt="md">
-        <Text size="sm">
-          Already have an account?{' '}
-          <Anchor component="button" onClick={() => navigate('/login')} fw={500}>
-            Log in
-          </Anchor>
-        </Text>
-      </Group>
-    </Container>
+      </Panel>
+        <div className={styles.footer}>
+        <p className={styles.footerText}>
+          Masz już konto?{' '}
+          <TextLink onClick={() => navigate('/login')}>
+            Zaloguj się
+          </TextLink>
+        </p>
+      </div>
+    </>
   );
 };

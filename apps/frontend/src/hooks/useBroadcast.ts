@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { Messages } from '../types/Messages.ts';
 import { onBroadcastMessage, postBroadcastMessage } from '../helpers/broadcastHelpers.ts';
 
-
-
 export type Subscribe = <K extends keyof Messages>(message: K, callback: (data: Messages[K]) => void) => void;
 export type PostMessage = <K extends keyof Messages>(message: K, data: Messages[K]) => void;
 

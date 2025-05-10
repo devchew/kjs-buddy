@@ -1,31 +1,16 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCardContext } from '../contexts/CardContext';
+import { useCardContext } from '@internal/rally-card';
 import { useCardsStore } from '../contexts/CardsStoreContext';
 import { CardInfo, CardPanel } from '../types/Card';
 import monte from "../assets/montecalvaria.png";
 import pzm from "../assets/pzmot.png";
-import { TbSquareRoundedChevronLeft, TbPlus } from "react-icons/tb";
+import { TbPlus, TbSquareRoundedChevronLeft } from "react-icons/tb";
 import { usePredefinedCards } from '../hooks/usePredefinedCards';
-import {
-  Container, 
-  Title,
-  Text,
-  Button,
-  SimpleGrid,
-  Paper,
-  Group,
-  Box,
-  TextInput,
-  NumberInput,
-  Stack,
-  ActionIcon,
-  Card,
-  Grid,
-  Badge,
-  List
-} from '@mantine/core';
 import { PredefinedCard } from '../types/Responses';
+import { Button } from '../components/Button.tsx';
+import { Pill } from '../components/Pill.tsx';
+import { Panel } from '../components/Panel.tsx';
 
 type CardCreationMode = 'blank' | 'template' | 'details';
 
@@ -34,11 +19,11 @@ export const CardCreatePage: FunctionComponent = () => {
   const { updateCardInfo, updatePanels } = useCardContext();
   const { saveCard } = useCardsStore();
   const { predefinedCards, loading: loadingTemplates } = usePredefinedCards();
-  
+
   // Track creation mode (selecting template or entering details)
   const [creationMode, setCreationMode] = useState<CardCreationMode>('template');
   const [selectedTemplate, setSelectedTemplate] = useState<PredefinedCard | null>(null);
-  
+
   // Default values for the card info
   const [cardInfo, setCardInfo] = useState<CardInfo>({
     name: '',
@@ -48,10 +33,10 @@ export const CardCreatePage: FunctionComponent = () => {
     logo: monte,
     sponsorLogo: pzm,
   });
-  
+
   // Default single panel to start with
   const [panelCount, setPanelCount] = useState(1);
-  
+
   useEffect(() => {
     if (selectedTemplate) {
       // Ensure panels array exists and set panel count
@@ -59,14 +44,14 @@ export const CardCreatePage: FunctionComponent = () => {
       setPanelCount(panelsCount);
     }
   }, [selectedTemplate]);
-  
+
   const handleCardInfoChange = (name: string, value: string | number) => {
     setCardInfo({
       ...cardInfo,
       [name]: value,
     });
   };
-  
+
   const handleTemplateSelect = (template: PredefinedCard) => {
     setSelectedTemplate(template);
     // Update cardInfo using template properties directly since cardInfo is no longer a nested property
@@ -81,25 +66,25 @@ export const CardCreatePage: FunctionComponent = () => {
     setPanelCount(template.panels?.length || 1);
     setCreationMode('details');
   };
-  
+
   const handleStartBlank = () => {
     setSelectedTemplate(null);
     setCreationMode('details');
   };
-  
+
   const handleBackToTemplates = () => {
     setCreationMode('template');
   };
-  
+
   const handlePanelCountChange = (value: number | string) => {
     setPanelCount(typeof value === 'number' ? value : parseInt(value) || 1);
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     let panels: CardPanel[] = [];
-    
+
     // Generate panels based on the panel count
     for (let i = 1; i <= panelCount; i++) {
       panels.push({
@@ -114,11 +99,11 @@ export const CardCreatePage: FunctionComponent = () => {
         arrivalTime: 0,
       });
     }
-    
+
     // Update card info and panels in context
     updateCardInfo(cardInfo);
     updatePanels(panels);
-    
+
     // Save to the cards store
     saveCard(cardInfo, panels).then(({id}) => {
       // Navigate to the card view after saving
@@ -129,207 +114,330 @@ export const CardCreatePage: FunctionComponent = () => {
   // Template selection screen
   if (creationMode === 'template') {
     return (
-      <Container size="lg" py="xl">
-        <Group justify="space-between" mb="lg">
-          <Button
-            leftSection={<TbSquareRoundedChevronLeft size={20} />}
-            variant="default"
-            onClick={() => navigate('/')}
-          >
-            Powrót do strony głównej
-          </Button>
-          <Title order={2}>Utwórz nową kartę</Title>
-        </Group>
-        
-        <Box mb="xl">
-          <Title order={3}>Wybierz szablon</Title>
-          <Text c="dimmed">Rozpocznij od predefiniowanego szablonu lub utwórz od podstaw.</Text>
-        </Box>
-        
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
-          {/* Blank card option */}
-          <Card 
-            withBorder 
-            padding="lg"
-            shadow="sm"
-            radius="md"
+      <div>
+
+        <div style={{ marginBottom: '2rem' }}>
+          <h3>Wybierz szablon</h3>
+          <p style={{ color: '#666' }}>
+            Rozpocznij od predefiniowanego szablonu lub utwórz od podstaw.
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '1rem'
+        }}>
+          <div
+            style={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '1rem',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              cursor: 'pointer',
+            }}
             onClick={handleStartBlank}
           >
-            <Card.Section py="xl">
-              <Stack align="center">
-                <ActionIcon 
-                  variant="light" 
-                  radius="xl" 
-                  size="xl" 
-                  color="gray"
-                >
-                  <TbPlus size={24} />
-                </ActionIcon>
-              </Stack>
-            </Card.Section>
-            <Stack align="center">
-              <Text fw={700}>Pusta karta</Text>
-              <Text size="sm" c="dimmed" ta="center">
+            <div style={{
+              paddingTop: '.5rem',
+              paddingBottom: '.5rem',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                  border: '.1rem solid',
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <TbPlus size={24} color="#495057" />
+              </div>
+            </div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}>
+              <p style={{
+                fontWeight: 700,
+                margin: '0 0 8px 0'
+              }}>
+                Pusta karta
+              </p>
+              <p style={{
+                fontSize: '0.875rem',
+                color: '#666',
+                textAlign: 'center',
+                margin: 0
+              }}>
                 Zacznij od pustej karty
-              </Text>
-            </Stack>
-          </Card>
-          
+              </p>
+            </div>
+          </div>
+
           {/* Predefined templates */}
           {loadingTemplates ? (
-            <Paper withBorder p="xl" radius="md">
-              <Text ta="center">Ładowanie szablonów...</Text>
-            </Paper>
+            <div style={{
+              border: '1px solid #e0e0e0',
+              borderRadius: '8px',
+              padding: '1.5rem',
+              textAlign: 'center'
+            }}>
+              <p>Ładowanie szablonów...</p>
+            </div>
           ) : (
             predefinedCards.map(template => (
-              <Card 
+              <div
                 key={template.id}
-                withBorder 
-                padding="lg"
-                shadow="sm"
-                radius="md"
+                style={{
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '8px',
+                  padding: '1.5rem',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
                 onClick={() => handleTemplateSelect(template)}
               >
-                <Title order={4} mb="xs">{template.name}</Title>
-                <Text size="sm" c="dimmed" mb="lg">{template.description}</Text>
-                <Group justify="space-between" mt="auto">
-                  <Badge variant="light">Etapy: {template.panels?.length || 0}</Badge>
-                </Group>
-              </Card>
+                <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>{template.name}</h4>
+                <p style={{
+                  fontSize: '0.875rem',
+                  color: '#666',
+                  marginBottom: '1.5rem',
+                  flex: 1
+                }}>{template.description}</p>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginTop: 'auto'
+                }}>
+                  <Pill>
+                    Etapy: {template.panels?.length || 0}
+                  </Pill>
+                </div>
+              </div>
             ))
           )}
-        </SimpleGrid>
-      </Container>
+        </div>
+      </div>
     );
   }
-  
+
   // Card details form (either blank or pre-filled from template)
   return (
-    <Container size="lg" py="xl">
-      <Group justify="space-between" mb="lg">
+    < >
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '1.5rem'
+      }}>
         <Button
-          leftSection={<TbSquareRoundedChevronLeft size={20} />}
           onClick={handleBackToTemplates}
         >
+          <TbSquareRoundedChevronLeft size={20} />
           Powrót do szablonów
         </Button>
-        <Title order={2}>
+        <h3>
           {selectedTemplate ? `Tworzenie karty ${selectedTemplate.name}` : 'Tworzenie nowej karty'}
-        </Title>
-      </Group>
-      
-      <form onSubmit={handleSubmit}>
-        <Paper withBorder p="md" radius="md" mb="xl" w="100%">
-          <Title order={3} mb="md">Informacje o karcie</Title>
-          <Grid gutter="md">
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <TextInput
-                label="Nazwa wydarzenia"
+        </h3>
+      </div>
+
+        <Panel>
+      <form onSubmit={handleSubmit} style={{
+        display: 'flex',
+          flexDirection: 'column',
+        gap: '1rem',
+      }}>
+          <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Informacje o karcie</h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '1rem'
+          }}>
+            <div>
+              <label style={{
+                display: 'block',
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Nazwa wydarzenia
+              </label>
+              <input
+                type="text"
                 id="name"
                 name="name"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
                 value={cardInfo.name}
                 onChange={(e) => handleCardInfoChange('name', e.target.value)}
                 required
               />
-            </Grid.Col>
-            
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <TextInput
-                label="Data wydarzenia"
+            </div>
+
+            <div>
+              <label style={{
+                display: 'block',
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Data wydarzenia
+              </label>
+              <input
                 type="date"
                 id="date"
                 name="date"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
                 value={cardInfo.date}
                 onChange={(e) => handleCardInfoChange('date', e.target.value)}
                 required
               />
-            </Grid.Col>
-            
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <NumberInput
-                label="Numer karty"
+            </div>
+
+            <div>
+              <label style={{
+                display: 'block',
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Numer karty
+              </label>
+              <input
+                type="number"
                 id="cardNumber"
                 name="cardNumber"
+                min="1"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
                 value={cardInfo.cardNumber}
-                onChange={(value) => handleCardInfoChange('cardNumber', value || 1)}
-                min={1}
+                onChange={(e) => handleCardInfoChange('cardNumber', parseInt(e.target.value) || 1)}
                 required
               />
-            </Grid.Col>
-            
-            <Grid.Col span={{ base: 12, sm: 6 }}>
-              <NumberInput
-                label="Numer auta"
+            </div>
+
+            <div>
+              <label style={{
+                display: 'block',
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Numer auta
+              </label>
+              <input
+                type="number"
                 id="carNumber"
                 name="carNumber"
+                min="1"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
                 value={cardInfo.carNumber}
-                onChange={(value) => handleCardInfoChange('carNumber', value || 1)}
-                min={1}
+                onChange={(e) => handleCardInfoChange('carNumber', parseInt(e.target.value) || 1)}
                 required
               />
-            </Grid.Col>
-          </Grid>
-        </Paper>
-        
-        <Paper withBorder p="md" radius="md" mb="xl">
-          <Title order={3} mb="md">Etapy</Title>
-          <NumberInput
-            label="Liczba paneli (punkty PKC)"
-            id="panelCount"
-            value={panelCount}
-            onChange={handlePanelCountChange}
-            min={1}
-            max={10}
-            mb="md"
-          />
-          
+            </div>
+          </div>
+
+          <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Etapy</h3>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '6px',
+              fontWeight: 500
+            }}>
+              Liczba paneli (punkty PKC)
+            </label>
+            <input
+              type="number"
+              id="panelCount"
+              min="1"
+              max="10"
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                borderRadius: '4px',
+                border: '1px solid #e0e0e0',
+                fontSize: '1rem',
+                maxWidth: '200px'
+              }}
+              value={panelCount}
+              onChange={(e) => handlePanelCountChange(e.target.value)}
+            />
+          </div>
+
           {selectedTemplate && selectedTemplate.panels && (
-            <Box mt="md">
-              <Text mb="sm">
-                {panelCount > selectedTemplate.panels.length 
-                  ? `Dodano ${panelCount - selectedTemplate.panels.length} dodatkowych paneli do szablonu.` 
+            <div style={{ marginTop: '1rem' }}>
+              <p style={{ marginBottom: '0.5rem' }}>
+                {panelCount > selectedTemplate.panels.length
+                  ? `Dodano ${panelCount - selectedTemplate.panels.length} dodatkowych paneli do szablonu.`
                   : panelCount < selectedTemplate.panels.length
                     ? `Usunięto ${selectedTemplate.panels.length - panelCount} paneli z szablonu.`
                     : 'Używanie paneli zgodnie z szablonem.'}
-              </Text>
-              <Paper withBorder p="xs" bg="gray.0">
-                <List spacing="xs">
+              </p>
+              <div style={{
+                border: '1px solid #e0e0e0',
+                padding: '0.5rem',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '4px'
+              }}>
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem'
+                }}>
                   {Array.from({length: Math.min(panelCount, selectedTemplate.panels.length)}).map((_, index) => (
-                    <List.Item key={index}>
-                      <Group justify="space-between">
-                        <Text>PKC{index + 1}: <Text span fw={700}>{index === 0 ? 'Start' : `PS${index}`}</Text></Text>
-                      </Group>
-                    </List.Item>
+                    <li key={index} style={{ padding: '0.25rem 0' }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                      }}>
+                        <span>PKC{index + 1}: <strong>{index === 0 ? 'Start' : `PS${index}`}</strong></span>
+                      </div>
+                    </li>
                   ))}
                   {panelCount > selectedTemplate.panels.length && (
-                    <List.Item>
-                      <Text ta="center" c="dimmed" fs="italic">
-                        + {panelCount - selectedTemplate.panels.length} dodatkowych paneli zostanie wygenerowanych
-                      </Text>
-                    </List.Item>
+                    <li style={{ textAlign: 'center', color: '#666', fontStyle: 'italic' }}>
+                      + {panelCount - selectedTemplate.panels.length} dodatkowych paneli zostanie wygenerowanych
+                    </li>
                   )}
-                </List>
-              </Paper>
-            </Box>
+                </ul>
+              </div>
+            </div>
           )}
-        </Paper>
-        
-        <Group justify="space-between">
-          <Button 
-            variant="outline"
-            onClick={handleBackToTemplates}
-          >
-            Wstecz
-          </Button>
-          
-          <Button 
-            type="submit" 
-            color="blue"
-          >
+
+          <Button type="submit" primary>
             Utwórz kartę
           </Button>
-        </Group>
       </form>
-    </Container>
+        </Panel>
+      </>
   );
 };

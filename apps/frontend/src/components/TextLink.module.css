@@ -1,0 +1,10 @@
+.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.875rem;
+}

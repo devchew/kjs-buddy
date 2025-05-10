@@ -1,30 +1,36 @@
 import { useWakeLock } from '../hooks/useWakeLock.ts';
-import { Switch, Group, Alert } from '@mantine/core';
 import { TbScreenShare } from 'react-icons/tb';
+import style from './WakeLock.module.css';
 
 export const WakeLock = () => {
-    const {wakeLockError, wakeLockActive, toggleWakeLock} = useWakeLock();
-
-    return (
-        <Group mb="md">
+    const {wakeLockError, wakeLockActive, toggleWakeLock} = useWakeLock();    return (
+        <div className={style.container}>
             {wakeLockError && (
-                <Alert color="red" variant="light" title="Wake Lock Error" radius="md" mb="xs">
+                <div className={style.error}>
+                    <strong>Wake Lock Error: </strong>
                     {wakeLockError}
-                </Alert>
+                </div>
             )}
-            <Switch
-                checked={wakeLockActive}
-                onChange={() => toggleWakeLock()}
-                label="Pozostaw ekran aktywny"
-                size="md"
-                thumbIcon={
-                    wakeLockActive ? (
-                        <TbScreenShare size={14} stroke="1.5" />
-                    ) : (
-                        <TbScreenShare size={14} stroke="1.5" color="gray" />
-                    )
-                }
-            />
-        </Group>
+            <label className={style.label}>
+                <div className={style.switch}>
+                    <input
+                        type="checkbox"
+                        checked={wakeLockActive}
+                        onChange={() => toggleWakeLock()}
+                        className={style.input}
+                    />
+                    <span className={`${style.slider} ${wakeLockActive ? style.sliderActive : ''}`}>
+                        <span className={`${style.thumb} ${wakeLockActive ? style.thumbActive : ''}`}>
+                            <TbScreenShare 
+                                size={14} 
+                                color={wakeLockActive ? '#339af0' : 'gray'} 
+                                className={style.icon}
+                            />
+                        </span>
+                    </span>
+                </div>
+                <span>Pozostaw ekran aktywny</span>
+            </label>
+        </div>
     )
 }
