@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Card } from './Card.tsx';
-import { CardProvider, useCardContext } from '../contexts/CardContext.tsx';
+import { Card } from './Card';
+import { CardProvider, useCardContext } from '../contexts/CardContext';
 import { type FunctionComponent, type PropsWithChildren, useEffect } from 'react';
 
 import type { Card as CartType } from '../types/Card.ts';
