@@ -1,0 +1,20 @@
+.input {
+    box-sizing: border-box;
+    padding-left: 0.875rem;
+    margin: 0;
+    border: 1px solid oklch(12% 9% 264deg / 8%);
+    width: 100%;
+    max-width: 16rem;
+    height: 2.5rem;
+    border-radius: 0.375rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: normal;
+    background-color: transparent;
+    color: oklch(12% 7% 264deg / 67%);
+
+    &:focus {
+        outline: 2px solid oklch(45% 50% 264deg);
+        outline-offset: -1px;
+    }
+}
