@@ -7,6 +7,13 @@
     "dist"
   ],
   "module": "./dist/rally-card.js",
+  "exports": {
+    ".": {
+      "import": "./dist/rally-card.js",
+      "require": "./dist/rally-card.cjs"
+    },
+    "./style.css": "./dist/rally-card.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
