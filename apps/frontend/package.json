@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@internal/rally-card": "workspace:*",
+    "@internal/ui": "workspace:*",
     "@types/uuid": "^10.0.0",
     "dayjs": "^1.11.13",
     "openapi-fetch": "^0.13.5",
