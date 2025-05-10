@@ -2,11 +2,9 @@ import { AskNotificationBar } from "./AskNotificationBar";
 import { Countdown } from "./Countdown";
 import { WakeLock } from "./WakeLock";
 import { useOffline } from "../hooks/offline";
-import { useCardContext } from "@internal/rally-card";
 
 export const ActionsBottomBar = () => {
     const isOffline = useOffline();
-    const { id } = useCardContext();
     return (
       <div style={{ marginTop: '90px' }}>
           <div style={{
@@ -36,7 +34,7 @@ export const ActionsBottomBar = () => {
           <div>
             <AskNotificationBar />
             <WakeLock />
-            {id && (<Countdown />)}
+            <Countdown />
           </div>
           </div>
       </div>

@@ -9,7 +9,6 @@ import { useNavigate, useMatch } from 'react-router-dom';
 import type { Countdown as CountdownType } from '../types/Countdown.ts';
 import { useBroadcast } from '../hooks/useBroadcast.ts';
 
-
 export const Countdown: FunctionComponent = () => {
     const { subscribe }  = useBroadcast();
     const isOnCardPage = useMatch('/cards/:id');
@@ -26,6 +25,13 @@ export const Countdown: FunctionComponent = () => {
         return () => clearInterval(interval);
     }, [countdown]);
 
+    useEffect(() => {
+        subscribe('countdown', (data) => {
+            console.log('countdown recived', data);
+            setCountdown(data);
+        });
+    }, [subscribe]);
+
     if (countdown.toTime === 0 && countdown.message === '') {
         return null;
     }
@@ -41,12 +47,6 @@ export const Countdown: FunctionComponent = () => {
         seconds
     ] = until > 0 ? msToSeparateValues(until) : [0, 0, 0];
 
-    useEffect(() => {
-        subscribe('countdown', (data) => {
-            console.log('countdown recived', data);
-            setCountdown(data);
-        });
-    }, [subscribe]);
 
     return (
         <div
@@ -64,6 +64,7 @@ export const Countdown: FunctionComponent = () => {
             width: '100%',
             maxWidth: '550px',
             cursor: isOnCardPage ? 'default' : 'pointer',
+          color: 'white'
           }}
         >
             <div style={{
@@ -73,7 +74,7 @@ export const Countdown: FunctionComponent = () => {
             }}>
                 <span style={{
                   fontWeight: 600,
-                  color: 'white'
+
                 }}>
                     {countdown.message}
                 </span>
@@ -84,7 +85,6 @@ export const Countdown: FunctionComponent = () => {
                     <span style={{
                       fontSize: '1.5rem',
                       fontWeight: 700,
-                      color: 'white'
                     }}>:</span>
                     <div className="countdown__value">
                         {minutes && <AnimatedNumber size={40} value={minutes} minDigits={2} />}
@@ -92,7 +92,6 @@ export const Countdown: FunctionComponent = () => {
                     <span style={{
                       fontSize: '1.5rem',
                       fontWeight: 700,
-                      color: 'white'
                     }}>:</span>
                     <div className="countdown__value">
                         {seconds && <AnimatedNumber size={40} value={seconds} minDigits={2} />}
