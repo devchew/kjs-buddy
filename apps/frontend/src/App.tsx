@@ -12,6 +12,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ActionsBottomBar } from './components/ActionsBottomBar.tsx';
 import "@internal/rally-card/style.css";
 import { BackgroundSync } from './components/BackgroundSync.tsx';
+import { MainHeader } from './components/MainHeader.tsx';
 
 function App() {
   return (
@@ -20,18 +21,21 @@ function App() {
         <CardsStoreProvider>
           <CardProvider>
             <BackgroundSync />
-            <Routes>
-              {/* Public routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+            <MainHeader />
+            <main className="container">
+              <Routes>
+                {/* Public routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
 
-              {/* Main application routes - accessible without authentication */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/create" element={<CardCreatePage />} />
-              <Route path="/cards" element={<CardsListPage />} />
-              <Route path="/cards/:id" element={<CardPage />} />
-            </Routes>
+                {/* Main application routes - accessible without authentication */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/create" element={<CardCreatePage />} />
+                <Route path="/cards" element={<CardsListPage />} />
+                <Route path="/cards/:id" element={<CardPage />} />
+              </Routes>
+            </main>
             <ActionsBottomBar />
 
           </CardProvider>

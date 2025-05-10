@@ -1,23 +1,23 @@
-.timePicker {
+.rally-card-timePicker {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.timePicker__title,
-.timePicker__subtitle {
+.rally-card-timePicker__title,
+.rally-card-timePicker__subtitle {
     font-size: 0.7rem;
     text-align: center;
 }
 
-.timePicker__values {
+.rally-card-timePicker__values {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.timePickerValue {
+.rally-card-timePickerValue {
     border: 0.0625rem solid #000; /* 1px */
     display: grid;
     grid-template-columns: 1fr;
@@ -28,11 +28,11 @@
     background-color: #fff;
 }
 
-.timePickerValue--gray {
+.rally-card-timePickerValue--gray {
     background-color: #c1c1c1;
 }
 
-.timePickerValue__input {
+.rally-card-timePickerValue__input {
     grid-area: 1 / 1 / 2 / 2;
     width: 100%;
     background-color: transparent;
@@ -41,18 +41,18 @@
     font-size: 1.8rem;
 }
 
-.timePickerValue__input::-webkit-outer-spin-button,
-.timePickerValue__input::-webkit-inner-spin-button {
+.rally-card-timePickerValue__input::-webkit-outer-spin-button,
+.rally-card-timePickerValue__input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
 /* Firefox */
-.timePickerValue__input[type=number] {
+.rally-card-timePickerValue__input[type=number] {
     -moz-appearance: textfield;
 }
 
-.timePickerValue__label {
+.rally-card-timePickerValue__label {
     grid-area: 1 / 1 / 2 / 2;
     width: 100%;
     background-color: transparent;

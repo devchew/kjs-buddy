@@ -10,7 +10,7 @@
     border: 0.125rem solid #000; /* 2px */
 }
 
-.panelDetails {
+.rally-card-panelDetails {
     display: flex;
     flex-direction: column;
     gap: 0.625rem; /* 10px */
@@ -19,15 +19,15 @@
     justify-content: flex-end;
 }
 
-.panelDetails__name {
+.rally-card-panelDetails__name {
     font-size: 0.85rem;
     font-weight: 700;
     color: #D84315;
 }
 
-.panelDetails__finish,
-.panelDetails__times,
-.panelDetails__results {
+.rally-card-panelDetails__finish,
+.rally-card-panelDetails__times,
+.rally-card-panelDetails__results {
     display: flex;
     flex-direction: row;
     gap: 0.3125rem; /* 5px */
@@ -35,35 +35,35 @@
     justify-content: flex-end;
 }
 
-.panelDetails__times > div:last-child {
+.rally-card-panelDetails__times > div:last-child {
     margin-left: 2.625rem; /* 42px */
 }
 
-.panelDetails__times__icon {
+.rally-card-panelDetails__times__icon {
     margin-bottom: 0.4375rem; /* 7px */
 }
-.panelDetails__times__icon svg {
+.rally-card-panelDetails__times__icon svg {
     width: 1.3em;
     height: 1.3em;
 }
 
-.panelDetails__times__arrow {
+.rally-card-panelDetails__times__arrow {
     margin: 0.75rem -0.5rem; /* 12px -8px */
     width: 1.5em;
     height: 1.5em;
 }
 
-.panelDetails__finish__icon {
+.rally-card-panelDetails__finish__icon {
     margin-right: 0.3125rem; /* 5px */
     margin-left: 7.4375rem; /* 119px */
     margin-bottom: 0.4375rem; /* 7px */
 }
-.panelDetails__finish__icon svg {
+.rally-card-panelDetails__finish__icon svg {
     width: 1.3em;
     height: 1.3em;
 }
 
-.panelDetails__results__icon {
+.rally-card-panelDetails__results__icon {
     margin-right: 0.3125rem; /* 5px */
     margin-left: 7.4375rem; /* 119px */
     text-align: center;

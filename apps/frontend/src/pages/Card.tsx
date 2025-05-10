@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card as CardComponent, useCardContext } from '@internal/rally-card';
 import { useCardsStore } from '../contexts/CardsStoreContext';
 import { PiFloppyDisk, PiPencil, PiX } from 'react-icons/pi';
-import { TbSquareRoundedChevronLeft } from "react-icons/tb";
 import { CardPanel } from '../types/Card';
 import { LongPressButton } from '../components/LongPressButton.tsx';
 import { useBroadcast } from '../hooks/useBroadcast.ts';
+import { RallyCardWrapper } from '../components/RallyCardWrapper.tsx';
 
 // Card content component that uses the edit mode context
 export const CardPage: FunctionComponent = () => {
@@ -73,42 +73,7 @@ export const CardPage: FunctionComponent = () => {
   }
 
   return (
-    <div style={{
-      maxWidth: '768px',
-      margin: '0 auto',
-      padding: '1rem'
-    }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '1.5rem'
-      }}>
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            backgroundColor: 'white',
-            border: '1px solid #e0e0e0',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-          onClick={() => navigate(id ? "/cards" : "/")}
-        >
-          <TbSquareRoundedChevronLeft size={20} />
-          {id ? "Powrót do kart" : "Powrót do strony głównej"}
-        </button>
-        <h2>{id ? "Podgląd karty" : "Aktualna karta"}</h2>
-      </div>
-
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        paddingBottom: '2rem'
-      }}>
+      <RallyCardWrapper>
         <CardComponent />
 
         <div style={{
@@ -171,18 +136,12 @@ export const CardPage: FunctionComponent = () => {
           ) : (
             <LongPressButton
               onLongPress={handleLongPress}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
             >
               <PiPencil size={20} />
               Edytuj (naciśnij i przytrzymaj)
             </LongPressButton>
           )}
         </div>
-      </div>
-    </div>
+    </RallyCardWrapper>
   );
 };

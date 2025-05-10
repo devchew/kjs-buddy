@@ -29,18 +29,18 @@ export const Panel: FunctionComponent = () => {
     };
 
     return (
-        <div className="panel">
+        <div className="rally-card-panel">
             {isEditMode && (
-                <div className="panel__deleteButton" onClick={handleDelete}>
+                <div className="rally-card-panel__deleteButton" onClick={handleDelete}>
                     <PiTrash size={20} color="#ef476f" />
                 </div>
             )}
             <PanelStrip />
-            <div className="panel__main">
+            <div className="rally-card-panel__main">
                 {isEditMode && number > 1 && (
                     <input
                         type="text"
-                        className="panel__nameInput"
+                        className="rally-card-panel__nameInput"
                         value={editableName}
                         onChange={handleNameChange}
                         placeholder="Enter panel name"

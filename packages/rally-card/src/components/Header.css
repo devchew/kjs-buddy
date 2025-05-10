@@ -1,4 +1,4 @@
-.header {
+.rally-card-header {
     width: 100%;
     height: 100%;
     padding: 0.1rem;
@@ -9,22 +9,22 @@
     display: inline-flex;
 }
 
-.header__eventLogo {
+.rally-card-header__eventLogo {
     width: 6.875rem; /* 110px */
     height: 3.75rem; /* 60px */
 }
 
-.header__eventSponsorLogo {
+.rally-card-header__eventSponsorLogo {
     width: 3.75rem; /* 60px */
     height: 3.75rem; /* 60px */
 }
 
-.header__eventLogo,
-.header__eventSponsorLogo {
+.rally-card-header__eventLogo,
+.rally-card-header__eventSponsorLogo {
     object-fit: contain;
 }
 
-.header__carNumber {
+.rally-card-header__carNumber {
     padding: 0.0625rem 0.125rem; /* 1px 2px */
     border: 0.0625rem solid black; /* 1px */
     flex-direction: column;
@@ -34,31 +34,31 @@
     font-size: 1.3rem;
 }
 
-.header__carNumber__title {
+.rally-card-header__carNumber__title {
     color: black;
     font-weight: 400;
     word-wrap: break-word;
 }
 
-.header__carNumber__number {
+.rally-card-header__carNumber__number {
     color: black;
     font-weight: 400;
     word-wrap: break-word;
     line-height: 1.25rem; /* 20px */
 }
 
-.header__eventName {
+.rally-card-header__eventName {
     font-size: 0.8rem;
     line-height: 1rem;
 }
 
-.header__eventName__title {
+.rally-card-header__eventName__title {
     color: black;
     font-weight: 700;
     word-wrap: break-word;
 }
 
-.header__eventName__name {
+.rally-card-header__eventName__name {
     color: black;
     font-weight: 400;
     word-wrap: break-word;

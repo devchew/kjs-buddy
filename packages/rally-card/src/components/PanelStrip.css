@@ -1,4 +1,4 @@
-.panelStrip {
+.rally-card-panelStrip {
     display: flex;
     padding: 0.3125rem 0.125rem; /* 5px 2px */
     flex-direction: column;
@@ -8,8 +8,8 @@
     background: #1b3c83;
 }
 
-.panelStrip__previous,
-.panelStrip__current {
+.rally-card-panelStrip__previous,
+.rally-card-panelStrip__current {
     color: #FFF;
     text-align: center;
 }

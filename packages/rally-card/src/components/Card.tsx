@@ -8,7 +8,7 @@ export const Card = () => {
     const { panels, updatePanelByNumber } = useCardContext();
 
     return (
-        <div className="card">
+        <div className="rally-card">
             <Header />
             {panels.map((panel) => (
                 <PanelProvider key={panel.number} panel={panel} onChange={(panel) => updatePanelByNumber(panel.number, panel)}>

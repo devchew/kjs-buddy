@@ -53,15 +53,15 @@ const TimePickerValue: FunctionComponent<TimePickerValueProps> = (
     }
 
     return (
-        <div className={["timePickerValue", "timePickerValue--" + (style || 'normal')].join(" ")}>
-            {label && <span className="timePickerValue__label">{label}</span>}
+        <div className={["rally-card-timePickerValue", "rally-card-timePickerValue--" + (style || 'normal')].join(" ")}>
+            {label && <span className="rally-card-timePickerValue__label">{label}</span>}
             <input
                 type="text"
                 inputMode="numeric"
                 autoComplete="off"
                 autoCorrect="off"
                 datatype="number"
-                className="timePickerValue__input"
+                className="rally-card-timePickerValue__input"
                 value={val}
                 onFocus={(e) => e.target.select()}
                 pattern={patternNumberTwoDigits}
@@ -129,9 +129,9 @@ export const TimePicker: FunctionComponent<Props> = (
     }, [value]);
 
     return (
-        <div className={["timePicker", className].join(' ')}>
-            {title && <span className="timePicker__title">{title}</span>}
-            <div className="timePicker__values">
+        <div className={["rally-card-timePicker", className].join(' ')}>
+            {title && <span className="rally-card-timePicker__title">{title}</span>}
+            <div className="rally-card-timePicker__values">
                 {showHours && <TimePickerValue
                     value={hours}
                     label="H"
@@ -169,7 +169,7 @@ export const TimePicker: FunctionComponent<Props> = (
                     max={99}
                 /> }
             </div>
-            {subtitle && <span className="timePicker__subtitle">{subtitle}</span>}
+            {subtitle && <span className="rally-card-timePicker__subtitle">{subtitle}</span>}
         </div>
     )
 

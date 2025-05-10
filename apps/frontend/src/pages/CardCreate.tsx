@@ -1,13 +1,16 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCardContext } from '@internal/rally-card';
 import { useCardsStore } from '../contexts/CardsStoreContext';
 import { CardInfo, CardPanel } from '../types/Card';
 import monte from "../assets/montecalvaria.png";
 import pzm from "../assets/pzmot.png";
-import { TbSquareRoundedChevronLeft, TbPlus } from "react-icons/tb";
+import { TbPlus, TbSquareRoundedChevronLeft } from "react-icons/tb";
 import { usePredefinedCards } from '../hooks/usePredefinedCards';
 import { PredefinedCard } from '../types/Responses';
+import { Button } from '../components/Button.tsx';
+import { Pill } from '../components/Pill.tsx';
+import { Panel } from '../components/Panel.tsx';
 
 type CardCreationMode = 'blank' | 'template' | 'details';
 
@@ -111,31 +114,7 @@ export const CardCreatePage: FunctionComponent = () => {
   // Template selection screen
   if (creationMode === 'template') {
     return (
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '1.5rem'
-        }}>
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 16px',
-              backgroundColor: 'white',
-              border: '1px solid #e0e0e0',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-            onClick={() => navigate('/')}
-          >
-            <TbSquareRoundedChevronLeft size={20} />
-            Powrót do strony głównej
-          </button>
-          <h2>Utwórz nową kartę</h2>
-        </div>
+      <div>
 
         <div style={{ marginBottom: '2rem' }}>
           <h3>Wybierz szablon</h3>
@@ -149,20 +128,19 @@ export const CardCreatePage: FunctionComponent = () => {
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
           gap: '1rem'
         }}>
-          {/* Blank card option */}
           <div
             style={{
               border: '1px solid #e0e0e0',
               borderRadius: '8px',
-              padding: '1.5rem',
+              padding: '1rem',
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={handleStartBlank}
           >
             <div style={{
-              paddingTop: '1.5rem',
-              paddingBottom: '1.5rem',
+              paddingTop: '.5rem',
+              paddingBottom: '.5rem',
               display: 'flex',
               justifyContent: 'center'
             }}>
@@ -170,7 +148,8 @@ export const CardCreatePage: FunctionComponent = () => {
                 width: '48px',
                 height: '48px',
                 borderRadius: '50%',
-                backgroundColor: '#f1f3f5',
+                  border: '.1rem solid',
+
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
@@ -237,15 +216,9 @@ export const CardCreatePage: FunctionComponent = () => {
                   justifyContent: 'space-between',
                   marginTop: 'auto'
                 }}>
-                  <span style={{
-                    backgroundColor: '#e7f5ff',
-                    color: '#1971c2',
-                    padding: '2px 8px',
-                    borderRadius: '16px',
-                    fontSize: '0.75rem'
-                  }}>
+                  <Pill>
                     Etapy: {template.panels?.length || 0}
-                  </span>
+                  </Pill>
                 </div>
               </div>
             ))
@@ -257,44 +230,30 @@ export const CardCreatePage: FunctionComponent = () => {
 
   // Card details form (either blank or pre-filled from template)
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
+    < >
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '1.5rem'
       }}>
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            backgroundColor: '#228be6',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+        <Button
           onClick={handleBackToTemplates}
         >
           <TbSquareRoundedChevronLeft size={20} />
           Powrót do szablonów
-        </button>
-        <h2>
+        </Button>
+        <h3>
           {selectedTemplate ? `Tworzenie karty ${selectedTemplate.name}` : 'Tworzenie nowej karty'}
-        </h2>
+        </h3>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div style={{
-          border: '1px solid #e0e0e0',
-          borderRadius: '8px',
-          padding: '1rem',
-          marginBottom: '2rem',
-          width: '100%',
-          background: 'white'
-        }}>
+        <Panel>
+      <form onSubmit={handleSubmit} style={{
+        display: 'flex',
+          flexDirection: 'column',
+        gap: '1rem',
+      }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Informacje o karcie</h3>
           <div style={{
             display: 'grid',
@@ -403,15 +362,7 @@ export const CardCreatePage: FunctionComponent = () => {
               />
             </div>
           </div>
-        </div>
 
-        <div style={{
-          border: '1px solid #e0e0e0',
-          borderRadius: '8px',
-          padding: '1rem',
-          marginBottom: '2rem',
-          background: 'white'
-        }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Etapy</h3>
           <div style={{ marginBottom: '1rem' }}>
             <label style={{
@@ -481,42 +432,12 @@ export const CardCreatePage: FunctionComponent = () => {
               </div>
             </div>
           )}
-        </div>
 
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between'
-        }}>
-          <button
-            type="button"
-            style={{
-              padding: '8px 16px',
-              backgroundColor: 'white',
-              color: '#228be6',
-              border: '1px solid #228be6',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-            onClick={handleBackToTemplates}
-          >
-            Wstecz
-          </button>
-
-          <button
-            type="submit"
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#228be6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
-          >
+          <Button type="submit" primary>
             Utwórz kartę
-          </button>
-        </div>
+          </Button>
       </form>
-    </div>
+        </Panel>
+      </>
   );
 };

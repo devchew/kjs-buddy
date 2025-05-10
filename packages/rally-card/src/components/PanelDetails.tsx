@@ -31,28 +31,28 @@ export const PanelDetails: FunctionComponent = () => {
     } = usePanelContext();
 
     return (
-        <div className="panelDetails">
+        <div className="rally-card-panelDetails">
             {/* Only show name in detail section when not in edit mode */}
-            {!isEditMode && <span className="panelDetails__name">{name}</span>}
+            {!isEditMode && <span className="rally-card-panelDetails__name">{name}</span>}
 
-            {number > 1 && <div className="panelDetails__finish">
-              <IconInRedCircle className="panelDetails__finish__icon"><PiFlagCheckeredFill
+            {number > 1 && <div className="rally-card-panelDetails__finish">
+              <IconInRedCircle className="rally-card-panelDetails__finish__icon"><PiFlagCheckeredFill
                 fill="#000"/></IconInRedCircle>
               <TimePicker title="Czas Mety" value={finishTime} precision="miliseconds" onChange={setFinishTime} />
             </div>}
-            <div className="panelDetails__times">
+            <div className="rally-card-panelDetails__times">
                 {number > 1 ? <>
                     <TimePicker title="Prowizoryczny start" value={provisionalStartTime} onChange={setProvisionalStartTime} precision="minutes"/>
-                    <PiCaretRightFill className="panelDetails__times__arrow"/>
+                    <PiCaretRightFill className="rally-card-panelDetails__times__arrow"/>
                     <TimePicker title="Faktyczny start" value={actualStartTime} onChange={setActualStartTime} precision="minutes" style="gray"/>
-                    <IconInRedCircle className="panelDetails__times__icon"><PiFlagFill fill="#000"/></IconInRedCircle>
-                    <PiCaretRightFill className="panelDetails__times__arrow"/>
+                    <IconInRedCircle className="rally-card-panelDetails__times__icon"><PiFlagFill fill="#000"/></IconInRedCircle>
+                    <PiCaretRightFill className="rally-card-panelDetails__times__arrow"/>
                     <TimePicker title="Czas przejazdu" value={drivingTime} onChange={setDrivingTime} precision="minutes"/>
                 </> : <TimePicker title="Prowizoryczny czas" value={provisionalStartTime} onChange={setProvisionalStartTime} precision="minutes"/>}
             </div>
-            <div className="panelDetails__results">
+            <div className="rally-card-panelDetails__results">
                 {number > 1 && <>
-                  <IconInRedCircle className="panelDetails__results__icon">start</IconInRedCircle>
+                  <IconInRedCircle className="rally-card-panelDetails__results__icon">start</IconInRedCircle>
                   <TimePicker subtitle="Wynik" value={resultTime} onChange={setResultTime} precision="milisecondsWithoutHours"/>
                 </>}
                 <TimePicker subtitle={`PKC${number}`} value={nextPKCTime} onChange={setNextPKCTime} precision="minutes" style="gray"/>
