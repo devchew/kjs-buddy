@@ -14,6 +14,7 @@ export type CardContextType = Card & {
     updatePanelName: (panelNumber: number, name: string) => void;
     countdown: Countdown;
     setId: (id: string) => void;
+    unloadCard: () => void;
 }
 
 const defaultCardContext: CardContextType = {
@@ -38,6 +39,7 @@ const defaultCardContext: CardContextType = {
     countdown: {toTime: 0, message: ''},
     id: '',
     setId: () => {},
+    unloadCard: () => {},
 }
 
 const CardContext = createContext<CardContextType>(defaultCardContext);
@@ -118,6 +120,14 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
         ));
     };
 
+    // Unload card
+    const unloadCard = () => {
+        setCardInfo(defaultCardContext.cardInfo);
+        setPanels(defaultCardContext.panels);
+        setId(defaultCardContext.id);
+        localStorage.removeItem('currentCard');
+    };
+
     useEffect(() => {
         subscribe('countdown', (data) => {
             console.log('countdown recived', data);
@@ -179,7 +189,8 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
                 updatePanelByNumber,
                 addPanel,
                 deletePanel,
-                updatePanelName
+                updatePanelName,
+                unloadCard
             }
         }>
             {children}

@@ -19,9 +19,11 @@ import {
   Center,
   rem
 } from '@mantine/core';
+import { useCardContext } from '../contexts/CardContext';
 
 export const CardsListPage: FunctionComponent = () => {
   const { cards, deleteCard } = useCardsStore();
+  const { unloadCard, id: contextCardId } = useCardContext();
   const navigate = useNavigate();
   
   // Format date from timestamp
@@ -29,6 +31,13 @@ export const CardsListPage: FunctionComponent = () => {
     const date = new Date(timestamp);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
+
+  const onCardDelete = (id: string) => {
+    deleteCard(id);
+    if (id === contextCardId) {
+      unloadCard(); // Unload the card if it's the one currently in context
+    }
+  }
   
   return (
     <Container size="md" py="md">
@@ -69,7 +78,7 @@ export const CardsListPage: FunctionComponent = () => {
                     <ActionIcon 
                       color="red" 
                       variant="subtle"
-                      onClick={() => deleteCard(card.id)}
+                      onClick={() => onCardDelete(card.id)}
                       aria-label="Usuń kartę"
                     >
                       <PiTrash style={{ width: rem(18), height: rem(18) }} />
