@@ -12,6 +12,7 @@
     "generate-api": "openapi-typescript http://localhost:3000/api/docs-json -o ./src/api/endpoints.ts"
   },
   "dependencies": {
+    "@internal/rally-card": "workspace:*",
     "@types/uuid": "^10.0.0",
     "dayjs": "^1.11.13",
     "openapi-fetch": "^0.13.5",
