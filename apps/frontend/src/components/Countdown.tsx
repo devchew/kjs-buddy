@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from 'react';
-import './Countdown.css';
+import style from './Countdown.module.css';
 import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css"
 import { msToSeparateValues, getNowAsMsFrommidnight } from '../helpers/timeParsers.ts';
@@ -78,22 +78,21 @@ export const Countdown: FunctionComponent = () => {
                 }}>
                     {countdown.message}
                 </span>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <div className="countdown__value">
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>                    <div className={style.value}>
                         {hours && <AnimatedNumber size={40} value={hours} minDigits={2} />}
                     </div>
                     <span style={{
                       fontSize: '1.5rem',
                       fontWeight: 700,
                     }}>:</span>
-                    <div className="countdown__value">
+                    <div className={style.value}>
                         {minutes && <AnimatedNumber size={40} value={minutes} minDigits={2} />}
                     </div>
                     <span style={{
                       fontSize: '1.5rem',
                       fontWeight: 700,
                     }}>:</span>
-                    <div className="countdown__value">
+                    <div className={style.value}>
                         {seconds && <AnimatedNumber size={40} value={seconds} minDigits={2} />}
                     </div>
                 </div>

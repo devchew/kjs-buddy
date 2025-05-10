@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import { Header, useCardContext } from "@internal/rally-card";
-import "./Home.css";
+import style from "./Home.module.css";
 import { RallyCardWrapper } from '../components/RallyCardWrapper.tsx';
 import { LinkButton } from '../components/Button.tsx';
 import { useAuth } from '../contexts/AuthContext.tsx';
@@ -12,11 +12,9 @@ export const HomePage: FunctionComponent = () => {
   const { isAuthenticated } = useAuth();
   const { cards } = useCardsStore()
 
-
   return (
-    <div className="container">
-
-      <div className="stack">
+    <div className={style.container}>
+      <div className={style.stack}>
 
           {!currentCardId && <>
             <h1>Witaj w KJS Buddy!</h1>
@@ -28,15 +26,13 @@ export const HomePage: FunctionComponent = () => {
 
               {!isAuthenticated && <><p>Lub zaloguj się miej swoje karty zawsze przy sobie</p>
             <LinkButton to="/login">Zaloguj się</LinkButton></>}
-          </>}
-
-        {currentCardId && (
-          <div className="card">
-            <div className="card-header">
-              <p className="card-title">Aktywna karta</p>
+          </>}        {currentCardId && (
+          <div className={style.card}>
+            <div className={style.cardHeader}>
+              <p className={style.cardTitle}>Aktywna karta</p>
             </div>
             <Link to={`/cards/${currentCardId}`} style={{ textDecoration: 'none' }}>
-              <div className="card-content">
+              <div className={style.cardContent}>
                 <RallyCardWrapper>
                     <Header />
                 </RallyCardWrapper>

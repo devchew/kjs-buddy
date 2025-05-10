@@ -1,8 +1,8 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import './RallyCardWrapper.css';
+import style from './RallyCardWrapper.module.css';
 
 export const RallyCardWrapper: FunctionComponent<PropsWithChildren> = ({children}) => (
-    <div className="rally-card-wrapper">
+    <div className={style.wrapper}>
         {children}
     </div>
 )

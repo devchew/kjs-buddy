@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { TbBellRinging } from 'react-icons/tb';
+import style from './AskNotificationBar.module.css';
 
 const useNotificationPermision = () => {
     const [granted, setGranted] = useState(false);

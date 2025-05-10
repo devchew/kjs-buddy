@@ -6,13 +6,13 @@
     background-color: #747bff;
 }
 
-.bottomStrip__message {
+.message {
     text-align: center;
     display: block;
     font-size: 1.5rem;
 }
 
-.countdown {
+.container {
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -21,7 +21,7 @@
     margin-bottom: 1rem;
 }
 
-.countdown__value {
+.value {
     font-size: 40px;
     color: currentColor;
     font-weight: 700;

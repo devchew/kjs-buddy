@@ -1,10 +1,10 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import "./Panel.css";
+import style from "./Panel.module.css";
 
 export const Panel:FunctionComponent<PropsWithChildren> = ({children}) => {
 
     return (
-        <div className="panel-box">
+        <div className={style.panel}>
             {children}
         </div>
     )

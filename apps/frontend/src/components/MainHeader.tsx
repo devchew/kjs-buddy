@@ -1,23 +1,19 @@
 import { useAuth } from '../contexts/AuthContext.tsx';
-import './MainHeader.css';
+import style from './MainHeader.module.css';
 import { Link } from 'react-router-dom';
 import { LinkButton } from './Button.tsx';
 
 const User = () => {
-    const { user } = useAuth();
-
-    if (!user) {
+    const { user } = useAuth();    if (!user) {
         return (
-            <div className="header-user">
+            <div className={style.user}>
                 <LinkButton to="/login">
                     Logowanie
                 </LinkButton>
             </div>
         );
-    }
-
-    return (
-        <div className="header-user">
+    }    return (
+        <div className={style.user}>
             <LinkButton to="/profile">
                 {user.email}
             </LinkButton>
@@ -25,14 +21,12 @@ const User = () => {
     )
 }
 
-export const MainHeader = () => {
-
-    return (
-        <header className="main-header">
-            <Link className="main-header__brand" to="/">
+export const MainHeader = () => {    return (
+        <header className={style.header}>
+            <Link className={style.brand} to="/">
                 KJS Buddy
             </Link>
-            <div className="main-header__user">
+            <div className={style.userContainer}>
                 <User />
             </div>
         </header>
