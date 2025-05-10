@@ -1,5 +1,5 @@
 {
-  "name": "vite-project",
+  "name": "@internal/rally-card",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,7 @@
     "dist"
   ],
   "module": "./dist/rally-card.js",
+  "types": "dist/rally-card.d.ts",
   "exports": {
     ".": {
       "import": "./dist/rally-card.js",
@@ -16,13 +17,14 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "5.4.0"

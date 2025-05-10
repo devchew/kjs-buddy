@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import "./Header.css";
 import { useCardContext } from '../contexts/CardContext.tsx';
 import monte from "./../assets/montecalvaria.png";

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
+import typescript from '@rollup/plugin-typescript'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -18,7 +19,17 @@ export default defineConfig({
       rollupOptions: {
         // make sure to externalize deps that shouldn't be bundled
         // into your library
-        external: ['react', 'react-dom'],
-      },
+        external: ['React', 'react', 'react-dom'],
+        plugins: [
+          typescript({
+            'target': 'es2020',
+            'rootDir': resolvePath('../src'),
+            'declaration': true,
+            'declarationDir': resolvePath('../dist'),
+            exclude: resolvePath('../node_modules/**'),
+            allowSyntheticDefaultImports: true
+          })
+        ]
+      }
   },
 })
