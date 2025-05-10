@@ -9,16 +9,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
   plugins: [react()],
     build: {
-    lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
-      name: 'rally-card',
-      // the proper extensions will be added
-      fileName: 'rally-card',
-    },
-    rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
-      external: ['react', 'react-dom'],
-    },
+      lib: {
+        entry: resolve(__dirname, 'src/main.ts'),
+        name: 'rally-card',
+        // the proper extensions will be added
+        fileName: 'rally-card',
+      },
+      rollupOptions: {
+        // make sure to externalize deps that shouldn't be bundled
+        // into your library
+        external: ['react', 'react-dom'],
+      },
   },
 })
