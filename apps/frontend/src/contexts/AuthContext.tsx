@@ -40,18 +40,30 @@ export const useAuth = () => {
   return context;
 };
 
+
 export const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Create the authenticated client with the current token
-  const authClient = useMemo(() => createAuthClient(token), [token]);
+  const authClient = useMemo(() => {
+    const client = createAuthClient(token);
+    client.use({
+        onResponse: ({response}) => {
+            if (response.status === 401) {
+                logout();
+            }
+        }
+    })
 
-  // Check for existing token and user in localStorage on mount
+    return client;
+}, [token]);
+
+  // Check for existing token and user in sessionStorage on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('auth-token');
-    const storedUser = localStorage.getItem('auth-user');
+    const storedToken = sessionStorage.getItem('auth-token');
+    const storedUser = sessionStorage.getItem('auth-user');
 
     if (storedToken && storedUser) {
       setToken(storedToken);
@@ -85,9 +97,9 @@ export const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children })
         setToken(access_token);
         setUser(user);
         
-        // Store in localStorage for persistence
-        localStorage.setItem('auth-token', access_token);
-        localStorage.setItem('auth-user', JSON.stringify(user));
+        // Store in sessionStorage for persistence
+        sessionStorage.setItem('auth-token', access_token);
+        sessionStorage.setItem('auth-user', JSON.stringify(user));
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -115,9 +127,9 @@ export const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children })
         setToken(access_token);
         setUser(user);
         
-        // Store in localStorage for persistence
-        localStorage.setItem('auth-token', access_token);
-        localStorage.setItem('auth-user', JSON.stringify(user));
+        // Store in sessionStorage for persistence
+        sessionStorage.setItem('auth-token', access_token);
+        sessionStorage.setItem('auth-user', JSON.stringify(user));
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -131,8 +143,8 @@ export const AuthProvider: FunctionComponent<PropsWithChildren> = ({ children })
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('auth-token');
-    localStorage.removeItem('auth-user');
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('auth-user');
   };
 
   const isAuthenticated = !!token;
