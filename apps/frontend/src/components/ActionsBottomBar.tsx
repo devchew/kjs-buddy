@@ -16,7 +16,7 @@ export const ActionsBottomBar = () => {
             zIndex: 1000,
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px'
+            gap: '10px',
           }}>
           {isOffline && (
             <div style={{
@@ -33,7 +33,6 @@ export const ActionsBottomBar = () => {
 
           <div>
             <AskNotificationBar />
-            <WakeLock />
             <Countdown />
           </div>
           </div>
