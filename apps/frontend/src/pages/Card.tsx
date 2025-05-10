@@ -7,13 +7,6 @@ import { PiPencil, PiFloppyDisk, PiX } from 'react-icons/pi';
 import { TbSquareRoundedChevronLeft } from "react-icons/tb";
 import { CardPanel } from '../types/Card';
 import { MantineLongPressButton } from '../components/MantineLongPressButton';
-import { 
-  Container, 
-  Group, 
-  Title, 
-  Button, 
-  Stack,
-} from '@mantine/core';
 import { useCardContext } from '../contexts/CardContext';
 
 // Card content component that uses the edit mode context
@@ -78,57 +71,118 @@ const CardContent: FunctionComponent = () => {
   }
 
   return (
-    <Container size="md" py="md">
-      <Group justify="space-between" mb="lg">
-        <Button
-          leftSection={<TbSquareRoundedChevronLeft size={20} />}
-          variant="default"
+    <div style={{ 
+      maxWidth: '768px', 
+      margin: '0 auto',
+      padding: '1rem' 
+    }}>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '1.5rem'
+      }}>
+        <button
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            backgroundColor: 'white',
+            border: '1px solid #e0e0e0',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
           onClick={() => navigate(id ? "/cards" : "/")}
         >
+          <TbSquareRoundedChevronLeft size={20} />
           {id ? "Powrót do kart" : "Powrót do strony głównej"}
-        </Button>
-        <Title order={2}>{id ? "Podgląd karty" : "Aktualna karta"}</Title>
-      </Group>
+        </button>
+        <h2>{id ? "Podgląd karty" : "Aktualna karta"}</h2>
+      </div>
       
-      <Stack align="center" pb="xl">
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingBottom: '2rem'
+      }}>
         {/* KEEPING THE ORIGINAL CARD COMPONENT INTACT */}
         <CardComponent />
         
-        <Group my="md" justify="center">
+        <div style={{ 
+          marginTop: '1rem',
+          marginBottom: '1rem',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '0.75rem'
+        }}>
           {isEditMode ? (
             <>
-              <Button 
+              <button 
                 onClick={addPanel}
-                color="blue"
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#228be6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
               >
                 Dodaj panel
-              </Button>
-              <Button 
+              </button>
+              <button 
                 onClick={handleSave}
-                color="green"
-                leftSection={<PiFloppyDisk size={20} />}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#2b8a3e',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
               >
+                <PiFloppyDisk size={20} />
                 Zapisz
-              </Button>
-              <Button 
+              </button>
+              <button 
                 onClick={handleDiscard}
-                color="red"
-                leftSection={<PiX size={20} />}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#e03131',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
               >
+                <PiX size={20} />
                 Anuluj
-              </Button>
+              </button>
             </>
           ) : (
             <MantineLongPressButton 
               onLongPress={handleLongPress}
-              leftSection={<PiPencil size={20} />}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
             >
+              <PiPencil size={20} />
               Edytuj (naciśnij i przytrzymaj)
             </MantineLongPressButton>
           )}
-        </Group>
-      </Stack>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 

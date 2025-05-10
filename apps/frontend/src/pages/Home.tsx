@@ -2,20 +2,10 @@ import { FunctionComponent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCardsStore } from "../contexts/CardsStoreContext";
 import { useAuth } from "../contexts/AuthContext";
-import {
-  Container,
-  Title,
-  Stack,
-  Button,
-  Paper,
-  Text,
-  Group,
-  Box,
-  Divider,
-} from "@mantine/core";
 import { Header } from "../components/Header";
 import { TbLogin, TbUser, TbUserPlus } from "react-icons/tb";
 import { useCardContext } from "../contexts/CardContext";
+import "./Home.css";
 
 export const HomePage: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -23,131 +13,81 @@ export const HomePage: FunctionComponent = () => {
   const { id: currentCardId } = useCardContext();
   const { user, isAuthenticated } = useAuth();
 
-  // Get recent cards (up to 3, excluding last used)
   const recentCards = cards
     .sort((a, b) => b.lastUsed - a.lastUsed)
     .slice(0, 3);
 
   return (
-    <Container py="xl" size="md">
-      <Group justify="space-between" mb="md">
-        <Title ta="center">
-          Witaj w KJS Buddy
-        </Title>
-        
+    <div className="container">
+      <div className="header">
+        <h1 className="title">Witaj w KJS Buddy</h1>
         {isAuthenticated ? (
-          <Button
-            variant="subtle"
-            onClick={() => navigate("/profile")}
-            leftSection={<TbUser size={20} />}
-          >
-            {user?.email?.split('@')[0] || 'Profile'}
-          </Button>
+          <button className="button" onClick={() => navigate("/profile")}>
+            <TbUser size={20} /> {user?.email?.split('@')[0] || 'Profile'}
+          </button>
         ) : (
-          <Group>
-            <Button
-              variant="subtle"
-              onClick={() => navigate("/login")}
-              leftSection={<TbLogin size={20} />}
-            >
-              Log In
-            </Button>
-            <Button
-              variant="light"
-              onClick={() => navigate("/register")}
-              leftSection={<TbUserPlus size={20} />}
-            >
-              Register
-            </Button>
-          </Group>
+          <div className="auth-buttons">
+            <button className="button" onClick={() => navigate("/login")}>
+              <TbLogin size={20} /> Log In
+            </button>
+            <button className="button button-light" onClick={() => navigate("/register")}>
+              <TbUserPlus size={20} /> Register
+            </button>
+          </div>
         )}
-      </Group>
+      </div>
 
-      <Stack maw={600} mx="auto" gap="md">
+      <div className="stack">
         {isAuthenticated && (
-          <Paper p="xs" withBorder radius="md" mb="lg">
-            <Text fw={500} size="sm">
-              Witaj, {user?.email?.split('@')[0] || 'User'}!
-              Twoje karty są synchronizowane w chmurze.
-            </Text>
-          </Paper>
+          <div className="card">
+            <p>Witaj, {user?.email?.split('@')[0] || 'User'}! Twoje karty są synchronizowane w chmurze.</p>
+          </div>
         )}
-        
+
         {!isAuthenticated && (
-          <Paper p="xs" withBorder radius="md" mb="lg">
-            <Text fw={500} size="sm" mb="xs">
-              Zaloguj się lub zarejestruj, aby synchronizować karty w chmurze.
-            </Text>
-          </Paper>
+          <div className="card">
+            <p>Zaloguj się lub zarejestruj, aby synchronizować karty w chmurze.</p>
+          </div>
         )}
 
-        {/* Last used card for quick access */}
         {currentCardId && (
-          <Box mt="lg" w="100%">
-            <Group justify="space-between" mb="xs">
-              <Text fw={600} size="lg">
-                Aktywna karta
-              </Text>
-              <Divider w="60%" />
-            </Group>
-            <Link
-              to={`/cards/${currentCardId}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Paper p="sm" shadow="xs">
+          <div className="card">
+            <div className="card-header">
+              <p className="card-title">Aktywna karta</p>
+              <hr className="card-divider" />
+            </div>
+            <Link to={`/cards/${currentCardId}`} style={{ textDecoration: 'none' }}>
+              <div className="card-content">
                 <Header />
-              </Paper>
+              </div>
             </Link>
-          </Box>
+          </div>
         )}
 
-        {/* Recent cards section */}
         {recentCards.length > 0 && (
-          <Box mt="md" w="100%">
-            <Group justify="space-between" mb="xs">
-              <Text fw={600} size="lg">
-                Ostatnie karty
-              </Text>
-              <Divider w="60%" />
-            </Group>
-            <Stack gap="xs">
+          <div className="card">
+            <div className="card-header">
+              <p className="card-title">Ostatnie karty</p>
+              <hr className="card-divider" />
+            </div>
+            <div className="recent-cards">
               {recentCards.map((card) => (
-                <Paper
+                <div
                   key={card.id}
-                  p="sm"
-                  radius="md"
-                  withBorder
+                  className="recent-card"
                   onClick={() => navigate(`/cards/${card.id}`)}
-                  style={{ cursor: "pointer" }}
-                  shadow="xs"
                 >
-                  <Text fw={700}>{card.cardInfo.name}</Text>
-                  <Text size="sm" c="dimmed">
-                    {card.cardInfo.date} | Auto #{card.cardInfo.carNumber}
-                  </Text>
-                </Paper>
+                  <p className="recent-card-title">{card.cardInfo.name}</p>
+                  <p className="recent-card-subtitle">{card.cardInfo.date} | Auto #{card.cardInfo.carNumber}</p>
+                </div>
               ))}
-            </Stack>
-          </Box>
+            </div>
+          </div>
         )}
 
-        <Button
-          size="lg"
-          fullWidth
-          color="green"
-          onClick={() => navigate("/cards")}
-        >
-          Wszystkie karty
-        </Button>
-        <Button
-          size="lg"
-          fullWidth
-          color="blue"
-          onClick={() => navigate("/create")}
-        >
-          Utwórz nową kartę
-        </Button>
-      </Stack>
-    </Container>
+        <button className="button-green" onClick={() => navigate("/cards")}>Wszystkie karty</button>
+        <button className="button-blue" onClick={() => navigate("/create")}>Utwórz nową kartę</button>
+      </div>
+    </div>
   );
 };

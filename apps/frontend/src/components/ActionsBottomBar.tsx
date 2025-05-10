@@ -1,4 +1,3 @@
-import { Alert, Box, Stack } from "@mantine/core";
 import { AskNotificationBar } from "./AskNotificationBar";
 import { Countdown } from "./Countdown";
 import { WakeLock } from "./WakeLock";
@@ -9,20 +8,37 @@ export const ActionsBottomBar = () => {
     const isOffline = useOffline();
     const { id } = useCardContext();
     return (
-      <Box mt={90}>
-          <Stack p="md" style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
+      <div style={{ marginTop: '90px' }}>
+          <div style={{ 
+            padding: '16px', 
+            position: "fixed", 
+            bottom: 0, 
+            left: 0, 
+            right: 0, 
+            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px'
+          }}>
           {isOffline && (
-                    <Alert color="red" radius="md" title="Offline">
-                      Brak połączenia z internetem
-                    </Alert>
-                  )}
+            <div style={{ 
+              backgroundColor: '#ffeded', 
+              color: '#c53030',
+              padding: '12px',
+              borderRadius: '8px',
+              border: '1px solid #f56565'
+            }}>
+              <strong>Offline: </strong>
+              Brak połączenia z internetem
+            </div>
+          )}
                   
-                  <Box>
-                    <AskNotificationBar />
-                    <WakeLock />
-                    {id && (<Countdown />)}
-                  </Box>
-          </Stack>
-      </Box>
+          <div>
+            <AskNotificationBar />
+            <WakeLock />
+            {id && (<Countdown />)}
+          </div>
+          </div>
+      </div>
     )
 };

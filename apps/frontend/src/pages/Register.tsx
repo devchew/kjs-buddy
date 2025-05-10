@@ -1,19 +1,6 @@
 import { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import {
-  Container,
-  Title,
-  Paper,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Group,
-  Stack,
-  Alert,
-  Anchor,
-} from '@mantine/core';
 import { TbAlertCircle, TbUserPlus } from 'react-icons/tb';
 
 export const RegisterPage: FunctionComponent = () => {
@@ -59,64 +46,187 @@ export const RegisterPage: FunctionComponent = () => {
   };
   
   return (
-    <Container size="sm" py="xl">
-      <Title ta="center" mb="lg">
+    <div style={{ 
+      maxWidth: '480px', 
+      margin: '0 auto', 
+      padding: '2rem 1rem' 
+    }}>
+      <h1 style={{ 
+        textAlign: 'center', 
+        marginBottom: '1.5rem' 
+      }}>
         Create an Account
-      </Title>
+      </h1>
       
-      <Paper p="lg" shadow="md" radius="md" withBorder>
+      <div style={{ 
+        padding: '1.5rem',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+        borderRadius: '8px',
+        border: '1px solid #e0e0e0',
+        backgroundColor: 'white'
+      }}>
         <form onSubmit={handleSubmit}>
-          <Stack>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {error && (
-              <Alert icon={<TbAlertCircle />} title="Registration Error" color="red">
+              <div style={{ 
+                backgroundColor: '#fee2e2', 
+                color: '#b91c1c',
+                padding: '12px', 
+                borderRadius: '6px',
+                border: '1px solid #fecaca'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <TbAlertCircle />
+                  <strong>Registration Error</strong>
+                </div>
                 {error}
-              </Alert>
+              </div>
             )}
             
-            <TextInput
-              label="Email"
-              placeholder="Your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <div>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '6px', 
+                fontWeight: 500 
+              }}>
+                Email
+              </label>
+              <input 
+                type="email"
+                style={{ 
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
             
-            <PasswordInput
-              label="Password"
-              placeholder="Create a password (min. 6 characters)"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Password
+              </label>
+              <input 
+                type="password"
+                style={{ 
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
+                placeholder="Create a password (min. 6 characters)"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
             
-            <PasswordInput
-              label="Confirm Password"
-              placeholder="Confirm your password"
-              value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
-              required
-            />
+            <div>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '6px',
+                fontWeight: 500
+              }}>
+                Confirm Password
+              </label>
+              <input 
+                type="password"
+                style={{ 
+                  width: '100%',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid #e0e0e0',
+                  fontSize: '1rem'
+                }}
+                placeholder="Confirm your password"
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                required
+              />
+            </div>
             
-            <Button 
-              fullWidth 
+            <button 
               type="submit" 
-              loading={isSubmitting}
-              leftSection={<TbUserPlus size={20} />}
+              disabled={isSubmitting}
+              style={{
+                width: '100%',
+                padding: '10px 16px',
+                backgroundColor: '#228be6',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontSize: '1rem',
+                marginTop: '8px'
+              }}
             >
-              Register
-            </Button>
-          </Stack>
+              {isSubmitting ? (
+                <>
+                  <div style={{
+                    width: '20px',
+                    height: '20px',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    borderTopColor: 'white',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }} />
+                  <style>{`
+                    @keyframes spin {
+                      to {
+                        transform: rotate(360deg);
+                      }
+                    }
+                  `}</style>
+                  <span>Registering...</span>
+                </>
+              ) : (
+                <>
+                  <TbUserPlus size={20} />
+                  <span>Register</span>
+                </>
+              )}
+            </button>
+          </div>
         </form>
-      </Paper>
+      </div>
       
-      <Group justify="center" mt="md">
-        <Text size="sm">
+      <div style={{ 
+        textAlign: 'center', 
+        marginTop: '1rem'
+      }}>
+        <p style={{ fontSize: '0.875rem' }}>
           Already have an account?{' '}
-          <Anchor component="button" onClick={() => navigate('/login')} fw={500}>
+          <button 
+            onClick={() => navigate('/login')} 
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              color: '#228be6',
+              fontWeight: 500,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontSize: '0.875rem'
+            }}
+          >
             Log in
-          </Anchor>
-        </Text>
-      </Group>
-    </Container>
+          </button>
+        </p>
+      </div>
+    </div>
   );
 };

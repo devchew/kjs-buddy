@@ -12,11 +12,6 @@
     "generate-api": "openapi-typescript http://localhost:3000/api/docs-json -o ./src/api/endpoints.ts"
   },
   "dependencies": {
-    "@mantine/core": "^7.17.5",
-    "@mantine/dates": "^7.17.5",
-    "@mantine/form": "^7.17.5",
-    "@mantine/hooks": "^7.17.5",
-    "@mantine/notifications": "^7.17.5",
     "@types/uuid": "^10.0.0",
     "dayjs": "^1.11.13",
     "openapi-fetch": "^0.13.5",
