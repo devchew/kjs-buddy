@@ -3,7 +3,7 @@ import { useHttpClient } from "../hooks/useHttpClient";
 import { StoredCard } from "../types/CardsStore";
 import { v4 as uuidv4 } from 'uuid';
 import { CardResponse } from "../types/Responses";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 
 const serverCardToStoredCard = (card: CardResponse): StoredCard => {
@@ -23,7 +23,7 @@ const resolveConflictCard = (localCard: StoredCard, serverCard: StoredCard): Sto
   if (serverCardAge > localCardAge ) {
     // Server card is newer, use it
     return serverCard;
-  }  
+  }
 
   return localCard;
 }
@@ -82,13 +82,13 @@ export const useCardsSharedStorage = () => {
           return newCards;
         });
     }, [http, isAuthenticated]);
-    
+
     const createCard = useCallback( (card: Omit<StoredCard, 'id'>): Promise<StoredCard> => {
         const localCards = getLocalCards();
-        const id = uuidv4(); 
+        const id = uuidv4();
         const newCard = { ...card, lastUsed: Date.now(), id };
         const updatedCards = [...localCards, newCard];
-                
+
         if (!isAuthenticated) {
             localStorage.setItem(localStorageKey, JSON.stringify(updatedCards));
             return Promise.resolve(newCard);
@@ -123,19 +123,19 @@ export const useCardsSharedStorage = () => {
             return c;
         });
         localStorage.setItem(localStorageKey, JSON.stringify(updatedCards));
-        
+
         if (!isAuthenticated) {
             return Promise.resolve(card);
         }
 
-        return http.PUT("/cards/{id}", { 
+        return http.PUT("/cards/{id}", {
             body: {
                 ...card.cardInfo,
                 panels: card.panels,
             },
             params: {
                 path: {
-                    id: card.id     
+                    id: card.id
                 }
             }
         })
@@ -161,7 +161,7 @@ export const useCardsSharedStorage = () => {
         if (!isAuthenticated) {
             return Promise.resolve();
         }
-        return http.DELETE("/cards/{id}", { 
+        return http.DELETE("/cards/{id}", {
             params: {
                 path: {
                     id: id
@@ -204,8 +204,8 @@ export const useCardsSharedStorage = () => {
         return Promise.resolve(card);
     }, [http, isAuthenticated]);
 
-    const syncCards = useCallback( (cards: StoredCard[]): Promise<void> => {
-        console.log('Syncing cards with server', cards);
+    const syncCards = useCallback( (_: StoredCard[]): Promise<void> => {
+        // console.log('Syncing cards with server', cards);
         return Promise.resolve();
     }, [http, isAuthenticated]);
 

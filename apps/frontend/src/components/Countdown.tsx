@@ -3,17 +3,20 @@ import './Countdown.css';
 import AnimatedNumber from "react-awesome-animated-number";
 import "react-awesome-animated-number/dist/index.css"
 import { msToSeparateValues, getNowAsMsFrommidnight } from '../helpers/timeParsers.ts';
-import { useCardContext } from '../contexts/CardContext.tsx';
+import { useCardContext } from '@internal/rally-card';
 import { gradientColorBasedOnTime } from '../helpers/gradientColorBasedOnTime.ts';
 import { useNavigate, useMatch } from 'react-router-dom';
+import type { Countdown as CountdownType } from '../types/Countdown.ts';
+import { useBroadcast } from '../hooks/useBroadcast.ts';
 
 
 export const Countdown: FunctionComponent = () => {
+    const { subscribe }  = useBroadcast();
     const isOnCardPage = useMatch('/cards/:id');
     const navigate = useNavigate();
     const [until, setUntil] = useState(0);
-    const { countdown, id } = useCardContext();
-
+    const [countdown, setCountdown] = useState<CountdownType>({toTime: 0, message: ''});
+    const { id } = useCardContext();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -38,10 +41,17 @@ export const Countdown: FunctionComponent = () => {
         seconds
     ] = until > 0 ? msToSeparateValues(until) : [0, 0, 0];
 
+    useEffect(() => {
+        subscribe('countdown', (data) => {
+            console.log('countdown recived', data);
+            setCountdown(data);
+        });
+    }, [subscribe]);
+
     return (
-        <div 
+        <div
           onClick={isOnCardPage ? undefined : () => navigate(`/cards/${id}`)}
-          style={{ 
+          style={{
             backgroundColor: gradientColorBasedOnTime(until),
             padding: '16px',
             borderRadius: '8px',
@@ -56,13 +66,13 @@ export const Countdown: FunctionComponent = () => {
             cursor: isOnCardPage ? 'default' : 'pointer',
           }}
         >
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
               alignItems: 'center'
             }}>
-                <span style={{ 
-                  fontWeight: 600, 
+                <span style={{
+                  fontWeight: 600,
                   color: 'white'
                 }}>
                     {countdown.message}
@@ -71,17 +81,17 @@ export const Countdown: FunctionComponent = () => {
                     <div className="countdown__value">
                         {hours && <AnimatedNumber size={40} value={hours} minDigits={2} />}
                     </div>
-                    <span style={{ 
-                      fontSize: '1.5rem', 
-                      fontWeight: 700, 
+                    <span style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
                       color: 'white'
                     }}>:</span>
                     <div className="countdown__value">
                         {minutes && <AnimatedNumber size={40} value={minutes} minDigits={2} />}
                     </div>
-                    <span style={{ 
-                      fontSize: '1.5rem', 
-                      fontWeight: 700, 
+                    <span style={{
+                      fontSize: '1.5rem',
+                      fontWeight: 700,
                       color: 'white'
                     }}>:</span>
                     <div className="countdown__value">

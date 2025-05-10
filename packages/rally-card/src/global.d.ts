@@ -5,5 +5,5 @@ declare module '*.css' {
 
 declare module '*.png' {
     const src: string;
-    export default src;
+    export default `data:image/png;base64, ${src}`;
 }

@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCardContext } from '../contexts/CardContext';
+import { useCardContext } from '@internal/rally-card';
 import { useCardsStore } from '../contexts/CardsStoreContext';
 import { CardInfo, CardPanel } from '../types/Card';
 import monte from "../assets/montecalvaria.png";
@@ -16,11 +16,11 @@ export const CardCreatePage: FunctionComponent = () => {
   const { updateCardInfo, updatePanels } = useCardContext();
   const { saveCard } = useCardsStore();
   const { predefinedCards, loading: loadingTemplates } = usePredefinedCards();
-  
+
   // Track creation mode (selecting template or entering details)
   const [creationMode, setCreationMode] = useState<CardCreationMode>('template');
   const [selectedTemplate, setSelectedTemplate] = useState<PredefinedCard | null>(null);
-  
+
   // Default values for the card info
   const [cardInfo, setCardInfo] = useState<CardInfo>({
     name: '',
@@ -30,10 +30,10 @@ export const CardCreatePage: FunctionComponent = () => {
     logo: monte,
     sponsorLogo: pzm,
   });
-  
+
   // Default single panel to start with
   const [panelCount, setPanelCount] = useState(1);
-  
+
   useEffect(() => {
     if (selectedTemplate) {
       // Ensure panels array exists and set panel count
@@ -41,14 +41,14 @@ export const CardCreatePage: FunctionComponent = () => {
       setPanelCount(panelsCount);
     }
   }, [selectedTemplate]);
-  
+
   const handleCardInfoChange = (name: string, value: string | number) => {
     setCardInfo({
       ...cardInfo,
       [name]: value,
     });
   };
-  
+
   const handleTemplateSelect = (template: PredefinedCard) => {
     setSelectedTemplate(template);
     // Update cardInfo using template properties directly since cardInfo is no longer a nested property
@@ -63,25 +63,25 @@ export const CardCreatePage: FunctionComponent = () => {
     setPanelCount(template.panels?.length || 1);
     setCreationMode('details');
   };
-  
+
   const handleStartBlank = () => {
     setSelectedTemplate(null);
     setCreationMode('details');
   };
-  
+
   const handleBackToTemplates = () => {
     setCreationMode('template');
   };
-  
+
   const handlePanelCountChange = (value: number | string) => {
     setPanelCount(typeof value === 'number' ? value : parseInt(value) || 1);
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     let panels: CardPanel[] = [];
-    
+
     // Generate panels based on the panel count
     for (let i = 1; i <= panelCount; i++) {
       panels.push({
@@ -96,11 +96,11 @@ export const CardCreatePage: FunctionComponent = () => {
         arrivalTime: 0,
       });
     }
-    
+
     // Update card info and panels in context
     updateCardInfo(cardInfo);
     updatePanels(panels);
-    
+
     // Save to the cards store
     saveCard(cardInfo, panels).then(({id}) => {
       // Navigate to the card view after saving
@@ -112,9 +112,9 @@ export const CardCreatePage: FunctionComponent = () => {
   if (creationMode === 'template') {
     return (
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: '1.5rem'
         }}>
@@ -136,21 +136,21 @@ export const CardCreatePage: FunctionComponent = () => {
           </button>
           <h2>Utwórz nową kartę</h2>
         </div>
-        
+
         <div style={{ marginBottom: '2rem' }}>
           <h3>Wybierz szablon</h3>
           <p style={{ color: '#666' }}>
             Rozpocznij od predefiniowanego szablonu lub utwórz od podstaw.
           </p>
         </div>
-        
-        <div style={{ 
+
+        <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
           gap: '1rem'
         }}>
           {/* Blank card option */}
-          <div 
+          <div
             style={{
               border: '1px solid #e0e0e0',
               borderRadius: '8px',
@@ -160,8 +160,8 @@ export const CardCreatePage: FunctionComponent = () => {
             }}
             onClick={handleStartBlank}
           >
-            <div style={{ 
-              paddingTop: '1.5rem', 
+            <div style={{
+              paddingTop: '1.5rem',
               paddingBottom: '1.5rem',
               display: 'flex',
               justifyContent: 'center'
@@ -178,19 +178,19 @@ export const CardCreatePage: FunctionComponent = () => {
                 <TbPlus size={24} color="#495057" />
               </div>
             </div>
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center'
             }}>
-              <p style={{ 
+              <p style={{
                 fontWeight: 700,
                 margin: '0 0 8px 0'
               }}>
                 Pusta karta
               </p>
-              <p style={{ 
-                fontSize: '0.875rem', 
+              <p style={{
+                fontSize: '0.875rem',
                 color: '#666',
                 textAlign: 'center',
                 margin: 0
@@ -199,7 +199,7 @@ export const CardCreatePage: FunctionComponent = () => {
               </p>
             </div>
           </div>
-          
+
           {/* Predefined templates */}
           {loadingTemplates ? (
             <div style={{
@@ -212,7 +212,7 @@ export const CardCreatePage: FunctionComponent = () => {
             </div>
           ) : (
             predefinedCards.map(template => (
-              <div 
+              <div
                 key={template.id}
                 style={{
                   border: '1px solid #e0e0e0',
@@ -226,14 +226,14 @@ export const CardCreatePage: FunctionComponent = () => {
                 onClick={() => handleTemplateSelect(template)}
               >
                 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>{template.name}</h4>
-                <p style={{ 
-                  fontSize: '0.875rem', 
-                  color: '#666', 
+                <p style={{
+                  fontSize: '0.875rem',
+                  color: '#666',
                   marginBottom: '1.5rem',
                   flex: 1
                 }}>{template.description}</p>
-                <div style={{ 
-                  display: 'flex', 
+                <div style={{
+                  display: 'flex',
                   justifyContent: 'space-between',
                   marginTop: 'auto'
                 }}>
@@ -254,13 +254,13 @@ export const CardCreatePage: FunctionComponent = () => {
       </div>
     );
   }
-  
+
   // Card details form (either blank or pre-filled from template)
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '1.5rem'
       }}>
@@ -285,7 +285,7 @@ export const CardCreatePage: FunctionComponent = () => {
           {selectedTemplate ? `Tworzenie karty ${selectedTemplate.name}` : 'Tworzenie nowej karty'}
         </h2>
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div style={{
           border: '1px solid #e0e0e0',
@@ -296,21 +296,21 @@ export const CardCreatePage: FunctionComponent = () => {
           background: 'white'
         }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Informacje o karcie</h3>
-          <div style={{ 
+          <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '1rem'
           }}>
             <div>
-              <label style={{ 
-                display: 'block', 
+              <label style={{
+                display: 'block',
                 marginBottom: '6px',
                 fontWeight: 500
               }}>
                 Nazwa wydarzenia
               </label>
               <input
-                type="text" 
+                type="text"
                 id="name"
                 name="name"
                 style={{
@@ -325,17 +325,17 @@ export const CardCreatePage: FunctionComponent = () => {
                 required
               />
             </div>
-            
+
             <div>
-              <label style={{ 
-                display: 'block', 
+              <label style={{
+                display: 'block',
                 marginBottom: '6px',
                 fontWeight: 500
               }}>
                 Data wydarzenia
               </label>
               <input
-                type="date" 
+                type="date"
                 id="date"
                 name="date"
                 style={{
@@ -350,17 +350,17 @@ export const CardCreatePage: FunctionComponent = () => {
                 required
               />
             </div>
-            
+
             <div>
-              <label style={{ 
-                display: 'block', 
+              <label style={{
+                display: 'block',
                 marginBottom: '6px',
                 fontWeight: 500
               }}>
                 Numer karty
               </label>
               <input
-                type="number" 
+                type="number"
                 id="cardNumber"
                 name="cardNumber"
                 min="1"
@@ -376,17 +376,17 @@ export const CardCreatePage: FunctionComponent = () => {
                 required
               />
             </div>
-            
+
             <div>
-              <label style={{ 
-                display: 'block', 
+              <label style={{
+                display: 'block',
                 marginBottom: '6px',
                 fontWeight: 500
               }}>
                 Numer auta
               </label>
               <input
-                type="number" 
+                type="number"
                 id="carNumber"
                 name="carNumber"
                 min="1"
@@ -404,7 +404,7 @@ export const CardCreatePage: FunctionComponent = () => {
             </div>
           </div>
         </div>
-        
+
         <div style={{
           border: '1px solid #e0e0e0',
           borderRadius: '8px',
@@ -414,15 +414,15 @@ export const CardCreatePage: FunctionComponent = () => {
         }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Etapy</h3>
           <div style={{ marginBottom: '1rem' }}>
-            <label style={{ 
-              display: 'block', 
+            <label style={{
+              display: 'block',
               marginBottom: '6px',
               fontWeight: 500
             }}>
               Liczba paneli (punkty PKC)
             </label>
             <input
-              type="number" 
+              type="number"
               id="panelCount"
               min="1"
               max="10"
@@ -438,12 +438,12 @@ export const CardCreatePage: FunctionComponent = () => {
               onChange={(e) => handlePanelCountChange(e.target.value)}
             />
           </div>
-          
+
           {selectedTemplate && selectedTemplate.panels && (
             <div style={{ marginTop: '1rem' }}>
               <p style={{ marginBottom: '0.5rem' }}>
-                {panelCount > selectedTemplate.panels.length 
-                  ? `Dodano ${panelCount - selectedTemplate.panels.length} dodatkowych paneli do szablonu.` 
+                {panelCount > selectedTemplate.panels.length
+                  ? `Dodano ${panelCount - selectedTemplate.panels.length} dodatkowych paneli do szablonu.`
                   : panelCount < selectedTemplate.panels.length
                     ? `Usunięto ${selectedTemplate.panels.length - panelCount} paneli z szablonu.`
                     : 'Używanie paneli zgodnie z szablonem.'}
@@ -454,9 +454,9 @@ export const CardCreatePage: FunctionComponent = () => {
                 backgroundColor: '#f8f9fa',
                 borderRadius: '4px'
               }}>
-                <ul style={{ 
-                  listStyle: 'none', 
-                  padding: 0, 
+                <ul style={{
+                  listStyle: 'none',
+                  padding: 0,
                   margin: 0,
                   display: 'flex',
                   flexDirection: 'column',
@@ -464,8 +464,8 @@ export const CardCreatePage: FunctionComponent = () => {
                 }}>
                   {Array.from({length: Math.min(panelCount, selectedTemplate.panels.length)}).map((_, index) => (
                     <li key={index} style={{ padding: '0.25rem 0' }}>
-                      <div style={{ 
-                        display: 'flex', 
+                      <div style={{
+                        display: 'flex',
                         justifyContent: 'space-between'
                       }}>
                         <span>PKC{index + 1}: <strong>{index === 0 ? 'Start' : `PS${index}`}</strong></span>
@@ -482,10 +482,10 @@ export const CardCreatePage: FunctionComponent = () => {
             </div>
           )}
         </div>
-        
-        <div style={{ 
+
+        <div style={{
           display: 'flex',
-          justifyContent: 'space-between' 
+          justifyContent: 'space-between'
         }}>
           <button
             type="button"
@@ -501,8 +501,8 @@ export const CardCreatePage: FunctionComponent = () => {
           >
             Wstecz
           </button>
-          
-          <button 
+
+          <button
             type="submit"
             style={{
               padding: '8px 16px',

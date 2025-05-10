@@ -2,9 +2,9 @@ import { FunctionComponent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCardsStore } from "../contexts/CardsStoreContext";
 import { useAuth } from "../contexts/AuthContext";
-import { Header } from "../components/Header";
+import { Header } from "@internal/rally-card";
 import { TbLogin, TbUser, TbUserPlus } from "react-icons/tb";
-import { useCardContext } from "../contexts/CardContext";
+import { useCardContext } from "@internal/rally-card";
 import "./Home.css";
 
 export const HomePage: FunctionComponent = () => {
@@ -54,7 +54,6 @@ export const HomePage: FunctionComponent = () => {
           <div className="card">
             <div className="card-header">
               <p className="card-title">Aktywna karta</p>
-              <hr className="card-divider" />
             </div>
             <Link to={`/cards/${currentCardId}`} style={{ textDecoration: 'none' }}>
               <div className="card-content">
@@ -68,7 +67,6 @@ export const HomePage: FunctionComponent = () => {
           <div className="card">
             <div className="card-header">
               <p className="card-title">Ostatnie karty</p>
-              <hr className="card-divider" />
             </div>
             <div className="recent-cards">
               {recentCards.map((card) => (

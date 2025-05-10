@@ -3,8 +3,8 @@ import type { Card, CardInfo, CardPanel } from '../types/Card.ts';
 
 export type CardContextType = Card & {
     updateCard: (card: Card) => void;
-    updateCardInfo: (cardInfo: CardInfo) => void;
-    updatePanels: (panels: CardPanel[]) => void;
+    updateCardInfo: (cardInfo?: CardInfo) => void;
+    updatePanels: (panels?: CardPanel[]) => void;
     updatePanelByNumber: (panelNumber: number, panel: CardPanel) => void;
     addPanel: () => void;
     deletePanel: (panelNumber: number) => void;
@@ -17,10 +17,10 @@ export type CardContextType = Card & {
 
 const defaultCardContext: CardContextType = {
     cardInfo: {
-        name: 'Rally example',
+        name: '---',
         cardNumber: 1,
-        carNumber: 69,
-        date: '2021-09-01',
+        carNumber: 0,
+        date: new Date().toISOString().split('T')[0],
         logo: '',
         sponsorLogo: '',
     },
@@ -56,8 +56,8 @@ export const CardProvider: FunctionComponent<PropsWithChildren> = ({ children })
     const [id, setId] = useState<string>(defaultCardContext.id);
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const updateCardInfo = (cardInfo: CardInfo) => setCardInfo(cardInfo);
-    const updatePanels = (panels: CardPanel[]) => setPanels(panels);
+    const updateCardInfo = (cardInfo?: CardInfo) => setCardInfo(cardInfo || defaultCardContext.cardInfo);
+    const updatePanels = (panels?: CardPanel[]) => setPanels(panels || defaultCardContext.panels);
     const updatePanelByNumber = (panelNumber: number, panel: CardPanel) => setPanels(panels.map((p) => p.number === panelNumber ? panel : p));
 
     const updateCard = (card: Card) => {

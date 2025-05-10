@@ -10,7 +10,7 @@ interface LongPressButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: string;
 }
 
-export function MantineLongPressButton({
+export function LongPressButton({
   onLongPress,
   delay = 800,
   children,
@@ -37,20 +37,20 @@ export function MantineLongPressButton({
 
     const intervalTime = 10; // Update every 10ms for smooth animation
     const startTime = Date.now();
-    
+
     const intervalId = window.setInterval(() => {
       const elapsedTime = Date.now() - startTime;
       const newProgress = Math.min((elapsedTime / delay) * 100, 100);
-      
+
       setProgress(newProgress);
-      
+
       if (newProgress >= 100) {
         clearInterval(intervalId);
         onLongPress();
         setPressing(false);
       }
     }, intervalTime);
-    
+
     setTimer(intervalId);
   };
 
@@ -80,10 +80,10 @@ export function MantineLongPressButton({
       red: { backgroundColor: variant === 'filled' ? '#e03131' : 'transparent', color: variant === 'filled' ? 'white' : '#e03131', borderColor: '#e03131' },
       gray: { backgroundColor: variant === 'filled' ? '#495057' : 'transparent', color: variant === 'filled' ? 'white' : '#495057', borderColor: '#495057' }
     };
-    
+
     const defaultColor = { backgroundColor: variant === 'filled' ? '#228be6' : 'transparent', color: variant === 'filled' ? 'white' : '#228be6', borderColor: '#228be6' };
     const selectedColor = colorMap[color] || defaultColor;
-    
+
     return {
       ...selectedColor,
       border: variant !== 'filled' ? `1px solid ${selectedColor.borderColor || selectedColor.color}` : 'none',
@@ -114,7 +114,7 @@ export function MantineLongPressButton({
         {children}
       </button>
       {pressing && (
-        <div 
+        <div
           style={{
             position: 'absolute',
             bottom: 0,
@@ -126,12 +126,12 @@ export function MantineLongPressButton({
             overflow: 'hidden'
           }}
         >
-          <div 
+          <div
             style={{
               height: '100%',
               width: `${progress}%`,
-              backgroundColor: color === 'green' ? '#2b8a3e' : 
-                              color === 'red' ? '#e03131' : 
+              backgroundColor: color === 'green' ? '#2b8a3e' :
+                              color === 'red' ? '#e03131' :
                               color === 'gray' ? '#495057' : '#228be6',
               transition: 'width 0.01s linear'
             }}

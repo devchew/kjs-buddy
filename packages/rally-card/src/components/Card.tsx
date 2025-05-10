@@ -1,11 +1,10 @@
-import type { FunctionComponent } from 'react';
 import { Header } from './Header.tsx';
 import { Panel } from './Panel.tsx';
 import "./Card.css"
 import { useCardContext } from '../contexts/CardContext.tsx';
 import { PanelProvider } from '../contexts/PanelContext.tsx';
 
-export const Card: FunctionComponent = () => {
+export const Card = () => {
     const { panels, updatePanelByNumber } = useCardContext();
 
     return (
