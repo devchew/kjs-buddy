@@ -5,10 +5,31 @@ volumes:
     driver: local
 
 services:
+#   backend:
+#     build:
+#       context: ./dist/backend
+#       dockerfile: Dockerfile
+#     container_name: backend
+#     restart: unless-stopped
+#     ports:
+#       - 3000:3000
+#     volumes:
+#       - database:/usr/src/app/data
+
+#   frontend:
+#     build:
+#       context: ./dist/frontend
+#       dockerfile: Dockerfile
+#     container_name: frontend
+#     restart: unless-stopped
+#     ports:
+#       - 8888:80
+#     environment:
+#       - API_URL=http://backend:3000
+
+
   backend:
-    build:
-      context: ./dist/backend
-      dockerfile: Dockerfile
+    image: devchew/kjsbuddy-backend:master
     container_name: backend
     restart: unless-stopped
     ports:
@@ -17,12 +38,10 @@ services:
       - database:/usr/src/app/data
 
   frontend:
-    build:
-      context: ./dist/frontend
-      dockerfile: Dockerfile
+    image: devchew/kjsbuddy-frontend:master
     container_name: frontend
     restart: unless-stopped
     ports:
       - 8888:80
     environment:
-      - API_URL=http://backend:3000
+      - API_URL=http://localhost:3000

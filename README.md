@@ -1,5 +1,8 @@
 # KJS-Buddy
 
+[try it here](https://rajdex.pl/)
+> it might not work sometimes because of the server being cheap or down
+
 KJS-Buddy is a card management application that allows users to create, store, and manage cards across devices. The application includes authentication features, card templates, and user-specific card management.
 
 ![countdown](./docs/countdown.gif)
