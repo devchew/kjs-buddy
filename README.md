@@ -113,4 +113,10 @@ pnpm check-types # Run TypeScript type checking
 
 ## Deployment
 
-tbd
+### test locally
+
+1. `pnpm install --frozen-lockfile`
+1. `pnpm build`
+1. `pnpm deploy --filter=./apps/backend --prod ./dist/backend`
+1. `pnpm deploy --filter=./apps/frontend --prod ./dist/frontend`
+1. `docker compose up`
