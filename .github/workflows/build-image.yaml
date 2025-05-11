@@ -32,6 +32,9 @@ jobs:
       - name: install packages
         run: pnpm install --frozen-lockfile
 
+      - name: prepare dotenv
+        run: cp ./apps/frontend/.env.substr ./apps/frontend/.env
+
       - name: build
         run: pnpm build
 
@@ -70,6 +73,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend
+          path: ./frontend
+        
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -117,6 +122,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: backend
+          path: ./backend
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
@@ -134,7 +140,7 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: ./frontend
+          context: ./backend
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
