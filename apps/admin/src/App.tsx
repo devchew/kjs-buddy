@@ -3,9 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MainHeader } from './components/MainHeader.tsx';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
-import { CardPage } from './pages/Card';
-import { CardCreatePage } from './pages/CardCreate';
-import { CardsListPage } from './pages/CardsList.tsx';
 import { HomePage } from './pages/Home';
 import { LoginPage } from './pages/Login';
 import { ProfilePage } from './pages/Profile';
@@ -47,23 +44,7 @@ function AppRoutes() {
               <HomePage />
             </ProtectedRoute>
           } />
-          <Route path="/create" element={
-            <ProtectedRoute>
-              <CardCreatePage />
-            </ProtectedRoute>
-          } />
-          <Route path="/cards" element={
-            <ProtectedRoute>
-              <CardsListPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/cards/:id" element={
-            <ProtectedRoute>
-              <CardPage />
-            </ProtectedRoute>
-          } />
 
-          {/* Template routes */}
           <Route path="/templates" element={
             <ProtectedRoute>
               <TemplatesListPage />

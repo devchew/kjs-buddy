@@ -33,7 +33,6 @@ export const MainHeader = () => {
             {isAuthenticated && (
                 <nav className={style.navigation}>
                     <Link to="/" className={style.navLink}>Home</Link>
-                    <Link to="/cards" className={style.navLink}>Cards</Link>
                     <Link to="/templates" className={style.navLink}>Templates</Link>
                 </nav>
             )}
