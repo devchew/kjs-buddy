@@ -25,6 +25,19 @@
   margin-top: 20px;
 }
 
+.logoSection {
+  margin-top: 16px;
+}
+
+.logoImage {
+  max-width: 100px;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px;
+  background-color: white;
+}
+
 .jsonDisplay {
   background-color: #f5f5f5;
   padding: 15px;
@@ -32,6 +45,30 @@
   overflow-x: auto;
   white-space: pre-wrap;
   font-family: monospace;
+}
+
+.panelsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.panelItem {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.panelHeader {
+  background-color: #f5f5f5;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.panelBody {
+  padding: 15px;
 }
 
 .error {

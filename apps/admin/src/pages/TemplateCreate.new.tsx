@@ -6,42 +6,26 @@ import { useAuth } from '../contexts/AuthContext';
 import { FormField } from '../components/FormField';
 import style from './TemplateForm.module.css';
 
-import { CardPanel } from '../types/Card';
-import monte from "../assets/montecalvaria.png";
-import pzm from "../assets/pzmot.png";
+interface PanelData {
+  number: number;
+  name: string;
+}
 
 interface TemplateFormData {
   name: string;
   description: string;
-  cardNumber: number;
-  carNumber: number;
   date: string;
-  logo: string;
-  sponsorLogo: string;
   isPublic: boolean;
-  panels: CardPanel[];
+  panels: PanelData[];
 }
 
-export const TemplateCreatePage: FunctionComponent = () => {  const [formData, setFormData] = useState<TemplateFormData>({
+export const TemplateCreatePage: FunctionComponent = () => {
+  const [formData, setFormData] = useState<TemplateFormData>({
     name: '',
     description: '',
-    cardNumber: 1,
-    carNumber: 1,
     date: new Date().toISOString().split('T')[0],
-    logo: monte,
-    sponsorLogo: pzm,
     isPublic: false,
-    panels: [{ 
-      number: 1, 
-      name: '', 
-      finishTime: 0,
-      provisionalStartTime: 34200000, // 9:30 AM in milliseconds
-      actualStartTime: 34200000,
-      drivingTime: 0,
-      resultTime: 0,
-      nextPKCTime: 0,
-      arrivalTime: 0
-    }],
+    panels: [{ number: 1, name: '' }],
   });
   
   const [panelCount, setPanelCount] = useState(1);
@@ -61,29 +45,20 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
+
   // Handle panel count change
   const handlePanelCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCount = parseInt(e.target.value, 10) || 1;
     setPanelCount(newCount);
     
     // Update panels array
-    const updatedPanels: CardPanel[] = [];
+    const updatedPanels: PanelData[] = [];
     for (let i = 1; i <= newCount; i++) {
       // Keep existing panel data if available
       const existingPanel = formData.panels.find(p => p.number === i);
       updatedPanels.push(
         existingPanel || 
-        { 
-          number: i, 
-          name: i === 1 ? '' : `PS${i-1}`,
-          finishTime: 0,
-          provisionalStartTime: i === 1 ? 34200000 : 0, // 9:30 AM in milliseconds for first panel
-          actualStartTime: i === 1 ? 34200000 : 0,
-          drivingTime: 0,
-          resultTime: 0,
-          nextPKCTime: 0,
-          arrivalTime: 0
-        }
+        { number: i, name: i === 1 ? '' : `PS${i-1}` }
       );
     }
     
@@ -92,6 +67,7 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
       panels: updatedPanels
     }));
   };
+
   // Handle panel name change
   const handlePanelNameChange = (index: number, value: string) => {
     const updatedPanels = [...formData.panels];
@@ -105,23 +81,22 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
       panels: updatedPanels
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // Create the template data matching the server's expected format
+      // Create the template data
       const templateData = {
         name: formData.name,
         description: formData.description,
-        cardNumber: formData.cardNumber,
-        carNumber: formData.carNumber,
         date: formData.date,
-        logo: formData.logo,
-        sponsorLogo: formData.sponsorLogo,
         isPublic: formData.isPublic,
-        panels: formData.panels
+        content: JSON.stringify({
+          panels: formData.panels
+        })
       };
 
       const response = await authClient.POST('/cards/templates/create', {
@@ -149,7 +124,8 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
       
       <Panel>
         <form onSubmit={handleSubmit} className={style.form}>
-          {/* Basic Template Information */}          <div className={style.formSection}>
+          {/* Basic Template Information */}
+          <div className={style.formSection}>
             <h3>Template Information</h3>
             
             <FormField
@@ -175,36 +151,6 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
             
             <div className={style.formRow}>
               <div className={style.formGroup}>
-                <label htmlFor="cardNumber">Card Number</label>
-                <input
-                  type="number"
-                  id="cardNumber"
-                  name="cardNumber"
-                  value={formData.cardNumber}
-                  onChange={handleInputChange}
-                  className={style.input}
-                  min={1}
-                  required
-                />
-              </div>
-              
-              <div className={style.formGroup}>
-                <label htmlFor="carNumber">Car Number</label>
-                <input
-                  type="number"
-                  id="carNumber"
-                  name="carNumber"
-                  value={formData.carNumber}
-                  onChange={handleInputChange}
-                  className={style.input}
-                  min={1}
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className={style.formRow}>
-              <div className={style.formGroup}>
                 <label htmlFor="date">Date</label>
                 <input
                   type="date"
@@ -213,7 +159,6 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
                   value={formData.date}
                   onChange={handleInputChange}
                   className={style.input}
-                  required
                 />
               </div>
               
@@ -228,26 +173,6 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
                   />
                   Public Template
                 </label>
-              </div>
-            </div>
-            
-            {/* Logo selection would ideally be an upload or selection component */}
-            {/* For now using default logos */}
-            <div className={style.formRow}>
-              <div className={style.formGroup}>
-                <label>Event Logo</label>
-                <div className={style.logoPreview}>
-                  <img src={formData.logo} alt="Event Logo" height="40" />
-                  <span>Using default event logo</span>
-                </div>
-              </div>
-              
-              <div className={style.formGroup}>
-                <label>Sponsor Logo</label>
-                <div className={style.logoPreview}>
-                  <img src={formData.sponsorLogo} alt="Sponsor Logo" height="40" />
-                  <span>Using default sponsor logo</span>
-                </div>
               </div>
             </div>
           </div>

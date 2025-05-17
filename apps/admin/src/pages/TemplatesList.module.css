@@ -42,6 +42,31 @@
   color: #777;
 }
 
+.templateMeta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.panelCount {
+  background-color: #667eea;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.publicBadge {
+  background-color: var(--primary, #333);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .actions {
   display: flex;
   gap: 10px;

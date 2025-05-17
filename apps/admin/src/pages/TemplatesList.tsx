@@ -4,13 +4,23 @@ import { Panel } from '../components/Panel';
 import { Button, LinkButton } from '../components/Button';
 import { useAuth } from '../contexts/AuthContext';
 import style from './TemplatesList.module.css';
+import { CardPanel } from '../types/Card';
 
 interface Template {
   id: string;
   name: string;
   description: string;
+  date: string;
+  isPublic: boolean;
+  panels: Array<any>; // Ensure panels is treated as an array
   createdAt: string;
   updatedAt: string;
+  cardNumber?: number;
+  carNumber?: number;
+  logo?: string;
+  sponsorLogo?: string;
+  userId?: string;
+  [key: string]: any; // Add index signature to allow dynamic property access
 }
 
 export const TemplatesListPage = () => {
@@ -18,20 +28,70 @@ export const TemplatesListPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { authClient } = useAuth();
-
-  useEffect(() => {
-    const fetchTemplates = async () => {
+    // Helper function to get panel count, handling different API response structures
+  const getPanelCount = (template: any): number => {
+    if (!template) return 0;
+    
+    // If template.panels is an array (most common case)
+    if (Array.isArray(template.panels)) {
+      return template.panels.length;
+    }
+    
+    // Try nested structure where panels might be inside a 'card' property
+    if (template.card && Array.isArray(template.card.panels)) {
+      return template.card.panels.length;
+    }
+    
+    // In some nested structures, we need to check if the panels might be a record/object with numeric keys
+    if (template.panels && typeof template.panels === 'object' && !Array.isArray(template.panels)) {
+      return Object.keys(template.panels).length;
+    }
+    
+    // Check if any property contains an array of objects with 'number' property (typical for panels)
+    for (const key of Object.keys(template)) {
+      const value = template[key];
+      if (value && typeof value === 'object') {
+        if (Array.isArray(value) && value.length > 0 && value[0] && typeof value[0] === 'object' && 'number' in value[0]) {
+          return value.length;
+        }
+      }
+    }
+    
+    return 0;
+  };
+  useEffect(() => {    
+    const fetchTemplates = async () => {      
       try {
         setIsLoading(true);
-        const response = await authClient.GET('/cards/templates/all');
-        if (response.error) {
-          throw new Error('Failed to fetch templates');
+        const { data, error } = await authClient.GET('/cards/templates/all');
+        if (error) {
+          console.error('API Error:', error);
+          throw new Error(`Failed to fetch templates: ${error}`);
         }
-        setTemplates(response.data || []);
+        
+        const templates = data || [];
+        
+        // Enhanced debugging for panel structure
+        console.log('Fetched templates count:', templates.length);
+        if (templates.length > 0) {
+          const firstTemplate = templates[0];
+          console.log('First template structure:', firstTemplate);
+          
+          // Test our panel counting function
+          const panelCount = getPanelCount(firstTemplate);
+          console.log('Panel count using our function:', panelCount);
+          
+          // Always log all template structures to help debug
+          templates.forEach((template, index) => {
+            console.log(`Template ${index} - ID: ${template.id}, Name: ${template.name}, Panels Count: ${getPanelCount(template)}`);
+          });
+        }
+        
+        setTemplates(templates);
         setError(null);
       } catch (err) {
         setError('Error fetching templates. Please try again.');
-        console.error(err);
+        console.error('Fetch error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -39,15 +99,20 @@ export const TemplatesListPage = () => {
 
     fetchTemplates();
   }, [authClient]);
-
   const handleDelete = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this template?')) {
       return;
     }
 
     try {
-      const response = await authClient.DELETE(`/cards/templates/${id}`);
-      if (response.error) {
+      const { error } = await authClient.DELETE("/cards/templates/{id}", {
+        params: {
+          path: {
+            id
+          }
+        }
+      });
+      if (error) {
         throw new Error('Failed to delete template');
       }
       setTemplates(templates.filter(t => t.id !== id));
@@ -77,12 +142,18 @@ export const TemplatesListPage = () => {
             <LinkButton to="/templates/create" primary>Create Template</LinkButton>
           </Panel>
         ) : (
-          templates.map((template) => (
+          templates.map((template) => (            
             <Panel key={template.id}>
               <div className={style.templateItem}>
                 <div className={style.templateInfo}>
                   <h2>{template.name}</h2>
-                  <p>{template.description}</p>
+                  <p>{template.description}</p>                    <div className={style.templateMeta}>
+                    <span>{template.date}</span>
+                    {template.isPublic && <span className={style.publicBadge}>Public</span>}
+                    <span className={style.panelCount}>
+                      Panels: {getPanelCount(template)}
+                    </span>
+                  </div>
                   <small>Last updated: {new Date(template.updatedAt).toLocaleString()}</small>
                 </div>
                 <div className={style.actions}>
