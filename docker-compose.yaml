@@ -39,12 +39,11 @@ services:
       - database:/usr/src/app/data
     environment:
       - CORS_ORIGINS=https://rajdex.pl
-
   frontend:
     image: devchew/kjsbuddy-frontend:master
     container_name: frontend
     restart: unless-stopped
     ports:
-      - 8888:80
+      - 8888:8080
     environment:
-      - API_URL=http://localhost:3000
+      - API_URL=http://backend:3000
