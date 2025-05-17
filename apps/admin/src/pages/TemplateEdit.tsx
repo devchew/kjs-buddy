@@ -6,8 +6,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { FormField } from '../components/FormField';
 import style from './TemplateForm.module.css';
 import { CardPanel } from '../types/Card';
-import monte from "../assets/montecalvaria.png";
-import pzm from "../assets/pzmot.png";
+import monte from "../assets/montecalvaria.png?inline";
+import pzm from "../assets/pzmot.png?inline";
 
 interface TemplateFormData {
   name: string;
@@ -111,10 +111,8 @@ export const TemplateEditPage = () => {  const [formData, setFormData] = useStat
           }],
         });
         
-        setPanelCount(typedPanels.length || 1);
-      } catch (err: any) {
+        setPanelCount(typedPanels.length || 1);      } catch (err: any) {
         setError(err.message || 'Failed to load template');
-        console.error(err);
       } finally {
         setIsLoading(false);
       }
@@ -214,10 +212,8 @@ export const TemplateEditPage = () => {  const [formData, setFormData] = useStat
         throw new Error('Failed to update template');
       }
 
-      navigate('/templates');
-    } catch (err: any) {
+      navigate('/templates');    } catch (err: any) {
       setError(err.message || 'Failed to update template. Please try again.');
-      console.error(err);
     } finally {
       setIsSubmitting(false);
     }

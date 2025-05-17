@@ -65,33 +65,14 @@ export const TemplatesListPage = () => {
         setIsLoading(true);
         const { data, error } = await authClient.GET('/cards/templates/all');
         if (error) {
-          console.error('API Error:', error);
           throw new Error(`Failed to fetch templates: ${error}`);
         }
         
         const templates = data || [];
-        
-        // Enhanced debugging for panel structure
-        console.log('Fetched templates count:', templates.length);
-        if (templates.length > 0) {
-          const firstTemplate = templates[0];
-          console.log('First template structure:', firstTemplate);
-          
-          // Test our panel counting function
-          const panelCount = getPanelCount(firstTemplate);
-          console.log('Panel count using our function:', panelCount);
-          
-          // Always log all template structures to help debug
-          templates.forEach((template, index) => {
-            console.log(`Template ${index} - ID: ${template.id}, Name: ${template.name}, Panels Count: ${getPanelCount(template)}`);
-          });
-        }
-        
         setTemplates(templates);
         setError(null);
       } catch (err) {
         setError('Error fetching templates. Please try again.');
-        console.error('Fetch error:', err);
       } finally {
         setIsLoading(false);
       }
@@ -115,10 +96,8 @@ export const TemplatesListPage = () => {
       if (error) {
         throw new Error('Failed to delete template');
       }
-      setTemplates(templates.filter(t => t.id !== id));
-    } catch (err) {
+      setTemplates(templates.filter(t => t.id !== id));    } catch (err) {
       setError('Error deleting template. Please try again.');
-      console.error(err);
     }
   };
 

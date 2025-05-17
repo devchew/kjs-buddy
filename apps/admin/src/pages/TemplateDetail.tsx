@@ -53,11 +53,7 @@ export const TemplateDetailPage = () => {
         if (error) {
           throw new Error('Failed to fetch template');
         }
-        
-        // Log the template data structure for debugging
-        console.log('Template data from API:', data);
-        
-        if (data) {
+          if (data) {
           // Make sure the data conforms to our Template interface
           const templateData: Template = {
             id: data.id,
@@ -77,10 +73,8 @@ export const TemplateDetailPage = () => {
           setTemplate(templateData);
         } else {
           setError('No template data returned from API');
-        }
-      } catch (err: any) {
+        }      } catch (err: any) {
         setError(err.message || 'Failed to load template');
-        console.error(err);
       } finally {
         setIsLoading(false);
       }

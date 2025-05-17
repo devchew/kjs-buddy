@@ -132,10 +132,8 @@ export const TemplateCreatePage: FunctionComponent = () => {  const [formData, s
         throw new Error('Failed to create template');
       }
 
-      navigate('/templates');
-    } catch (err: any) {
+      navigate('/templates');    } catch (err: any) {
       setError(err.message || 'Failed to create template. Please try again.');
-      console.error(err);
     } finally {
       setIsSubmitting(false);
     }

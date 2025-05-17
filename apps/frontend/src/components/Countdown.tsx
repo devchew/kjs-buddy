@@ -23,11 +23,8 @@ export const Countdown: FunctionComponent = () => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [countdown]);
-
-    useEffect(() => {
+    }, [countdown]);    useEffect(() => {
         subscribe('countdown', (data) => {
-            console.log('countdown recived', data);
             setCountdown(data);
         });
     }, [subscribe]);

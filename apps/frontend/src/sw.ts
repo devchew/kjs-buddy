@@ -60,28 +60,24 @@ const updateCountdownNotify = (countdown: Countdown) => {
 
     if (when5 > 0) {
         countdown5MinNotifyTimer = setTimeout(() => {
-            sendNotification('PKC 5 minut!', countdown.message).then(r => console.log('Notification sent', r));
+            sendNotification('PKC 5 minut!', countdown.message);
         }, when5);
     }
 
     if (when1 > 0) {
         countdown1MinNotifyTimer = setTimeout(() => {
-            sendNotification('PKC 1 minuta', countdown.message).then(r => console.log('Notification sent', r));
+            sendNotification('PKC 1 minuta', countdown.message);
         }, when1);
     }
 }
 
 channel.addEventListener('message', event => {
-    console.log('Received', event.data);
-
     onBroadcastMessage(event, 'panels', (data) => {
         const countdown = calculateCountdown(data);
         updateCountdownNotify(countdown);
         postMessage('countdown', countdown);
-    });
-
-    onBroadcastMessage(event, 'notifiyTest', (data) => {
-        sendNotification('Test', data).then(r => console.log('Notification sent', r));
+    });    onBroadcastMessage(event, 'notifiyTest', (data) => {
+        sendNotification('Test', data);
     });
 
 });
