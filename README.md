@@ -32,13 +32,13 @@ The project is organized as a monorepo using Turborepo with the following struct
 ## Installation
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/devchew/kjs-buddy.git
    cd kjs-buddy
    ```
 
 2. Install dependencies:
-   ```
+   ```bash
    pnpm install
    ```
 
@@ -46,13 +46,13 @@ The project is organized as a monorepo using Turborepo with the following struct
 
 To start both frontend and backend in development mode:
 
-```
+```bash
 pnpm dev
 ```
 
 ### Frontend Only
 
-```
+```bash
 cd apps/frontend
 pnpm dev
 ```
@@ -61,7 +61,7 @@ The frontend development server will start at [http://localhost:7777](http://loc
 
 ### Backend Only
 
-```
+```bash
 cd apps/backend
 pnpm dev
 ```
@@ -72,20 +72,20 @@ The backend API server will start at [http://localhost:3000](http://localhost:30
 
 To build both frontend and backend:
 
-```
+```bash
 pnpm build
 ```
 
 ### Frontend Only
 
-```
+```bash
 cd apps/frontend
 pnpm build
 ```
 
 ### Backend Only
 
-```
+```bash
 cd apps/backend
 pnpm build
 ```
@@ -95,11 +95,25 @@ pnpm build
 The API documentation is available at `/api/docs` when the backend server is running.
 Additional documentation can be found in [docs/backend-api.md](docs/backend-api.md).
 
+## Configuration
+
+The backend application can be configured using environment variables:
+
+### CORS Configuration
+
+To configure CORS (Cross-Origin Resource Sharing), set the `CORS_ORIGINS` environment variable with a comma-separated list of allowed domains:
+
+```bash
+CORS_ORIGINS=http://localhost:7777,https://rajdex.pl
+```
+
+By default, `http://localhost:7777` is allowed if `CORS_ORIGINS` is not set.
+
 ## Testing
 
 ### Backend
 
-```
+```bash
 cd apps/backend
 pnpm test        # Run unit tests
 pnpm test:e2e    # Run end-to-end tests
@@ -108,7 +122,7 @@ pnpm test:cov    # Run tests with coverage
 
 ### Frontend
 
-```
+```bash
 cd apps/frontend
 pnpm lint        # Run ESLint
 pnpm check-types # Run TypeScript type checking
@@ -116,10 +130,23 @@ pnpm check-types # Run TypeScript type checking
 
 ## Deployment
 
-### test locally
+### Test Locally
 
-1. `pnpm install --frozen-lockfile`
-1. `pnpm build`
-1. `pnpm deploy --filter=./apps/backend --prod ./dist/backend`
-1. `pnpm deploy --filter=./apps/frontend --prod ./dist/frontend`
-1. `docker compose up`
+Run the following commands:
+
+```bash
+# Install dependencies
+pnpm install --frozen-lockfile
+
+# Build all packages
+pnpm build
+
+# Deploy backend
+pnpm deploy --filter=./apps/backend --prod ./dist/backend
+
+# Deploy frontend
+pnpm deploy --filter=./apps/frontend --prod ./dist/frontend
+
+# Start the application
+docker compose up
+```
