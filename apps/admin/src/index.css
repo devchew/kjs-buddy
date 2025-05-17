@@ -1,0 +1,81 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+/*envs*/
+:root {
+  --background-color: #b8b9ac;
+  --primary: #4f554f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #222322;
+    --primary: #7c8077;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--background-color);
+  color: var(--primary);
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+body {
+  font-optical-sizing: auto;
+  font-family: "Chakra Petch", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+html {
+  font-size: clamp(5px, 2.5vw, 20px);
+}
+
+.container {
+  padding: 2rem;
+  max-width: 870px;
+  margin: 0 auto;
+}
+
+
+.stack {
+  margin: 0 auto;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+}
