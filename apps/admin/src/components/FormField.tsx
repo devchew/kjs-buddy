@@ -3,18 +3,22 @@ import styles from './FormField.module.css';
 import { TbAlertCircle } from 'react-icons/tb';
 
 interface FormFieldProps {
+  id?: string;
+  name?: string;
   label: string;
-  type: string;
-  placeholder: string;
+  type?: string;
+  placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 }
 
 export const FormField: FunctionComponent<FormFieldProps> = ({
+  id,
+  name,
   label,
-  type,
-  placeholder,
+  type = 'text',
+  placeholder = '',
   value,
   onChange,
   required = true
@@ -23,8 +27,9 @@ export const FormField: FunctionComponent<FormFieldProps> = ({
     <div className={styles.container}>
       <label className={styles.label}>
         {label}
-      </label>
-      <input
+      </label>      <input
+        id={id}
+        name={name}
         type={type}
         className={styles.input}
         placeholder={placeholder}
