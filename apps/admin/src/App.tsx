@@ -1,16 +1,16 @@
 import "@internal/rally-card/style.css";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { MainHeader } from './components/MainHeader.tsx';
-import { AuthProvider } from './contexts/AuthContext';
-import { ProtectedRoute } from './components/ProtectedRoute.tsx';
-import { HomePage } from './pages/Home';
-import { LoginPage } from './pages/Login';
-import { ProfilePage } from './pages/Profile';
-import { RegisterPage } from './pages/Register';
-import { TemplatesListPage } from './pages/TemplatesList';
-import { TemplateCreatePage } from './pages/TemplateCreate';
-import { TemplateEditPage } from './pages/TemplateEdit';
-import { TemplateDetailPage } from './pages/TemplateDetail';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { MainHeader } from "./components/MainHeader.tsx";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import { HomePage } from "./pages/Home";
+import { LoginPage } from "./pages/Login";
+import { ProfilePage } from "./pages/Profile";
+import { RegisterPage } from "./pages/Register";
+import { TemplatesListPage } from "./pages/TemplatesList";
+import { TemplateCreatePage } from "./pages/TemplateCreate";
+import { TemplateEditPage } from "./pages/TemplateEdit";
+import { TemplateDetailPage } from "./pages/TemplateDetail";
 
 function App() {
   return (
@@ -34,37 +34,55 @@ function AppRoutes() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected routes */}
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          } />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/templates" element={
-            <ProtectedRoute>
-              <TemplatesListPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/templates/create" element={
-            <ProtectedRoute>
-              <TemplateCreatePage />
-            </ProtectedRoute>
-          } />
-          <Route path="/templates/:id" element={
-            <ProtectedRoute>
-              <TemplateDetailPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/templates/edit/:id" element={
-            <ProtectedRoute>
-              <TemplateEditPage />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/templates"
+            element={
+              <ProtectedRoute>
+                <TemplatesListPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/templates/create"
+            element={
+              <ProtectedRoute>
+                <TemplateCreatePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/templates/:id"
+            element={
+              <ProtectedRoute>
+                <TemplateDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/templates/edit/:id"
+            element={
+              <ProtectedRoute>
+                <TemplateEditPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </>

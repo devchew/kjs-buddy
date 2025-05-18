@@ -8,17 +8,17 @@
  */
 export const clearAllCaches = async (): Promise<boolean> => {
   try {
-    if ('caches' in window) {
+    if ("caches" in window) {
       const cacheNames = await caches.keys();
       await Promise.all(
-        cacheNames.map(cacheName => caches.delete(cacheName))
+        cacheNames.map((cacheName) => caches.delete(cacheName)),
       );
-      console.log('All caches cleared successfully');
+      console.log("All caches cleared successfully");
       return true;
     }
     return false;
   } catch (error) {
-    console.error('Error clearing caches:', error);
+    console.error("Error clearing caches:", error);
     return false;
   }
 };
@@ -29,17 +29,17 @@ export const clearAllCaches = async (): Promise<boolean> => {
  */
 export const unregisterServiceWorkers = async (): Promise<boolean> => {
   try {
-    if ('serviceWorker' in navigator) {
+    if ("serviceWorker" in navigator) {
       const registrations = await navigator.serviceWorker.getRegistrations();
       await Promise.all(
-        registrations.map(registration => registration.unregister())
+        registrations.map((registration) => registration.unregister()),
       );
-      console.log('All service workers unregistered');
+      console.log("All service workers unregistered");
       return true;
     }
     return false;
   } catch (error) {
-    console.error('Error unregistering service workers:', error);
+    console.error("Error unregistering service workers:", error);
     return false;
   }
 };
@@ -69,25 +69,28 @@ export const checkForNewVersion = async (): Promise<boolean> => {
     // Add cache busting query param to avoid getting cached version
     const response = await fetch(`/version.json?_=${Date.now()}`);
     if (!response.ok) return false;
-    
+
     const data = await response.json();
-    
+
     // Check if we have stored the current version in localStorage
-    const storedVersion = localStorage.getItem('app_version');
-    const storedBuildTime = localStorage.getItem('app_build_time');
-    
+    const storedVersion = localStorage.getItem("app_version");
+    const storedBuildTime = localStorage.getItem("app_build_time");
+
     // If we have a new version or build time, update localStorage and return true
-    if (!storedVersion || !storedBuildTime || 
-        storedVersion !== data.version || 
-        storedBuildTime !== data.buildTime) {
-      localStorage.setItem('app_version', data.version);
-      localStorage.setItem('app_build_time', data.buildTime);
+    if (
+      !storedVersion ||
+      !storedBuildTime ||
+      storedVersion !== data.version ||
+      storedBuildTime !== data.buildTime
+    ) {
+      localStorage.setItem("app_version", data.version);
+      localStorage.setItem("app_build_time", data.buildTime);
       return true;
     }
-    
+
     return false;
   } catch (error) {
-    console.error('Error checking for new version:', error);
+    console.error("Error checking for new version:", error);
     return false;
   }
 };

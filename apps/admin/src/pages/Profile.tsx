@@ -18,7 +18,7 @@ export const ProfilePage: FunctionComponent = () => {
     return (
       <div className={styles.container}>
         <div className={styles.loadingContainer}>
-          <p>Loading...</p>
+          <p>Ładowanie...</p>
         </div>
       </div>
     );

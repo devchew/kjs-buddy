@@ -55,6 +55,9 @@ importers:
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.7.1(typescript@5.8.3)
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: ^5.2.2
         version: 5.8.3
@@ -255,6 +258,9 @@ importers:
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.7.1(typescript@5.8.3)
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       typescript:
         specifier: ^5.2.2
         version: 5.8.3

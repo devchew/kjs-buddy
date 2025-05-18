@@ -1,44 +1,44 @@
 .container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    background-color: #a56106;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: .5rem;
-    color: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: #a56106;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: #fff;
 }
 
 .action {
-    border: 1px solid #fff;
-    padding: .5rem 1rem;
-    border-radius: 20px;
-    background-color: transparent;
-    color: #fff;
-    cursor: pointer;
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
 }
 .askNotificationBar__action:hover {
-    background-color: #fff;
-    color: #a56106;
+  background-color: #fff;
+  color: #a56106;
 }
 
 .askNotificationBar__dismiss {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    cursor: pointer;
-    border: 1px solid #fff;
-    padding: .5rem 1rem;
-    border-radius: 20px;
-    background-color: transparent;
-    color: #fff;
-    font-size: 0.8rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #fff;
+  font-size: 0.8rem;
 }
 
 .askNotificationBar__dismiss:hover {
-    background-color: #fff;
-    color: #a56106;
+  background-color: #fff;
+  color: #a56106;
 }

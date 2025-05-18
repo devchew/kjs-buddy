@@ -6,7 +6,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
 
 if (!baseUrl) {
   throw new Error(
-    "VITE_API_URL is not defined in .env file. Please set it to the API URL."
+    "VITE_API_URL is not defined in .env file. Please set it to the API URL.",
   );
 }
 
@@ -16,5 +16,4 @@ export const createAuthClient = (token: string | null) =>
   createClient<paths>({
     baseUrl,
     headers: { Authorization: `Bearer ${token}` },
-    
   });

@@ -1,6 +1,6 @@
 .pill {
-    border-radius: 2rem;
-    border: .1rem solid var(--primary);
-    padding: .2rem .8rem;
-    font-size: .8rem;
+  border-radius: 2rem;
+  border: 0.1rem solid var(--primary);
+  padding: 0.2rem 0.8rem;
+  font-size: 0.8rem;
 }

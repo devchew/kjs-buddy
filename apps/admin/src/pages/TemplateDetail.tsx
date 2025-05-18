@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Panel } from '../components/Panel';
-import { Button, LinkButton } from '../components/Button';
-import { useAuth } from '../contexts/AuthContext';
-import style from './TemplateDetail.module.css';
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Panel } from "../components/Panel";
+import { Button, LinkButton } from "../components/Button";
+import { useAuth } from "../contexts/AuthContext";
+import style from "./TemplateDetail.module.css";
 
 // Use a simpler PanelData interface for display purposes
 interface PanelData {
@@ -12,7 +12,7 @@ interface PanelData {
   // Could add other panel properties as needed
 }
 
-import { CardPanel } from '../types/Card';
+import { CardPanel } from "../types/Card";
 
 interface Template {
   id: string;
@@ -35,25 +35,26 @@ export const TemplateDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { authClient } = useAuth();
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();  useEffect(() => {
+  const { id } = useParams<{ id: string }>();
+  useEffect(() => {
     const fetchTemplate = async () => {
       try {
         setIsLoading(true);
         if (!id) return;
-        
+
         // Use the correct TypeScript API client format with path parameter
         const { data, error } = await authClient.GET("/cards/templates/{id}", {
           params: {
             path: {
-              id
-            }
-          }
+              id,
+            },
+          },
         });
-        
+
         if (error) {
-          throw new Error('Failed to fetch template');
+          throw new Error("Failed to fetch template");
         }
-          if (data) {
+        if (data) {
           // Make sure the data conforms to our Template interface
           const templateData: Template = {
             id: data.id,
@@ -67,14 +68,15 @@ export const TemplateDetailPage = () => {
             cardNumber: data.cardNumber,
             carNumber: data.carNumber,
             logo: data.logo,
-            sponsorLogo: data.sponsorLogo
+            sponsorLogo: data.sponsorLogo,
           };
-          
+
           setTemplate(templateData);
         } else {
-          setError('No template data returned from API');
-        }      } catch (err: any) {
-        setError(err.message || 'Failed to load template');
+          setError("No template data returned from API");
+        }
+      } catch (err: any) {
+        setError(err.message || "Failed to load template");
       } finally {
         setIsLoading(false);
       }
@@ -83,104 +85,147 @@ export const TemplateDetailPage = () => {
     fetchTemplate();
   }, [id, authClient]);
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this template?')) {
+    if (!window.confirm("Czy na pewno chcesz usunąć ten szablon?")) {
       return;
     }
 
     try {
       if (!id) return;
-      
+
       // Use the correct TypeScript API client format with path parameter
       const { error } = await authClient.DELETE("/cards/templates/{id}", {
         params: {
           path: {
-            id
-          }
-        }
+            id,
+          },
+        },
       });
-      
+
       if (error) {
-        throw new Error('Failed to delete template');
+        throw new Error("Failed to delete template");
       }
-      
-      navigate('/templates');
+
+      navigate("/templates");
     } catch (err: any) {
-      setError(err.message || 'Failed to delete template');
+      setError(err.message || "Failed to delete template");
       console.error(err);
     }
   };
-
   if (isLoading) {
-    return <div>Loading template...</div>;
+    return <div>Ładowanie szablonu...</div>;
   }
   if (!template) {
-    return <div className={style.error}>Template not found</div>;
+    return <div className={style.error}>Nie znaleziono szablonu</div>;
   }
-  
+
   // Get panels directly from the template
-  const panels = template.panels?.map(panel => ({
-    number: panel.number,
-    name: panel.name
-  } as PanelData)) || [];
+  const panels =
+    template.panels?.map(
+      (panel) =>
+        ({
+          number: panel.number,
+          name: panel.name,
+        }) as PanelData,
+    ) || [];
 
   return (
     <div className={style.container}>
+      {" "}
       <div className={style.header}>
         <h1>{template.name}</h1>
         <div className={style.actions}>
-          <LinkButton to={`/templates/edit/${template.id}`}>Edit</LinkButton>
-          <Button onClick={handleDelete}>Delete</Button>
+          <LinkButton to={`/templates/edit/${template.id}`}>Edytuj</LinkButton>
+          <Button onClick={handleDelete}>Usuń</Button>
         </div>
       </div>
-
-      {error && <div className={style.error}>{error}</div>}
-
-      <Panel>        <div className={style.templateMeta}>
-          <p><strong>Description:</strong> {template.description}</p>
-          <p><strong>Date:</strong> {template.date || 'Not specified'}</p>
-          <p><strong>Card Number:</strong> {template.cardNumber || 'Not specified'}</p>
-          <p><strong>Car Number:</strong> {template.carNumber || 'Not specified'}</p>
-          <p><strong>Public Template:</strong> {template.isPublic ? 'Yes' : 'No'}</p>
-          <p><strong>Created:</strong> {new Date(template.createdAt).toLocaleString()}</p>
-          <p><strong>Last Updated:</strong> {new Date(template.updatedAt).toLocaleString()}</p>
-            {template.logo && (
+      {error && <div className={style.error}>{error}</div>}{" "}
+      <Panel>
+        {" "}
+        <div className={style.templateMeta}>
+          <p>
+            <strong>Opis:</strong> {template.description}
+          </p>
+          <p>
+            <strong>Data:</strong> {template.date || "Nie określono"}
+          </p>
+          <p>
+            <strong>Numer karty:</strong>{" "}
+            {template.cardNumber || "Nie określono"}
+          </p>
+          <p>
+            <strong>Numer samochodu:</strong>{" "}
+            {template.carNumber || "Nie określono"}
+          </p>
+          <p>
+            <strong>Szablon publiczny:</strong>{" "}
+            {template.isPublic ? "Tak" : "Nie"}
+          </p>
+          <p>
+            <strong>Utworzono:</strong>{" "}
+            {new Date(template.createdAt).toLocaleString()}
+          </p>
+          <p>
+            <strong>Ostatnia aktualizacja:</strong>{" "}
+            {new Date(template.updatedAt).toLocaleString()}
+          </p>
+          {template.logo && (
             <div className={style.logoSection}>
-              <p><strong>Logo:</strong></p>
-              <img src={template.logo} alt="Template Logo" className={style.logoImage} />
+              <p>
+                <strong>Logo:</strong>
+              </p>
+              <img
+                src={template.logo}
+                alt="Logo szablonu"
+                className={style.logoImage}
+              />
             </div>
           )}
-          
+
           {template.sponsorLogo && (
             <div className={style.logoSection}>
-              <p><strong>Sponsor Logo:</strong></p>
-              <img src={template.sponsorLogo} alt="Sponsor Logo" className={style.logoImage} />
+              <p>
+                <strong>Logo sponsora:</strong>
+              </p>
+              <img
+                src={template.sponsorLogo}
+                alt="Logo sponsora"
+                className={style.logoImage}
+              />
             </div>
           )}
-        </div>
-
+        </div>{" "}
         <div className={style.contentSection}>
-          <h3>Panels ({panels.length})</h3>
-          
+          <h3>Panele ({panels.length})</h3>
+
           {panels.length === 0 ? (
-            <p>This template has no panels configured.</p>
+            <p>Ten szablon nie ma skonfigurowanych paneli.</p>
           ) : (
-            <div className={style.panelsContainer}>              {panels.map((panel: PanelData) => (
+            <div className={style.panelsContainer}>
+              {panels.map((panel: PanelData) => (
                 <div key={panel.number} className={style.panelItem}>
                   <div className={style.panelHeader}>
                     <strong>Panel {panel.number}</strong>
-                  </div>
+                  </div>{" "}
                   <div className={style.panelBody}>
-                    <p><strong>Name:</strong> {panel.name || (panel.number === 1 ? 'Start' : `PS${panel.number-1}`) || 'Unnamed'}</p>
+                    <p>
+                      <strong>Nazwa:</strong>{" "}
+                      {panel.name ||
+                        (panel.number === 1
+                          ? "Start"
+                          : `PS${panel.number - 1}`) ||
+                        "Bez nazwy"}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           )}
         </div>
-      </Panel>
-
+      </Panel>{" "}
       <div className={style.backButton}>
-        <Button onClick={() => navigate('/templates')}>Back to Templates</Button>
+        <Button onClick={() => navigate("/templates")}>
+          Powrót do szablonów
+        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from "react";
 
 /**
  * Custom hook to check for application updates
@@ -15,21 +15,21 @@ export function useAppUpdater(checkInterval = 5 * 60 * 1000) {
       // Add cache busting query param
       const response = await fetch(`/version.json?t=${Date.now()}`);
       if (!response.ok) return false;
-      
+
       const data = await response.json();
-      const currentBuildTime = localStorage.getItem('app_build_time');
-      
+      const currentBuildTime = localStorage.getItem("app_build_time");
+
       // If there's no stored build time or it's different, we have an update
       if (!currentBuildTime || currentBuildTime !== data.buildTime) {
-        console.log('New version available:', data.buildTime);
-        localStorage.setItem('app_build_time', data.buildTime);
+        console.log("New version available:", data.buildTime);
+        localStorage.setItem("app_build_time", data.buildTime);
         setUpdateAvailable(true);
         return true;
       }
-      
+
       return false;
     } catch (error) {
-      console.error('Error checking for updates:', error);
+      console.error("Error checking for updates:", error);
       return false;
     } finally {
       setLastChecked(Date.now());
@@ -51,10 +51,10 @@ export function useAppUpdater(checkInterval = 5 * 60 * 1000) {
   useEffect(() => {
     // First check on mount
     checkForUpdates();
-    
+
     // Set up interval for periodic checks
     const interval = setInterval(checkForUpdates, checkInterval);
-    
+
     // Clean up interval on unmount
     return () => clearInterval(interval);
   }, [checkForUpdates, checkInterval]);

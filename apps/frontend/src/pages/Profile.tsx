@@ -20,7 +20,7 @@ export const ProfilePage: FunctionComponent = () => {
     return (
       <div className={styles.container}>
         <div className={styles.loadingContainer}>
-          <p>Loading...</p>
+          <p>Ładowanie...</p>
         </div>
       </div>
     );
@@ -38,8 +38,8 @@ export const ProfilePage: FunctionComponent = () => {
         <p>
           <strong>Email:</strong> {user?.email}
         </p>
-        
-                    <WakeLock />
+
+        <WakeLock />
         <Button onClick={handleLogout} primary>
           <TbLogout size={20} />
           Wyloguj się

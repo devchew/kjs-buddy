@@ -1,5 +1,4 @@
-
 export type Countdown = {
-    toTime: number;
-    message: string;
-}
+  toTime: number;
+  message: string;
+};

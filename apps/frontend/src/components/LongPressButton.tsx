@@ -1,6 +1,12 @@
-import { useState, useEffect, useRef, PropsWithChildren, FunctionComponent } from 'react';
-import style from './LongPressButton.module.css';
-import { Button } from './Button';
+import {
+  useState,
+  useEffect,
+  useRef,
+  PropsWithChildren,
+  FunctionComponent,
+} from "react";
+import style from "./LongPressButton.module.css";
+import { Button } from "./Button";
 
 interface LongPressButtonProps {
   onLongPress: () => void;
@@ -8,12 +14,9 @@ interface LongPressButtonProps {
   onClick?: () => void;
 }
 
-export const LongPressButton:FunctionComponent<PropsWithChildren<LongPressButtonProps>> = ({
-  onLongPress,
-  delay = 800,
-  children,
-  onClick,
-}) => {
+export const LongPressButton: FunctionComponent<
+  PropsWithChildren<LongPressButtonProps>
+> = ({ onLongPress, delay = 800, children, onClick }) => {
   const [pressing, setPressing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [timer, setTimer] = useState<number | null>(null);
@@ -64,13 +67,13 @@ export const LongPressButton:FunctionComponent<PropsWithChildren<LongPressButton
     setPressing(false);
     setProgress(0);
   };
-    
+
   const handleClick = () => {
     if (onClick) {
       onClick();
     }
   };
-  
+
   return (
     <div className={style.container}>
       <Button
@@ -81,16 +84,13 @@ export const LongPressButton:FunctionComponent<PropsWithChildren<LongPressButton
         onTouchEnd={stopPressing}
         onTouchCancel={stopPressing}
         onClick={handleClick}
-        primary      
-        >
+        primary
+      >
         {children}
       </Button>
       {pressing && (
         <div className={style.progressContainer}>
-          <div 
-            ref={progressBarRef}
-            className={style.progressBar}
-          />
+          <div ref={progressBarRef} className={style.progressBar} />
         </div>
       )}
     </div>

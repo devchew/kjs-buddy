@@ -1,6 +1,6 @@
-import { FunctionComponent, ReactNode } from 'react';
-import styles from './FormField.module.css';
-import { TbAlertCircle } from 'react-icons/tb';
+import { FunctionComponent, ReactNode } from "react";
+import styles from "./FormField.module.css";
+import { TbAlertCircle } from "react-icons/tb";
 
 interface FormFieldProps {
   label: string;
@@ -17,13 +17,11 @@ export const FormField: FunctionComponent<FormFieldProps> = ({
   placeholder,
   value,
   onChange,
-  required = true
+  required = true,
 }) => {
   return (
     <div className={styles.container}>
-      <label className={styles.label}>
-        {label}
-      </label>
+      <label className={styles.label}>{label}</label>
       <input
         type={type}
         className={styles.input}
@@ -43,7 +41,7 @@ interface ErrorMessageProps {
 
 export const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({
   title,
-  children
+  children,
 }) => {
   return (
     <div className={styles.errorContainer}>

@@ -1,32 +1,44 @@
-import { FunctionComponent, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Card as CardComponent, useCardContext } from '@internal/rally-card';
-import { useCardsStore } from '../contexts/CardsStoreContext';
-import { PiFloppyDisk, PiPencil, PiX } from 'react-icons/pi';
-import { CardPanel } from '../types/Card';
-import { LongPressButton } from '../components/LongPressButton.tsx';
-import { useBroadcast } from '../hooks/useBroadcast.ts';
-import { RallyCardWrapper } from '../components/RallyCardWrapper.tsx';
+import { FunctionComponent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Card as CardComponent, useCardContext } from "@internal/rally-card";
+import { useCardsStore } from "../contexts/CardsStoreContext";
+import { PiFloppyDisk, PiPencil, PiX } from "react-icons/pi";
+import { CardPanel } from "../types/Card";
+import { LongPressButton } from "../components/LongPressButton.tsx";
+import { useBroadcast } from "../hooks/useBroadcast.ts";
+import { RallyCardWrapper } from "../components/RallyCardWrapper.tsx";
 
 // Card content component that uses the edit mode context
 export const CardPage: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
   const id = params.id as string;
   const navigate = useNavigate();
-  const { addPanel, panels, updatePanels, cardInfo, updateCardInfo, id: localCardId, setId, isEditMode, setIsEditMode } = useCardContext();
+  const {
+    addPanel,
+    panels,
+    updatePanels,
+    cardInfo,
+    updateCardInfo,
+    id: localCardId,
+    setId,
+    isEditMode,
+    setIsEditMode,
+  } = useCardContext();
   const { updateCard, getCard, loading } = useCardsStore();
   // Store a backup of panels when entering edit mode
   const [panelsBackup, setPanelsBackup] = useState<CardPanel[]>([]);
-  const { postMessage }  = useBroadcast();
-
+  const { postMessage } = useBroadcast();
 
   // Store the current card in local storage
   useEffect(() => {
     if (isEditMode || loading) return;
     updateCard(id, cardInfo, panels);
-    postMessage('cardInfo', cardInfo);
-    postMessage('panels', panels);
-    localStorage.setItem('currentCard', JSON.stringify({cardInfo, panels, id: localCardId}));
+    postMessage("cardInfo", cardInfo);
+    postMessage("panels", panels);
+    localStorage.setItem(
+      "currentCard",
+      JSON.stringify({ cardInfo, panels, id: localCardId }),
+    );
   }, [loading, panels, cardInfo]);
 
   // Load card data when component mounts or id changes
@@ -37,9 +49,8 @@ export const CardPage: FunctionComponent = () => {
       return;
     }
     getCard(id).then((card) => {
-
       if (!card) {
-        navigate('/cards');
+        navigate("/cards");
         return;
       }
 
@@ -47,13 +58,13 @@ export const CardPage: FunctionComponent = () => {
       updateCardInfo(card.cardInfo);
       updatePanels(card.panels);
       setId(id);
-    })
+    });
   }, [id, loading]);
 
   const handleLongPress = () => {
     // Save a backup of panels before entering edit mode
     setPanelsBackup([...panels]);
-    setIsEditMode(true)
+    setIsEditMode(true);
   };
 
   // Save changes and exit edit mode
@@ -73,75 +84,75 @@ export const CardPage: FunctionComponent = () => {
   }
 
   return (
-      <RallyCardWrapper>
-        <CardComponent />
+    <RallyCardWrapper>
+      <CardComponent />
 
-        <div style={{
-          marginTop: '1rem',
-          marginBottom: '1rem',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '0.75rem'
-        }}>
-          {isEditMode ? (
-            <>
-              <button
-                onClick={addPanel}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#228be6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}
-              >
-                Dodaj panel
-              </button>
-              <button
-                onClick={handleSave}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#2b8a3e',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                <PiFloppyDisk size={20} />
-                Zapisz
-              </button>
-              <button
-                onClick={handleDiscard}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#e03131',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                <PiX size={20} />
-                Anuluj
-              </button>
-            </>
-          ) : (
-            <LongPressButton
-              onLongPress={handleLongPress}
+      <div
+        style={{
+          marginTop: "1rem",
+          marginBottom: "1rem",
+          display: "flex",
+          justifyContent: "center",
+          gap: "0.75rem",
+        }}
+      >
+        {isEditMode ? (
+          <>
+            <button
+              onClick={addPanel}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#228be6",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
             >
-              <PiPencil size={20} />
-              Edytuj (naciśnij i przytrzymaj)
-            </LongPressButton>
-          )}
-        </div>
+              Dodaj panel
+            </button>
+            <button
+              onClick={handleSave}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#2b8a3e",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <PiFloppyDisk size={20} />
+              Zapisz
+            </button>
+            <button
+              onClick={handleDiscard}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#e03131",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <PiX size={20} />
+              Anuluj
+            </button>
+          </>
+        ) : (
+          <LongPressButton onLongPress={handleLongPress}>
+            <PiPencil size={20} />
+            Edytuj (naciśnij i przytrzymaj)
+          </LongPressButton>
+        )}
+      </div>
     </RallyCardWrapper>
   );
 };
