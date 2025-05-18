@@ -13,8 +13,9 @@ on:
   push:
     branches: master
     paths:
-      - 'apps/frontend/**'
-      - 'apps/backend/**'
+      - 'apps/**'
+      - 'packages/**'
+  workflow_dispatch:
 
 jobs:
   build:
