@@ -9,10 +9,13 @@ KJS-Buddy is a card management application that allows users to create, store, a
 
 ## Features
 
-- User authentication (email/password and social login)
-- Card creation and management
-- Card templates
-- Cross-device synchronization for registered users
+- [User Authentication](./docs/features/authentication-system.md) (email/password and social login)
+- [Card Management](./docs/features/card-management.md) (creation, templates, synchronization)
+- [Offline Capabilities](./docs/features/offline-capabilities.md)
+- [Real-time Countdown Timer](./docs/features/countdown-feature.md)
+- [Web Worker Implementation](./docs/features/web-worker-implementation.md)
+- [Version Management](./docs/features/version-management.md)
+- [API Integration](./docs/features/api-integration.md)
 - Role-based access control (admin, user)
 
 ## Project Structure
@@ -22,6 +25,9 @@ The project is organized as a monorepo using Turborepo with the following struct
 - `apps/frontend`: React application built with Vite
 - `apps/backend`: NestJS API server
 - `docs`: Project documentation
+  - [Application Overview](./docs/app.md)
+  - [Feature Documentation](./docs/features/)
+  - [Backend API Documentation](./docs/backend-api.md)
 
 ## Prerequisites
 
