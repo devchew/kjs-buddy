@@ -26,6 +26,25 @@ registerRoute(new NavigationRoute(
     { allowlist },
 ))
 
+// This allows the web app to trigger skipWaiting via
+// registration.waiting.postMessage({type: 'SKIP_WAITING'})
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+    
+    // Clear all caches when a new version is activated
+    event.waitUntil(
+      caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            return caches.delete(cacheName);
+          })
+        );
+      })
+    );
+  }
+});
+
 self.skipWaiting()
 clientsClaim()
 
@@ -76,8 +95,10 @@ channel.addEventListener('message', event => {
         const countdown = calculateCountdown(data);
         updateCountdownNotify(countdown);
         postMessage('countdown', countdown);
-    });    onBroadcastMessage(event, 'notifiyTest', (data) => {
-        sendNotification('Test', data);
+    });
+
+    onBroadcastMessage(event, 'notifiyTest', (data) => {
+        sendNotification('Test', data).then(r => console.log('Notification sent', r));
     });
 
 });

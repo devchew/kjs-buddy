@@ -13,6 +13,8 @@ import { ActionsBottomBar } from './components/ActionsBottomBar.tsx';
 import "@internal/rally-card/style.css";
 import { BackgroundSync } from './components/BackgroundSync.tsx';
 import { MainHeader } from './components/MainHeader.tsx';
+import ReloadPrompt from './components/ReloadPrompt';
+import AppUpdateChecker from './components/AppUpdateChecker';
 
 function App() {
   return (
@@ -35,9 +37,9 @@ function App() {
                 <Route path="/cards" element={<CardsListPage />} />
                 <Route path="/cards/:id" element={<CardPage />} />
               </Routes>
-            </main>
-            <ActionsBottomBar />
-
+            </main>            <ActionsBottomBar />
+            <ReloadPrompt />
+            <AppUpdateChecker checkIntervalMs={3 * 60 * 1000} />
           </CardProvider>
         </CardsStoreProvider>
       </AuthProvider>

@@ -1,0 +1,69 @@
+.app-update-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 9999;
+  max-width: 320px;
+  width: 100%;
+}
+
+.app-update-banner {
+  background-color: #2d3748;
+  border-left: 4px solid #4299e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  animation: slide-in 0.3s ease-out;
+}
+
+.app-update-message {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.app-update-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.app-update-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.app-update-button-primary {
+  background-color: #4299e1;
+  color: white;
+}
+
+.app-update-button-primary:hover {
+  background-color: #3182ce;
+}
+
+.app-update-button-secondary {
+  background-color: transparent;
+  color: #cbd5e0;
+  border: 1px solid #4a5568;
+}
+
+.app-update-button-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

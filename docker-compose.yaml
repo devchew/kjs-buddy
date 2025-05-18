@@ -16,7 +16,7 @@ services:
     volumes:
       - database:/usr/src/app/data
     environment:
-      - CORS_ORIGINS=http://localhost:8888,https://rajdex.pl
+      - CORS_ORIGINS=http://localhost:8888,http://localhost:9999
 
   frontend:
     build:
@@ -35,6 +35,6 @@ services:
     container_name: admin
     restart: unless-stopped
     ports:
-      - 8888:80
+      - 9999:80
     environment:
       - API_URL=http://backend:3000
