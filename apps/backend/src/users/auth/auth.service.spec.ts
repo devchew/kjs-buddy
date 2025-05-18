@@ -23,7 +23,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -51,24 +51,24 @@ describe('AuthService', () => {
     it('should return a user without password if credentials are valid', async () => {
       const email = 'test@example.com';
       const password = 'password123';
-      const user = { 
-        id: '1', 
-        email, 
+      const user = {
+        id: '1',
+        email,
         username: 'testuser',
         password: 'hashedPassword',
-        role: 'user'
+        role: 'user',
       };
 
       mockUsersService.findByEmail.mockResolvedValue(user);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
       const result = await service.validateUser(email, password);
-      
+
       expect(result).toEqual({
         id: user.id,
         email: user.email,
         username: user.username,
-        role: user.role
+        role: user.role,
       });
       expect(mockUsersService.findByEmail).toHaveBeenCalledWith(email);
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
@@ -81,7 +81,7 @@ describe('AuthService', () => {
       mockUsersService.findByEmail.mockResolvedValue(null);
 
       const result = await service.validateUser(email, password);
-      
+
       expect(result).toBeNull();
       expect(mockUsersService.findByEmail).toHaveBeenCalledWith(email);
       expect(bcrypt.compare).not.toHaveBeenCalled();
@@ -90,19 +90,19 @@ describe('AuthService', () => {
     it('should return null if password is invalid', async () => {
       const email = 'test@example.com';
       const password = 'wrongPassword';
-      const user = { 
-        id: '1', 
-        email, 
+      const user = {
+        id: '1',
+        email,
         username: 'testuser',
         password: 'hashedPassword',
-        role: 'user'
+        role: 'user',
       };
 
       mockUsersService.findByEmail.mockResolvedValue(user);
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
       const result = await service.validateUser(email, password);
-      
+
       expect(result).toBeNull();
       expect(mockUsersService.findByEmail).toHaveBeenCalledWith(email);
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
@@ -113,23 +113,23 @@ describe('AuthService', () => {
     it('should return token and user data for valid credentials', async () => {
       const loginDto = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
       };
-      
+
       const user = {
         id: '1',
         email: loginDto.email,
-        role: 'user'
+        role: 'user',
       };
-      
+
       const token = 'generated_token';
       const expectedResponse = {
         access_token: token,
         user: {
           id: user.id,
           email: user.email,
-          role: user.role
-        }
+          role: user.role,
+        },
       };
 
       // Mock validateUser to return a user without password
@@ -137,27 +137,35 @@ describe('AuthService', () => {
       mockJwtService.sign.mockReturnValue(token);
 
       const result = await service.login(loginDto);
-      
+
       expect(result).toEqual(expectedResponse);
-      expect(service.validateUser).toHaveBeenCalledWith(loginDto.email, loginDto.password);
-      expect(mockJwtService.sign).toHaveBeenCalledWith({ 
-        email: user.email, 
+      expect(service.validateUser).toHaveBeenCalledWith(
+        loginDto.email,
+        loginDto.password,
+      );
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
+        email: user.email,
         sub: user.id,
-        role: user.role
+        role: user.role,
       });
     });
 
     it('should throw UnauthorizedException for invalid credentials', async () => {
       const loginDto = {
         email: 'test@example.com',
-        password: 'wrongPassword'
+        password: 'wrongPassword',
       };
 
       // Mock validateUser to return null for invalid credentials
       jest.spyOn(service, 'validateUser').mockResolvedValue(null);
 
-      await expect(service.login(loginDto)).rejects.toThrow(UnauthorizedException);
-      expect(service.validateUser).toHaveBeenCalledWith(loginDto.email, loginDto.password);
+      await expect(service.login(loginDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
+      expect(service.validateUser).toHaveBeenCalledWith(
+        loginDto.email,
+        loginDto.password,
+      );
       expect(mockJwtService.sign).not.toHaveBeenCalled();
     });
   });
@@ -169,20 +177,20 @@ describe('AuthService', () => {
         username: 'newuser',
         password: 'password123',
       };
-      
+
       const createdUser = {
         id: '1',
         email: registerDto.email,
         username: registerDto.username,
         password: 'hashedPassword',
-        role: 'user'
+        role: 'user',
       };
 
       const userWithoutPassword = {
         id: createdUser.id,
         email: createdUser.email,
         username: createdUser.username,
-        role: createdUser.role
+        role: createdUser.role,
       };
 
       const token = 'generated_token';
@@ -191,21 +199,21 @@ describe('AuthService', () => {
         user: {
           id: userWithoutPassword.id,
           email: userWithoutPassword.email,
-          role: userWithoutPassword.role
-        }
+          role: userWithoutPassword.role,
+        },
       };
 
       mockUsersService.create.mockResolvedValue(createdUser);
       mockJwtService.sign.mockReturnValue(token);
 
       const result = await service.register(registerDto);
-      
+
       expect(result).toEqual(expectedResponse);
       expect(mockUsersService.create).toHaveBeenCalledWith(registerDto);
-      expect(mockJwtService.sign).toHaveBeenCalledWith({ 
-        email: userWithoutPassword.email, 
+      expect(mockJwtService.sign).toHaveBeenCalledWith({
+        email: userWithoutPassword.email,
         sub: userWithoutPassword.id,
-        role: userWithoutPassword.role
+        role: userWithoutPassword.role,
       });
     });
   });

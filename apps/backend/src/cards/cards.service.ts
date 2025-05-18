@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Card } from './entities/card.entity';
@@ -18,7 +22,7 @@ export class CardsService {
       userId,
       lastUsed: Date.now(),
     });
-    
+
     return this.cardRepository.save(card);
   }
 
@@ -45,7 +49,11 @@ export class CardsService {
     return card;
   }
 
-  async update(id: string, updateCardDto: UpdateCardDto, userId: string): Promise<Card> {
+  async update(
+    id: string,
+    updateCardDto: UpdateCardDto,
+    userId: string,
+  ): Promise<Card> {
     const card = await this.cardRepository.findOne({
       where: { id },
     });
@@ -59,9 +67,9 @@ export class CardsService {
     }
 
     // Update the card with new data
-    Object.assign(card, { 
+    Object.assign(card, {
       ...updateCardDto,
-      lastUsed: Date.now()
+      lastUsed: Date.now(),
     });
 
     return this.cardRepository.save(card);

@@ -19,7 +19,7 @@ describe('CardsService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CardsService,
@@ -49,11 +49,11 @@ describe('CardsService', () => {
       mockCardsRepository.find.mockResolvedValue(expectedCards);
 
       const result = await service.findAll(userId);
-      
+
       expect(result).toEqual(expectedCards);
       expect(mockCardsRepository.find).toHaveBeenCalledWith({
         where: { userId },
-        order: { lastUsed: 'DESC' }
+        order: { lastUsed: 'DESC' },
       });
     });
   });
@@ -62,20 +62,25 @@ describe('CardsService', () => {
     it('should return a specific card by ID and user ID', async () => {
       const cardId = '1';
       const userId = '1';
-      const expectedCard = { 
-        id: cardId, 
-        name: 'Card 1', 
+      const expectedCard = {
+        id: cardId,
+        name: 'Card 1',
         userId,
-        lastUsed: 1234567890
+        lastUsed: 1234567890,
       };
 
       mockCardsRepository.findOne.mockResolvedValue(expectedCard);
-      mockCardsRepository.save.mockResolvedValue({...expectedCard, lastUsed: expect.any(Number)});
+      mockCardsRepository.save.mockResolvedValue({
+        ...expectedCard,
+        lastUsed: expect.any(Number),
+      });
 
       const result = await service.findOne(cardId, userId);
-      
-      expect(result).toEqual({...expectedCard, lastUsed: expect.any(Number)});
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId, userId } });
+
+      expect(result).toEqual({ ...expectedCard, lastUsed: expect.any(Number) });
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId, userId },
+      });
       expect(mockCardsRepository.save).toHaveBeenCalled();
     });
 
@@ -85,8 +90,12 @@ describe('CardsService', () => {
 
       mockCardsRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne(cardId, userId)).rejects.toThrow(NotFoundException);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId, userId } });
+      await expect(service.findOne(cardId, userId)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId, userId },
+      });
       expect(mockCardsRepository.save).not.toHaveBeenCalled();
     });
   });
@@ -94,7 +103,7 @@ describe('CardsService', () => {
   describe('create', () => {
     it('should create and return a new card', async () => {
       const userId = '1';
-      const createCardDto = { 
+      const createCardDto = {
         name: 'New Card',
         cardNumber: 5,
         date: '2023-01-01',
@@ -111,22 +120,22 @@ describe('CardsService', () => {
             drivingTime: 300000,
             resultTime: 0,
             nextPKCTime: 0,
-            arrivalTime: 0
-          }
-        ]
+            arrivalTime: 0,
+          },
+        ],
       };
-      const newCard = { 
-        id: '1', 
-        ...createCardDto, 
-        userId, 
-        lastUsed: expect.any(Number)
+      const newCard = {
+        id: '1',
+        ...createCardDto,
+        userId,
+        lastUsed: expect.any(Number),
       };
 
       mockCardsRepository.create.mockReturnValue(newCard);
       mockCardsRepository.save.mockResolvedValue(newCard);
 
       const result = await service.create(createCardDto, userId);
-      
+
       expect(result).toEqual(newCard);
       expect(mockCardsRepository.create).toHaveBeenCalledWith({
         ...createCardDto,
@@ -142,25 +151,27 @@ describe('CardsService', () => {
       const cardId = '1';
       const userId = '1';
       const updateCardDto = { name: 'Updated Card' };
-      const existingCard = { 
-        id: cardId, 
-        name: 'Original Card', 
+      const existingCard = {
+        id: cardId,
+        name: 'Original Card',
         userId,
-        lastUsed: 1234567890
+        lastUsed: 1234567890,
       };
-      const updatedCard = { 
-        ...existingCard, 
-        ...updateCardDto, 
-        lastUsed: expect.any(Number) 
+      const updatedCard = {
+        ...existingCard,
+        ...updateCardDto,
+        lastUsed: expect.any(Number),
       };
 
       mockCardsRepository.findOne.mockResolvedValue(existingCard);
       mockCardsRepository.save.mockResolvedValue(updatedCard);
 
       const result = await service.update(cardId, updateCardDto, userId);
-      
+
       expect(result).toEqual(updatedCard);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.save).toHaveBeenCalledWith({
         ...existingCard,
         ...updateCardDto,
@@ -175,8 +186,12 @@ describe('CardsService', () => {
 
       mockCardsRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.update(cardId, updateCardDto, userId)).rejects.toThrow(NotFoundException);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+      await expect(
+        service.update(cardId, updateCardDto, userId),
+      ).rejects.toThrow(NotFoundException);
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.save).not.toHaveBeenCalled();
     });
 
@@ -185,16 +200,20 @@ describe('CardsService', () => {
       const userId = '1';
       const wrongUserId = '2';
       const updateCardDto = { name: 'Updated Card' };
-      const existingCard = { 
-        id: cardId, 
-        name: 'Original Card', 
-        userId 
+      const existingCard = {
+        id: cardId,
+        name: 'Original Card',
+        userId,
       };
 
       mockCardsRepository.findOne.mockResolvedValue(existingCard);
 
-      await expect(service.update(cardId, updateCardDto, wrongUserId)).rejects.toThrow(ForbiddenException);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+      await expect(
+        service.update(cardId, updateCardDto, wrongUserId),
+      ).rejects.toThrow(ForbiddenException);
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.save).not.toHaveBeenCalled();
     });
   });
@@ -203,18 +222,20 @@ describe('CardsService', () => {
     it('should remove a card', async () => {
       const cardId = '1';
       const userId = '1';
-      const existingCard = { 
-        id: cardId, 
-        name: 'Card to delete', 
-        userId 
+      const existingCard = {
+        id: cardId,
+        name: 'Card to delete',
+        userId,
       };
 
       mockCardsRepository.findOne.mockResolvedValue(existingCard);
       mockCardsRepository.remove.mockResolvedValue(existingCard);
 
       await service.remove(cardId, userId);
-      
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.remove).toHaveBeenCalledWith(existingCard);
     });
 
@@ -224,8 +245,12 @@ describe('CardsService', () => {
 
       mockCardsRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.remove(cardId, userId)).rejects.toThrow(NotFoundException);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+      await expect(service.remove(cardId, userId)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.remove).not.toHaveBeenCalled();
     });
 
@@ -233,16 +258,20 @@ describe('CardsService', () => {
       const cardId = '1';
       const userId = '1';
       const wrongUserId = '2';
-      const existingCard = { 
-        id: cardId, 
-        name: 'Card to delete', 
-        userId 
+      const existingCard = {
+        id: cardId,
+        name: 'Card to delete',
+        userId,
       };
 
       mockCardsRepository.findOne.mockResolvedValue(existingCard);
 
-      await expect(service.remove(cardId, wrongUserId)).rejects.toThrow(ForbiddenException);
-      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({ where: { id: cardId } });
+      await expect(service.remove(cardId, wrongUserId)).rejects.toThrow(
+        ForbiddenException,
+      );
+      expect(mockCardsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: cardId },
+      });
       expect(mockCardsRepository.remove).not.toHaveBeenCalled();
     });
   });

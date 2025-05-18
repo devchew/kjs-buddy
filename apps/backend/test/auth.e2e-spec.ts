@@ -53,7 +53,7 @@ describe('Auth Module (e2e)', () => {
       return request(app.getHttpServer())
         .post('/auth/register')
         .send(testUser)
-        .expect(409);  // HTTP Conflict or 400 Bad Request, depending on your implementation
+        .expect(409); // HTTP Conflict or 400 Bad Request, depending on your implementation
     });
 
     it('should login with valid credentials', () => {
@@ -92,9 +92,7 @@ describe('Auth Module (e2e)', () => {
     });
 
     it('should not get profile without valid authentication', () => {
-      return request(app.getHttpServer())
-        .get('/auth/profile')
-        .expect(401);
+      return request(app.getHttpServer()).get('/auth/profile').expect(401);
     });
   });
 });

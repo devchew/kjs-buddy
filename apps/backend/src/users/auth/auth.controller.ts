@@ -1,5 +1,19 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, Get, UseGuards, Request } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { RegisterDto } from '../dto/register.dto';
@@ -48,15 +62,15 @@ export class AuthController {
   async getProfile(@Request() req: RequestWithUser) {
     // Get the complete user data from the database
     const user = await this.usersService.findById(req.user.userId);
-    
+
     if (!user) {
       return { error: 'User not found' };
     }
-    
+
     // Remove sensitive information before sending the response
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userProfile } = user;
-    
+
     return userProfile;
   }
 }

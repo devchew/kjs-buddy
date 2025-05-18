@@ -1,4 +1,10 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CardPanelDto {
@@ -6,7 +12,10 @@ export class CardPanelDto {
   @IsNumber()
   number!: number;
 
-  @ApiProperty({ example: 'PS1 - Mountain Pass', description: 'Panel name/description' })
+  @ApiProperty({
+    example: 'PS1 - Mountain Pass',
+    description: 'Panel name/description',
+  })
   @IsString()
   name!: string;
 
@@ -14,11 +23,17 @@ export class CardPanelDto {
   @IsNumber()
   finishTime!: number;
 
-  @ApiProperty({ example: 34200000, description: 'Provisional start time in milliseconds' })
+  @ApiProperty({
+    example: 34200000,
+    description: 'Provisional start time in milliseconds',
+  })
   @IsNumber()
   provisionalStartTime!: number;
 
-  @ApiProperty({ example: 34200000, description: 'Actual start time in milliseconds' })
+  @ApiProperty({
+    example: 34200000,
+    description: 'Actual start time in milliseconds',
+  })
   @IsNumber()
   actualStartTime!: number;
 
@@ -40,7 +55,10 @@ export class CardPanelDto {
 }
 
 export class CardDto {
-  @ApiProperty({ example: 'Rally Monte Calvaria', description: 'Name of the event/card' })
+  @ApiProperty({
+    example: 'Rally Monte Calvaria',
+    description: 'Name of the event/card',
+  })
   @IsString()
   @IsNotEmpty()
   name!: string;
@@ -53,40 +71,51 @@ export class CardDto {
   @IsNumber()
   carNumber!: number;
 
-  @ApiProperty({ example: '2025-04-26', description: 'Event date in YYYY-MM-DD format' })
+  @ApiProperty({
+    example: '2025-04-26',
+    description: 'Event date in YYYY-MM-DD format',
+  })
   @IsString()
   date!: string;
-  
-  @ApiProperty({ example: 'montecalvaria.png', description: 'Logo image filename or URL' })
+
+  @ApiProperty({
+    example: 'montecalvaria.png',
+    description: 'Logo image filename or URL',
+  })
   @IsString()
   logo!: string;
 
-  @ApiProperty({ example: 'pzmot.png', description: 'Sponsor logo image filename or URL' })
+  @ApiProperty({
+    example: 'pzmot.png',
+    description: 'Sponsor logo image filename or URL',
+  })
   @IsString()
   sponsorLogo!: string;
 
-  @ApiProperty({ 
-    type: [CardPanelDto], 
+  @ApiProperty({
+    type: [CardPanelDto],
     description: 'Array of panels in the card',
-    example: [{
-      number: 1,
-      name: '',
-      finishTime: 0,
-      provisionalStartTime: 34200000,
-      actualStartTime: 34200000,
-      drivingTime: 0,
-      resultTime: 0,
-      nextPKCTime: 0,
-      arrivalTime: 0
-    }]
+    example: [
+      {
+        number: 1,
+        name: '',
+        finishTime: 0,
+        provisionalStartTime: 34200000,
+        actualStartTime: 34200000,
+        drivingTime: 0,
+        resultTime: 0,
+        nextPKCTime: 0,
+        arrivalTime: 0,
+      },
+    ],
   })
   @IsArray()
   panels!: CardPanelDto[];
 
-  @ApiProperty({ 
-    example: 'A description of the card', 
+  @ApiProperty({
+    example: 'A description of the card',
     description: 'Optional description',
-    required: false
+    required: false,
   })
   @IsOptional()
   @IsString()

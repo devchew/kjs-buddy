@@ -7,7 +7,7 @@ describe('Card Templates Module (e2e)', () => {
   let app: INestApplication;
   let authToken: string;
   let testTemplateId: string;
-  
+
   // Test user for authentication
   const testUser = {
     email: 'templatetest@example.com',
@@ -27,8 +27,8 @@ describe('Card Templates Module (e2e)', () => {
       logo: 'logo.png',
       sponsorLogo: 'sponsor.png',
       panels: [
-        { 
-          number: 1, 
+        {
+          number: 1,
           name: 'Test Panel',
           finishTime: 0,
           provisionalStartTime: 34200000,
@@ -36,10 +36,10 @@ describe('Card Templates Module (e2e)', () => {
           drivingTime: 0,
           resultTime: 0,
           nextPKCTime: 0,
-          arrivalTime: 0
-        }
-      ]
-    }
+          arrivalTime: 0,
+        },
+      ],
+    },
   };
 
   beforeAll(async () => {
@@ -58,17 +58,15 @@ describe('Card Templates Module (e2e)', () => {
     await app.init();
 
     // Register and login to get auth token for protected routes
-    await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(testUser);
-    
+    await request(app.getHttpServer()).post('/auth/register').send(testUser);
+
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
         email: testUser.email,
         password: testUser.password,
       });
-    
+
     authToken = loginResponse.body.access_token;
   });
 
@@ -86,13 +84,22 @@ describe('Card Templates Module (e2e)', () => {
         .expect((res) => {
           expect(res.body).toHaveProperty('id');
           expect(res.body).toHaveProperty('name', testTemplate.card.name);
-          expect(res.body).toHaveProperty('description', testTemplate.card.description);
+          expect(res.body).toHaveProperty(
+            'description',
+            testTemplate.card.description,
+          );
           expect(res.body).toHaveProperty('isPublic', testTemplate.isPublic);
           expect(res.body).toHaveProperty('panels');
-          expect(res.body).toHaveProperty('cardNumber', testTemplate.card.cardNumber);
-          expect(res.body).toHaveProperty('carNumber', testTemplate.card.carNumber);
+          expect(res.body).toHaveProperty(
+            'cardNumber',
+            testTemplate.card.cardNumber,
+          );
+          expect(res.body).toHaveProperty(
+            'carNumber',
+            testTemplate.card.carNumber,
+          );
           expect(res.body).toHaveProperty('date', testTemplate.card.date);
-          
+
           // Save the template ID for later tests
           testTemplateId = res.body.id;
         });
@@ -125,14 +132,14 @@ describe('Card Templates Module (e2e)', () => {
     });
 
     it('should update a card template with valid data and authentication', () => {
-      const updatedTemplate = { 
+      const updatedTemplate = {
         isPublic: true,
         card: {
           ...testTemplate.card,
-          name: 'Updated Template Name'
-        }
+          name: 'Updated Template Name',
+        },
       };
-      
+
       return request(app.getHttpServer())
         .put(`/cards/templates/${testTemplateId}`)
         .set('Authorization', `Bearer ${authToken}`)
@@ -145,14 +152,14 @@ describe('Card Templates Module (e2e)', () => {
     });
 
     it('should not update a card template without authentication', () => {
-      const updatedTemplate = { 
+      const updatedTemplate = {
         isPublic: true,
         card: {
           ...testTemplate.card,
-          name: 'Another Updated Name'
-        }
+          name: 'Another Updated Name',
+        },
       };
-      
+
       return request(app.getHttpServer())
         .put(`/cards/templates/${testTemplateId}`)
         .send(updatedTemplate)

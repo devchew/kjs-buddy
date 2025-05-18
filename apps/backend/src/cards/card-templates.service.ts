@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CardTemplate } from './entities/card-template.entity';
@@ -12,13 +16,16 @@ export class CardTemplatesService {
     private readonly cardTemplateRepository: Repository<CardTemplate>,
   ) {}
 
-  async create(createCardTemplateDto: CreateCardTemplateDto, userId: string): Promise<CardTemplate> {
+  async create(
+    createCardTemplateDto: CreateCardTemplateDto,
+    userId: string,
+  ): Promise<CardTemplate> {
     const cardTemplate = this.cardTemplateRepository.create({
       ...createCardTemplateDto,
       userId,
       isPublic: createCardTemplateDto.isPublic || false, // Default to false if not provided
     });
-    
+
     return this.cardTemplateRepository.save(cardTemplate);
   }
 
@@ -35,13 +42,19 @@ export class CardTemplatesService {
     });
 
     if (!cardTemplate) {
-      throw new NotFoundException(`Card template with ID ${id} not found or is not public`);
+      throw new NotFoundException(
+        `Card template with ID ${id} not found or is not public`,
+      );
     }
 
     return cardTemplate;
   }
 
-  async update(id: string, updateCardTemplateDto: UpdateCardTemplateDto, userId: string): Promise<CardTemplate> {
+  async update(
+    id: string,
+    updateCardTemplateDto: UpdateCardTemplateDto,
+    userId: string,
+  ): Promise<CardTemplate> {
     const cardTemplate = await this.cardTemplateRepository.findOne({
       where: { id },
     });
@@ -51,11 +64,17 @@ export class CardTemplatesService {
     }
 
     if (cardTemplate.userId !== userId) {
-      throw new ForbiddenException('You can only update your own card templates');
+      throw new ForbiddenException(
+        'You can only update your own card templates',
+      );
     }
 
     // Update the card template properties with the new values
-    const newTemplate = Object.assign({public: false}, cardTemplate, updateCardTemplateDto);
+    const newTemplate = Object.assign(
+      { public: false },
+      cardTemplate,
+      updateCardTemplateDto,
+    );
 
     return this.cardTemplateRepository.save(newTemplate);
   }
@@ -70,7 +89,9 @@ export class CardTemplatesService {
     }
 
     if (cardTemplate.userId !== userId) {
-      throw new ForbiddenException('You can only delete your own card templates');
+      throw new ForbiddenException(
+        'You can only delete your own card templates',
+      );
     }
 
     await this.cardTemplateRepository.remove(cardTemplate);

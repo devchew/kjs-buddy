@@ -7,7 +7,7 @@ describe('Cards Module (e2e)', () => {
   let app: INestApplication;
   let authToken: string;
   let testCardId: string;
-  
+
   // Test user for authentication
   const testUser = {
     email: 'cardtest@example.com',
@@ -33,10 +33,10 @@ describe('Cards Module (e2e)', () => {
         drivingTime: 300000,
         resultTime: 0,
         nextPKCTime: 0,
-        arrivalTime: 0
-      }
+        arrivalTime: 0,
+      },
     ],
-    description: 'Test card description'
+    description: 'Test card description',
   };
 
   beforeAll(async () => {
@@ -55,17 +55,15 @@ describe('Cards Module (e2e)', () => {
     await app.init();
 
     // Register and login to get auth token for protected routes
-    await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(testUser);
-    
+    await request(app.getHttpServer()).post('/auth/register').send(testUser);
+
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
       .send({
         email: testUser.email,
         password: testUser.password,
       });
-    
+
     authToken = loginResponse.body.access_token;
   });
 
@@ -89,7 +87,7 @@ describe('Cards Module (e2e)', () => {
           expect(res.body).toHaveProperty('logo', testCard.logo);
           expect(res.body).toHaveProperty('sponsorLogo', testCard.sponsorLogo);
           expect(res.body).toHaveProperty('panels');
-          
+
           // Save the card ID for later tests
           testCardId = res.body.id;
         });
@@ -126,7 +124,7 @@ describe('Cards Module (e2e)', () => {
 
     it('should update a card with valid data and authentication', () => {
       const updatedCard = { ...testCard, name: 'Updated Rally Name' };
-      
+
       return request(app.getHttpServer())
         .put(`/cards/${testCardId}`)
         .set('Authorization', `Bearer ${authToken}`)

@@ -6,6 +6,7 @@
     "build": "turbo check-types build",
     "build:frontend": "turbo run check-types build --filter=./apps/frontend",
     "build:backend": "turbo run check-types build --filter=./apps/backend",
+    "format": "turbo format",
     "dev": "turbo dev"
   },
   "repository": {

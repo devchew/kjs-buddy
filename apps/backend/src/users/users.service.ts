@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -23,7 +27,7 @@ export class UsersService {
 
   async create(registerDto: RegisterDto): Promise<User> {
     const { email, password } = registerDto;
-    
+
     // Check if user already exists
     const userExists = await this.findByEmail(email);
     if (userExists) {

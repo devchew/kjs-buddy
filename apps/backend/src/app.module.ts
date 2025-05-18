@@ -8,13 +8,7 @@ import { AuthModule } from './users/auth/auth.module';
 import { CardsModule } from './cards/cards.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    DatabaseModule,
-    UsersModule,
-    AuthModule,
-    CardsModule,
-  ],
+  imports: [ConfigModule, DatabaseModule, UsersModule, AuthModule, CardsModule],
   controllers: [AppController],
   providers: [AppService],
 })

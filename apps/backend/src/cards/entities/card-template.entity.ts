@@ -6,9 +6,9 @@ import { Card } from './card.entity';
 export class CardTemplate extends Card {
   @ApiProperty({
     example: true,
-    description: 'Whether the template is public and accessible without authentication'
+    description:
+      'Whether the template is public and accessible without authentication',
   })
   @Column({ default: false })
   isPublic!: boolean;
-  
 }

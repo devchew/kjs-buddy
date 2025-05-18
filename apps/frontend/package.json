@@ -9,7 +9,7 @@
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "lint": "eslint .",
-    "prettier": "prettier --write .",
+    "format": "prettier --write .",
     "preview": "vite preview",
     "generate-api": "openapi-typescript http://localhost:3000/api/docs-json -o ./src/api/endpoints.ts"
   },

@@ -20,7 +20,7 @@ describe('UsersService', () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
@@ -42,8 +42,8 @@ describe('UsersService', () => {
   describe('findById', () => {
     it('should return a user by ID', async () => {
       const userId = '1';
-      const expectedUser = { 
-        id: userId, 
+      const expectedUser = {
+        id: userId,
         email: 'test@example.com',
         username: 'testuser',
       };
@@ -51,9 +51,11 @@ describe('UsersService', () => {
       mockUsersRepository.findOneBy.mockResolvedValue(expectedUser);
 
       const result = await service.findById(userId);
-      
+
       expect(result).toEqual(expectedUser);
-      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ id: userId });
+      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({
+        id: userId,
+      });
     });
 
     it('should return null if user not found', async () => {
@@ -62,17 +64,19 @@ describe('UsersService', () => {
       mockUsersRepository.findOneBy.mockResolvedValue(null);
 
       const result = await service.findById(userId);
-      
+
       expect(result).toBeNull();
-      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ id: userId });
+      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({
+        id: userId,
+      });
     });
   });
 
   describe('findByEmail', () => {
     it('should return a user by email', async () => {
       const email = 'test@example.com';
-      const expectedUser = { 
-        id: '1', 
+      const expectedUser = {
+        id: '1',
         email,
         username: 'testuser',
       };
@@ -80,7 +84,7 @@ describe('UsersService', () => {
       mockUsersRepository.findOneBy.mockResolvedValue(expectedUser);
 
       const result = await service.findByEmail(email);
-      
+
       expect(result).toEqual(expectedUser);
       expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ email });
     });
@@ -91,7 +95,7 @@ describe('UsersService', () => {
       mockUsersRepository.findOneBy.mockResolvedValue(null);
 
       const result = await service.findByEmail(email);
-      
+
       expect(result).toBeNull();
       expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ email });
     });
@@ -99,15 +103,15 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should create and return a new user with hashed password', async () => {
-      const registerDto = { 
-        email: 'new@example.com', 
+      const registerDto = {
+        email: 'new@example.com',
         username: 'newuser',
         password: 'password123',
       };
-      
+
       const hashedPassword = 'hashed_password';
-      const newUser = { 
-        id: '1', 
+      const newUser = {
+        id: '1',
         email: registerDto.email,
         username: registerDto.username,
         password: hashedPassword,
@@ -119,9 +123,11 @@ describe('UsersService', () => {
       mockUsersRepository.save.mockResolvedValue(newUser);
 
       const result = await service.create(registerDto);
-      
+
       expect(result).toEqual(newUser);
-      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ email: registerDto.email });
+      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({
+        email: registerDto.email,
+      });
       expect(bcrypt.hash).toHaveBeenCalledWith(registerDto.password, 10);
       expect(mockUsersRepository.create).toHaveBeenCalledWith({
         email: registerDto.email,
@@ -131,12 +137,12 @@ describe('UsersService', () => {
     });
 
     it('should throw ConflictException if user with email already exists', async () => {
-      const registerDto = { 
-        email: 'existing@example.com', 
+      const registerDto = {
+        email: 'existing@example.com',
         username: 'newuser',
         password: 'password123',
       };
-      
+
       const existingUser = {
         id: '1',
         email: registerDto.email,
@@ -145,8 +151,12 @@ describe('UsersService', () => {
 
       mockUsersRepository.findOneBy.mockResolvedValue(existingUser);
 
-      await expect(service.create(registerDto)).rejects.toThrow(ConflictException);
-      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({ email: registerDto.email });
+      await expect(service.create(registerDto)).rejects.toThrow(
+        ConflictException,
+      );
+      expect(mockUsersRepository.findOneBy).toHaveBeenCalledWith({
+        email: registerDto.email,
+      });
       expect(mockUsersRepository.create).not.toHaveBeenCalled();
     });
   });

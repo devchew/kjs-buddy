@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -6,56 +13,56 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Card {
   @ApiProperty({
     example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'Unique identifier for the card'
+    description: 'Unique identifier for the card',
   })
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @ApiProperty({
     example: 'Rally Monte Calvaria',
-    description: 'Name of the event/card'
+    description: 'Name of the event/card',
   })
   @Column()
   name!: string;
 
   @ApiProperty({
     example: 'An event description',
-    description: 'Description of the card'
+    description: 'Description of the card',
   })
   @Column({ nullable: true })
   description!: string;
 
   @ApiProperty({
     example: 1,
-    description: 'Card number in the event'
+    description: 'Card number in the event',
   })
   @Column()
   cardNumber!: number;
 
   @ApiProperty({
     example: 69,
-    description: 'Car number in the event'
+    description: 'Car number in the event',
   })
   @Column()
   carNumber!: number;
 
   @ApiProperty({
     example: '2025-04-26',
-    description: 'Event date in YYYY-MM-DD format'
+    description: 'Event date in YYYY-MM-DD format',
   })
   @Column()
   date!: string;
 
   @ApiProperty({
     example: 'montecalvaria.png',
-    description: 'Logo image filename or URL'
+    description: 'Logo image filename or URL',
   })
   @Column()
   logo!: string;
 
   @ApiProperty({
     example: 'pzmot.png',
-    description: 'Sponsor logo image filename or URL'
+    description: 'Sponsor logo image filename or URL',
   })
   @Column()
   sponsorLogo!: string;
@@ -71,7 +78,7 @@ export class Card {
         drivingTime: 0,
         resultTime: 0,
         nextPKCTime: 0,
-        arrivalTime: 0
+        arrivalTime: 0,
       },
       {
         number: 2,
@@ -82,41 +89,41 @@ export class Card {
         drivingTime: 300000,
         resultTime: 0,
         nextPKCTime: 0,
-        arrivalTime: 0
-      }
+        arrivalTime: 0,
+      },
     ],
-    description: 'Array of panels in the card'
+    description: 'Array of panels in the card',
   })
   @Column('simple-json')
-  panels!: any[];  // Storing panels as JSON for flexibility
+  panels!: any[]; // Storing panels as JSON for flexibility
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user!: User;
 
   @ApiProperty({
     example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'ID of the user who owns this card'
+    description: 'ID of the user who owns this card',
   })
   @Column()
   userId!: string;
 
   @ApiProperty({
     example: 1714201274525,
-    description: 'Timestamp of when the card was last accessed'
+    description: 'Timestamp of when the card was last accessed',
   })
   @Column({ default: Date.now() })
   lastUsed!: number;
 
   @ApiProperty({
     example: '2025-04-26T12:00:00Z',
-    description: 'Date and time when the card was created'
+    description: 'Date and time when the card was created',
   })
   @CreateDateColumn()
   createdAt!: Date;
 
   @ApiProperty({
     example: '2025-04-26T15:30:45Z',
-    description: 'Date and time when the card was last updated'
+    description: 'Date and time when the card was last updated',
   })
   @UpdateDateColumn()
   updatedAt!: Date;
