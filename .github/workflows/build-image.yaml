@@ -38,6 +38,9 @@ jobs:
       - name: prepare dotenv
         run: cp ./apps/frontend/.env.substr ./apps/frontend/.env
 
+      - name: prepare dotenv
+        run: cp ./apps/admin/.env.substr ./apps/admin/.env
+
       - name: build
         run: pnpm build
 

@@ -6,9 +6,7 @@ volumes:
 
 services:
   backend:
-    build:
-      context: ./dist/backend
-      dockerfile: Dockerfile
+    image: devchew/kjsbuddy-backend:latest
     container_name: backend
     restart: unless-stopped
     ports:
@@ -16,25 +14,21 @@ services:
     volumes:
       - database:/usr/src/app/data
     environment:
-      - CORS_ORIGINS=http://localhost:8888,https://rajdex.pl
-
+      - CORS_ORIGINS=https://localhost:9999,https://localhost:9997
   frontend:
-    build:
-      context: ./dist/frontend
-      dockerfile: Dockerfile
+    image: devchew/kjsbuddy-frontend:latest
     container_name: frontend
     restart: unless-stopped
     ports:
-      - 8888:80
+      - 9999:80
     environment:
-      - API_URL=http://backend:3000
+      - API_URL=http://localhost:3000
+
   admin:
-    build:
-      context: ./dist/admin
-      dockerfile: Dockerfile
+    image: devchew/kjsbuddy-admin:latest
     container_name: admin
     restart: unless-stopped
     ports:
-      - 8888:80
+      - 9997:80
     environment:
-      - API_URL=http://backend:3000
+      - API_URL=http://localhost:3000
