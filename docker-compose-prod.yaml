@@ -10,7 +10,7 @@ services:
     container_name: backend
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - 9998:3000
     volumes:
       - database:/usr/src/app/data
     environment:
@@ -22,7 +22,7 @@ services:
     ports:
       - 9999:80
     environment:
-      - API_URL=http://localhost:3000
+      - API_URL=http://localhost:9998
 
   admin:
     image: devchew/kjsbuddy-admin:latest
@@ -31,4 +31,13 @@ services:
     ports:
       - 9997:80
     environment:
-      - API_URL=http://localhost:3000
+      - API_URL=http://localhost:9998
+
+  landing:
+    image: devchew/kjsbuddy-landing:latest
+    container_name: landing
+    restart: unless-stopped
+    ports:
+      - 9996:80
+    environment:
+      - MAIN_APP_URL=http://localhost:9997

@@ -74,6 +74,12 @@ jobs:
         with:
           name: admin
           path: ./dist/admin
+
+      - name: 'Upload landing'
+        uses: actions/upload-artifact@v4
+        with:
+          name: landing
+          path: ./dist/landing
           
   push_frontend:
     needs: [build]
