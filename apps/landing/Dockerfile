@@ -10,7 +10,7 @@ COPY ./docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set environment variable with default value
-ENV API_URL=http://backend:3000
+ENV MAIN_APP_URL=http://backend:3000
 
 # Use the entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
