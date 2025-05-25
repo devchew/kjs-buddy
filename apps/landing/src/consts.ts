@@ -1,0 +1,1 @@
+export const AppUrl = import.meta.env.VITE_MAIN_APP_URL || "http://localhost:3000";

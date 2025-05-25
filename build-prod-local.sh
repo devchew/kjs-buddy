@@ -21,6 +21,9 @@ pnpm deploy --filter=./apps/frontend --prod ./dist/frontend
 echo "Deploying admin..."
 pnpm deploy --filter=./apps/admin --prod ./dist/admin
 
+echo "Deploying landing..."
+pnpm deploy --filter=./apps/landing --prod ./dist/landing
+
 echo "Starting the application with docker compose..."
 docker compose up --build --force-recreate --remove-orphans -d
 

@@ -38,3 +38,14 @@ services:
       - 9999:80
     environment:
       - API_URL=http://backend:3000
+
+  landing:
+    build:
+      context: ./dist/landing
+      dockerfile: Dockerfile
+    container_name: landing
+    restart: unless-stopped
+    ports:
+      - 2137:80
+    environment:
+      - MAIN_APP_URL=http://backend:9999
