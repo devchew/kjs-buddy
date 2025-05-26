@@ -274,7 +274,10 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-
-      - name: Deploy to production server
-        run: |
-          curl --request GET "${% raw %}{{ secrets.COOLIFY_DEPLOY_WEBHOOK }}{% endraw %}" --header "Authorization: Bearer ${% raw %}{{ secrets.COOLIFY_TOKEN }}{% endraw %}"
+        
+      - name: Trigger Coolify deployment via webhook
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{secrets.COOLIFY_DEPLOY_WEBHOOK}}
+          method: GET
+          bearerToken: ${{secrets.COOLIFY_TOKEN}}
