@@ -266,3 +266,15 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  
+  deploy:
+    needs: [push_frontend, push_backend, push_admin, push_landing]
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to production server
+        run: |
+          curl --request GET "${% raw %}{{ secrets.COOLIFY_DEPLOY_WEBHOOK }}{% endraw %}" --header "Authorization: Bearer ${% raw %}{{ secrets.COOLIFY_TOKEN }}{% endraw %}"
