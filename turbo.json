@@ -1,9 +1,13 @@
 {
     "$schema": "https://turborepo.com/schema.json",
     "tasks": {
+      "prebuild": {
+        "cache": false,
+        "outputs": []
+      },
       "build": {
         "outputs": ["dist/**"],
-        "dependsOn": ["^build"] 
+        "dependsOn": ["^prebuild", "^build"]
       },
       "check-types": {
         "dependsOn": ["^check-types"]
