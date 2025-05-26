@@ -57,6 +57,9 @@ jobs:
       - name: prune admin
         run: pnpm deploy --filter=./apps/admin --prod ./dist/admin
 
+      - name: prune landing
+        run: pnpm deploy --filter=./apps/landing --prod ./dist/landing
+
       - name: 'Upload frontend'
         uses: actions/upload-artifact@v4
         with:
