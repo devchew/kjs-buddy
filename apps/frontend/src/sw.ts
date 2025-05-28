@@ -54,11 +54,34 @@ self.skipWaiting();
 clientsClaim();
 
 const sendNotification = async (title: string, body: string) => {
-  await self.registration.showNotification(title, {
-    body,
-    tag: "vibration-sample",
-  });
+  try {
+    await self.registration.showNotification(title, {
+      body,
+      icon: "/icon-192x192.png", // Add an icon (required for some mobile browsers)
+      badge: "/badge-72x72.png", // Add a badge for mobile
+      tag: "vibration-sample",
+      requireInteraction: true, // Keeps notification visible on mobile
+      silent: false,
+      data: {
+        // Add data for handling clicks
+        url: "https://app.rajdex.pl/", // Replace with your URL
+      },
+    });
+    console.log("Notification sent successfully");
+  } catch (error) {
+    console.error("Failed to show notification:", error);
+  }
 };
+
+self.addEventListener("notificationclick", (event) => {
+  console.log("Notification clicked:", event);
+
+  event.notification.close();
+
+  // Handle notification click
+  event.waitUntil(self.clients.openWindow(event.notification.data?.url || "/"));
+});
+
 
 const channel = new BroadcastChannel("sw-messages");
 
