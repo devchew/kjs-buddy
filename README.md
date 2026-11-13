@@ -1,6 +1,5 @@
 # KJS-Buddy
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/devchew/kjs-buddy)
 ![GitHub Stars](https://img.shields.io/github/stars/devchew/kjs-buddy?style=social)
 
 [try it here](https://rajdex.pl/)
